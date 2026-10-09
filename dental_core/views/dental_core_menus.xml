@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Clinical Main Menu -->
+    <menuitem
+        id="menu_dental_clinical"
+        name="Clinical"
+        parent="dental_base.menu_dental_root"
+        sequence="30"
+        groups="dental_base.group_dental_dentist,dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+
+    <!-- Clinical Sub-Menus -->
+    <menuitem
+        id="menu_dental_case"
+        name="Dental Cases"
+        parent="menu_dental_clinical"
+        action="action_dental_case"
+        sequence="10"
+        groups="dental_base.group_dental_dentist,dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+
+    <menuitem
+        id="menu_dental_clinical_examination"
+        name="Clinical Examinations"
+        parent="menu_dental_clinical"
+        action="action_dental_clinical_examination"
+        sequence="20"
+        groups="dental_base.group_dental_dentist,dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+
+    <menuitem
+        id="menu_dental_patient_diagnosis"
+        name="Diagnoses"
+        parent="menu_dental_clinical"
+        action="action_dental_patient_diagnosis"
+        sequence="30"
+        groups="dental_base.group_dental_dentist,dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+
+    <menuitem
+        id="menu_dental_treatment_plan"
+        name="Treatment Plans"
+        parent="menu_dental_clinical"
+        action="action_dental_treatment_plan"
+        sequence="40"
+        groups="dental_base.group_dental_dentist,dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+
+    <menuitem
+        id="menu_dental_treatment_session"
+        name="Treatment Sessions"
+        parent="menu_dental_clinical"
+        action="action_dental_treatment_session"
+        sequence="50"
+        groups="dental_base.group_dental_dentist,dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+
+    <!-- Configuration Menu Items -->
+    <menuitem
+        id="menu_dental_diagnosis_config"
+        name="Diagnosis Master"
+        parent="dental_base.menu_dental_configuration"
+        action="action_dental_diagnosis"
+        sequence="40"
+        groups="dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+</odoo>

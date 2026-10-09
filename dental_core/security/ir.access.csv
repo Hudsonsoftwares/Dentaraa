@@ -1,0 +1,23 @@
+id,name,model_id:id,group_id:id,for_read,for_write,for_create,for_unlink,domain
+access_dental_case_receptionist,dental.case.receptionist,model_dental_case,dental_base.group_dental_receptionist,0,0,0,0,
+access_dental_case_dentist,dental.case.dentist,model_dental_case,dental_base.group_dental_dentist,1,1,1,0,"['|', ('doctor_id.user_id', '=', user.id), ('doctor_id', '=', False)]"
+access_dental_case_manager,dental.case.manager,model_dental_case,dental_base.group_dental_manager,1,1,1,1,
+access_dental_clinical_examination_receptionist,dental.clinical.examination.receptionist,model_dental_clinical_examination,dental_base.group_dental_receptionist,0,0,0,0,
+access_dental_clinical_examination_dentist,dental.clinical.examination.dentist,model_dental_clinical_examination,dental_base.group_dental_dentist,1,1,1,0,"['|', ('doctor_id.user_id', '=', user.id), ('doctor_id', '=', False)]"
+access_dental_clinical_examination_manager,dental.clinical.examination.manager,model_dental_clinical_examination,dental_base.group_dental_manager,1,1,1,1,
+access_dental_diagnosis_receptionist,dental.diagnosis.receptionist,model_dental_diagnosis,dental_base.group_dental_receptionist,0,0,0,0,
+access_dental_diagnosis_dentist,dental.diagnosis.dentist,model_dental_diagnosis,dental_base.group_dental_dentist,1,1,1,0,
+access_dental_diagnosis_manager,dental.diagnosis.manager,model_dental_diagnosis,dental_base.group_dental_manager,1,1,1,1,
+access_dental_patient_diagnosis_receptionist,dental.patient.diagnosis.receptionist,model_dental_patient_diagnosis,dental_base.group_dental_receptionist,0,0,0,0,
+access_dental_patient_diagnosis_dentist,dental.patient.diagnosis.dentist,model_dental_patient_diagnosis,dental_base.group_dental_dentist,1,1,1,0,"['|', ('doctor_id.user_id', '=', user.id), ('doctor_id', '=', False)]"
+access_dental_patient_diagnosis_manager,dental.patient.diagnosis.manager,model_dental_patient_diagnosis,dental_base.group_dental_manager,1,1,1,1,
+access_dental_treatment_plan_receptionist,dental.treatment.plan.receptionist,model_dental_treatment_plan,dental_base.group_dental_receptionist,0,0,0,0,
+access_dental_treatment_plan_dentist,dental.treatment.plan.dentist,model_dental_treatment_plan,dental_base.group_dental_dentist,1,1,1,0,"['|', ('doctor_id.user_id', '=', user.id), ('doctor_id', '=', False)]"
+access_dental_treatment_plan_manager,dental.treatment.plan.manager,model_dental_treatment_plan,dental_base.group_dental_manager,1,1,1,1,
+access_dental_treatment_plan_line_receptionist,dental.treatment.plan.line.receptionist,model_dental_treatment_plan_line,dental_base.group_dental_receptionist,0,0,0,0,
+access_dental_treatment_plan_line_dentist,dental.treatment.plan.line.dentist,model_dental_treatment_plan_line,dental_base.group_dental_dentist,1,1,1,0,"['|', ('plan_id.doctor_id.user_id', '=', user.id), ('plan_id.doctor_id', '=', False)]"
+access_dental_treatment_plan_line_manager,dental.treatment.plan.line.manager,model_dental_treatment_plan_line,dental_base.group_dental_manager,1,1,1,1,
+access_dental_treatment_session_receptionist,dental.treatment.session.receptionist,model_dental_treatment_session,dental_base.group_dental_receptionist,0,0,0,0,
+access_dental_treatment_session_dentist,dental.treatment.session.dentist,model_dental_treatment_session,dental_base.group_dental_dentist,1,1,1,0,"['|', ('doctor_id.user_id', '=', user.id), ('doctor_id', '=', False)]"
+access_dental_treatment_session_manager,dental.treatment.session.manager,model_dental_treatment_session,dental_base.group_dental_manager,1,1,1,1,
+access_res_partner_receptionist,res.partner.receptionist,base.model_res_partner,dental_base.group_dental_receptionist,1,1,1,0,

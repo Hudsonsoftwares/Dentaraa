@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dental_clinical_examination_form" model="ir.ui.view">
+        <field name="name">dental.clinical.examination.form</field>
+        <field name="model">dental.clinical.examination</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="patient_id"/>
+                            <field name="case_id"/>
+                            <field name="doctor_id"/>
+                        </group>
+                        <group>
+                            <field name="examination_date"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Complaints &amp; Findings">
+                            <group>
+                                <field name="chief_complaint"/>
+                                <field name="presenting_complaint"/>
+                                <field name="clinical_findings"/>
+                                <field name="additional_notes"/>
+                            </group>
+                        </page>
+                        <page string="Dental Observations">
+                            <group>
+                                <field name="oral_hygiene"/>
+                                <field name="gum_condition"/>
+                                <field name="tooth_condition_summary"/>
+                                <field name="soft_tissue_findings"/>
+                                <field name="occlusion"/>
+                            </group>
+                        </page>
+                        <page string="Vitals">
+                            <group>
+                                <group>
+                                    <field name="height"/>
+                                    <field name="weight"/>
+                                    <field name="bmi"/>
+                                    <field name="temperature"/>
+                                </group>
+                                <group>
+                                    <field name="blood_pressure"/>
+                                    <field name="pulse_rate"/>
+                                    <field name="respiratory_rate"/>
+                                    <field name="oxygen_saturation"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_dental_clinical_examination_list" model="ir.ui.view">
+        <field name="name">dental.clinical.examination.list</field>
+        <field name="model">dental.clinical.examination</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="patient_id"/>
+                <field name="case_id"/>
+                <field name="examination_date"/>
+                <field name="doctor_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_dental_clinical_examination" model="ir.actions.act_window">
+        <field name="name">Clinical Examinations</field>
+        <field name="res_model">dental.clinical.examination</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

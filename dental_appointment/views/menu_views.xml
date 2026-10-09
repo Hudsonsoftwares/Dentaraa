@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_dental_appointment_root" name="Appointments" parent="dental_base.menu_dental_root" sequence="20"/>
+
+    <!-- Receptionist Menus -->
+    <menuitem id="menu_reception_todays_appointments" name="Today's Appointments" parent="menu_dental_appointment_root" action="dental_core.action_reception_todays_appointments" sequence="5" groups="dental_base.group_dental_receptionist,dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+    <menuitem id="menu_dental_appointment" name="All Appointments" parent="menu_dental_appointment_root" action="action_dental_appointment" sequence="10" groups="dental_base.group_dental_receptionist,dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+    
+    <record id="action_dental_appointment_calendar" model="ir.actions.act_window">
+        <field name="name">Calendar</field>
+        <field name="res_model">dental.appointment</field>
+        <field name="view_mode">calendar,list,form</field>
+    </record>
+    <menuitem id="menu_dental_appointment_calendar" name="Calendar" parent="menu_dental_appointment_root" action="action_dental_appointment_calendar" sequence="15" groups="dental_base.group_dental_receptionist,dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+
+    <!-- Check-in & Queue Menu -->
+    <menuitem id="menu_dental_queue_root" name="Check-in &amp; Queue" parent="dental_base.menu_dental_root" sequence="22" groups="dental_base.group_dental_receptionist,dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+    <record id="action_dental_patient_checkin" model="ir.actions.act_window">
+        <field name="name">Patient Check-in</field>
+        <field name="res_model">dental.appointment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '=', 'confirmed'), ('date_start', '&gt;=', context_today().strftime('%Y-%m-%d 00:00:00')), ('date_start', '&lt;=', context_today().strftime('%Y-%m-%d 23:59:59'))]</field>
+    </record>
+    <menuitem id="menu_dental_patient_checkin" name="Patient Check-in" parent="menu_dental_queue_root" action="action_dental_patient_checkin" sequence="10"/>
+    <menuitem id="menu_dental_queue" name="Queue Board" parent="menu_dental_queue_root" action="action_dental_appointment_queue" sequence="20"/>
+
+    <!-- Follow-ups & Recalls Menu -->
+    <menuitem id="menu_dental_followup_root" name="Follow-ups &amp; Recalls" parent="dental_base.menu_dental_root" sequence="25" groups="dental_base.group_dental_receptionist,dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+    <menuitem id="menu_dental_follow_up" name="Follow-ups" parent="menu_dental_followup_root" action="action_dental_follow_up" sequence="10"/>
+    <menuitem id="menu_dental_recall" name="Recalls" parent="menu_dental_followup_root" action="action_dental_recall" sequence="20"/>
+
+    <!-- Dentist Actions & Menus -->
+    <record id="action_dentist_my_appointments_menu" model="ir.actions.act_window">
+        <field name="name">My Appointments</field>
+        <field name="res_model">dental.appointment</field>
+        <field name="view_mode">list,calendar,form</field>
+        <field name="domain">[('doctor_id.user_id', '=', uid)]</field>
+        <field name="context">{'search_default_upcoming': 1}</field>
+    </record>
+
+    <record id="action_dentist_calendar_menu" model="ir.actions.act_window">
+        <field name="name">Calendar</field>
+        <field name="res_model">dental.appointment</field>
+        <field name="view_mode">calendar,list,form</field>
+        <field name="domain">[('doctor_id.user_id', '=', uid)]</field>
+    </record>
+
+    <record id="action_dentist_queue_menu" model="ir.actions.act_window">
+        <field name="name">Waiting Queue</field>
+        <field name="res_model">dental.appointment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', 'in', ('checked_in', 'in_consultation')), ('doctor_id.user_id', '=', uid)]</field>
+        <field name="view_id" ref="view_dental_appointment_queue_tree"/>
+    </record>
+
+    <menuitem id="menu_dentist_my_appointments_main" name="My Appointments" parent="menu_dental_appointment_root" action="action_dentist_my_appointments_menu" sequence="15" groups="dental_base.group_dental_dentist,dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+    <menuitem id="menu_dentist_calendar" name="Calendar" parent="menu_dental_appointment_root" action="action_dentist_calendar_menu" sequence="25" groups="dental_base.group_dental_dentist,dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+    <menuitem id="menu_dentist_queue" name="Waiting Queue" parent="menu_dental_appointment_root" action="action_dentist_queue_menu" sequence="35" groups="dental_base.group_dental_dentist,dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+
+    <!-- Configuration Menus -->
+    <menuitem id="menu_dental_appointment_config" name="Appointment Configuration" parent="dental_base.menu_dental_configuration" sequence="20"/>
+    <menuitem id="menu_dental_appointment_type" name="Appointment Types" parent="menu_dental_appointment_config" action="action_dental_appointment_type" sequence="10"/>
+    <menuitem id="menu_dental_recall_rule" name="Recall Rules" parent="menu_dental_appointment_config" action="action_dental_recall_rule" sequence="20"/>
+</odoo>

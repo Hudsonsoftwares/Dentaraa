@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dental_waiting_list_tree" model="ir.ui.view">
+        <field name="name">dental.waiting.list.tree</field>
+        <field name="model">dental.waiting.list</field>
+        <field name="arch" type="xml">
+            <list decoration-info="state == 'waiting'" decoration-success="state == 'assigned'" decoration-danger="state == 'cancelled'">
+                <field name="patient_id"/>
+                <field name="doctor_id"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="treatment_id"/>
+                <field name="priority"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dental_waiting_list_form" model="ir.ui.view">
+        <field name="name">dental.waiting.list.form</field>
+        <field name="model">dental.waiting.list</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_assign" string="Assign" type="object" class="oe_highlight" invisible="state != 'waiting'"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state in ('assigned', 'cancelled')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="waiting,assigned,cancelled"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="patient_id"/>
+                            <field name="doctor_id"/>
+                            <field name="treatment_id"/>
+                        </group>
+                        <group>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                            <field name="priority"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="notes"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dental_waiting_list" model="ir.actions.act_window">
+        <field name="name">Waiting List</field>
+        <field name="res_model">dental.waiting.list</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

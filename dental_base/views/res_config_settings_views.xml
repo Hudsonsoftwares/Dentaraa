@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_inherit_dental" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.dental</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="80"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Dental Clinic" string="Dental Clinic" name="dental_base" groups="dental_base.group_dental_admin">
+                    <block title="Clinic &amp; Branch Setup" name="dental_branch_settings">
+                        <setting id="dental_enable_multi_branch_setting" help="Enable multi-branch clinics and branch-level separation">
+                            <field name="dental_enable_multi_branch"/>
+                        </setting>
+                    </block>
+                    <block title="Clinical Standards &amp; Odontogram" name="dental_clinical_settings">
+                        <setting id="dental_tooth_numbering_setting" help="Default tooth numbering notation across clinical charts">
+                            <field name="dental_tooth_numbering_system" class="o_light_label"/>
+                        </setting>
+                        <setting id="dental_require_consent_setting" help="Require patient digital signature before performing invasive treatments">
+                            <field name="dental_require_consent"/>
+                        </setting>
+                    </block>
+                    <block title="Appointments &amp; Queue Management" name="dental_appointment_settings">
+                        <setting id="dental_appointment_duration_setting" help="Default appointment time duration for consultation scheduling">
+                            <div class="d-flex align-items-center">
+                                <field name="dental_appointment_duration" class="oe_inline me-2"/>
+                                <span>Minutes</span>
+                            </div>
+                        </setting>
+                        <setting id="dental_emergency_priority_setting" help="Give emergency check-ins priority in front-desk token queue">
+                            <field name="dental_emergency_priority_enabled"/>
+                        </setting>
+                    </block>
+                    <block title="Patient Identifiers" name="dental_patient_id_settings">
+                        <setting id="dental_patient_id_prefix_setting" help="Automated prefix for new patient identification codes">
+                            <field name="dental_patient_id_prefix" class="oe_inline"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Settings Action -->
+    <record id="action_dental_config_settings" model="ir.actions.act_window">
+        <field name="name">Dental Settings</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="context">{'module': 'dental_base', 'bin_size': False}</field>
+    </record>
+</odoo>

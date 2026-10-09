@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Action for Dental Patients -->
+    <record id="action_dental_patient" model="ir.actions.act_window">
+        <field name="name">Patients</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('is_dental_patient', '=', True)]</field>
+        <field name="context">{'default_is_dental_patient': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new dental patient
+            </p>
+        </field>
+    </record>
+
+    <!-- Action for Patient History -->
+    <record id="action_dental_patient_history" model="ir.actions.act_window">
+        <field name="name">Patient History</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('is_dental_patient', '=', True)]</field>
+        <field name="context">{'default_is_dental_patient': True}</field>
+    </record>
+
+    <!-- Menu Items for Dental Patients -->
+    <menuitem id="menu_dental_patients_root" name="Patients" parent="dental_base.menu_dental_root" sequence="30"/>
+    
+    <menuitem id="menu_dental_patients"
+              name="Patient List"
+              parent="menu_dental_patients_root"
+              action="action_dental_patient"
+              sequence="10"/>
+
+    <menuitem id="menu_dental_patient_history"
+              name="Patient History"
+              parent="menu_dental_patients_root"
+              action="action_dental_patient_history"
+              sequence="20"/>
+
+    <!-- Form View Inheritance -->
+    <record id="view_partner_form_dental" model="ir.ui.view">
+        <field name="name">res.partner.form.dental</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <button name="%(dental_appointment.action_dental_appointment)d" 
+                            string="Book Appointment" 
+                            type="action" 
+                            class="btn-primary" 
+                            context="{'default_patient_id': id, 'search_default_patient_id': id}"
+                            invisible="not is_dental_patient or not id"/>
+                </header>
+            </xpath>
+            <xpath expr="//h1" position="after">
+                <h2 invisible="not is_dental_patient">
+                    <field name="dental_patient_id"/>
+                </h2>
+            </xpath>
+            
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="is_dental_patient" widget="boolean_toggle"/>
+            </xpath>
+
+            <xpath expr="//notebook" position="inside">
+                <page string="Dental Information" name="dental_info" invisible="not is_dental_patient">
+                    <group>
+                        <group string="Basic Details">
+                            <field name="date_of_birth"/>
+                            <field name="age"/>
+                            <field name="gender"/>
+                            <field name="blood_group"/>
+                        </group>
+                        <group string="Emergency Info">
+                            <field name="guardian_id"/>
+                            <field name="emergency_contact"/>
+                            <field name="active_clinic_id"/>
+                        </group>
+                    </group>
+                    <group groups="dental_base.group_dental_dentist,dental_base.group_dental_assistant,dental_base.group_dental_manager,dental_base.group_dental_admin">
+                        <group string="Medical History">
+                            <field name="allergies"/>
+                            <field name="existing_conditions"/>
+                            <field name="current_medications"/>
+                            <field name="previous_surgeries"/>
+                            <field name="medical_history"/>
+                        </group>
+                        <group string="Dental History &amp; Hygiene">
+                            <field name="last_dental_visit"/>
+                            <field name="oral_hygiene"/>
+                            <field name="brushing_frequency"/>
+                            <field name="smoking_tobacco_history"/>
+                            <field name="previous_dental_treatments"/>
+                            <field name="dental_history"/>
+                            <field name="clinical_alerts"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+    
+    <!-- Tree view customization for Patients Action -->
+    <record id="view_partner_tree_dental" model="ir.ui.view">
+        <field name="name">res.partner.tree.dental</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <list string="Dental Patients">
+                <field name="dental_patient_id"/>
+                <field name="name"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="date_of_birth"/>
+                <field name="age"/>
+            </list>
+        </field>
+    </record>
+    
+    <!-- Link specific tree to action -->
+    <record id="action_dental_patient_tree_view" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_partner_tree_dental"/>
+        <field name="act_window_id" ref="action_dental_patient"/>
+    </record>
+</odoo>

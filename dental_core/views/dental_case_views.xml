@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dental_case_form" model="ir.ui.view">
+        <field name="name">dental.case.form</field>
+        <field name="model">dental.case</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,open,under_treatment,completed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="patient_id"/>
+                            <field name="doctor_id"/>
+                            <field name="appointment_id"/>
+                        </group>
+                        <group>
+                            <field name="case_date"/>
+                            <field name="branch_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Clinical Info">
+                            <group>
+                                <field name="chief_complaint"/>
+                                <field name="clinical_notes"/>
+                            </group>
+                        </page>
+                        <page string="Medical History">
+                            <group>
+                                <field name="medical_history_summary"/>
+                                <field name="allergies"/>
+                                <field name="current_medications"/>
+                                <field name="dental_history_summary"/>
+                            </group>
+                        </page>
+                        <page string="Examinations">
+                            <field name="examination_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="examination_date"/>
+                                    <field name="doctor_id"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Diagnoses">
+                            <field name="diagnosis_ids">
+                                <list>
+                                    <field name="diagnosis_id"/>
+                                    <field name="date"/>
+                                    <field name="doctor_id"/>
+                                    <field name="status"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Treatment Plans">
+                            <field name="treatment_plan_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="plan_date"/>
+                                    <field name="estimated_total"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Treatment Sessions">
+                            <field name="treatment_session_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="session_date"/>
+                                    <field name="plan_line_id"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_dental_case_list" model="ir.ui.view">
+        <field name="name">dental.case.list</field>
+        <field name="model">dental.case</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="patient_id"/>
+                <field name="doctor_id"/>
+                <field name="case_date"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dental_case_search" model="ir.ui.view">
+        <field name="name">dental.case.search</field>
+        <field name="model">dental.case</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="patient_id"/>
+                <field name="doctor_id"/>
+                <filter string="My Cases" name="my_cases" domain="[('doctor_id', '=', uid)]"/>
+                <filter string="Open Cases" name="open_cases" domain="[('state', '=', 'open')]"/>
+                <filter string="Under Treatment" name="under_treatment" domain="[('state', '=', 'under_treatment')]"/>
+                <filter string="Completed" name="completed" domain="[('state', '=', 'completed')]"/>
+                <filter string="Group By: Patient" name="group_by_patient" context="{'group_by':'patient_id'}"/>
+                <filter string="Group By: Doctor" name="group_by_doctor" context="{'group_by':'doctor_id'}"/>
+                <filter string="Group By: Status" name="group_by_status" context="{'group_by':'state'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_dental_case" model="ir.actions.act_window">
+        <field name="name">Dental Cases</field>
+        <field name="res_model">dental.case</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_dental_case_search"/>
+    </record>
+</odoo>

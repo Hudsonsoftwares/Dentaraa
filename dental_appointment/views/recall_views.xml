@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dental_recall_tree" model="ir.ui.view">
+        <field name="name">dental.recall.tree</field>
+        <field name="model">dental.recall</field>
+        <field name="arch" type="xml">
+            <list decoration-info="state == 'pending'" decoration-success="state == 'booked'" decoration-danger="state == 'cancelled'">
+                <field name="patient_id"/>
+                <field name="treatment_id"/>
+                <field name="due_date"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dental_recall_form" model="ir.ui.view">
+        <field name="name">dental.recall.form</field>
+        <field name="model">dental.recall</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_called" string="Called" type="object" class="oe_highlight" invisible="state != 'pending'"/>
+                    <button name="action_booked" string="Booked" type="object" class="oe_highlight" invisible="state in ('booked', 'cancelled')"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state in ('booked', 'cancelled')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="pending,called,booked"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="patient_id"/>
+                            <field name="treatment_id"/>
+                            <field name="last_appointment_id"/>
+                        </group>
+                        <group>
+                            <field name="due_date"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="notes"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dental_recall" model="ir.actions.act_window">
+        <field name="name">Recalls</field>
+        <field name="res_model">dental.recall</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_dental_recall_rule_tree" model="ir.ui.view">
+        <field name="name">dental.recall.rule.tree</field>
+        <field name="model">dental.recall.rule</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+                <field name="treatment_id"/>
+                <field name="interval_number"/>
+                <field name="interval_type"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_dental_recall_rule" model="ir.actions.act_window">
+        <field name="name">Recall Rules</field>
+        <field name="res_model">dental.recall.rule</field>
+        <field name="view_mode">list</field>
+    </record>
+</odoo>

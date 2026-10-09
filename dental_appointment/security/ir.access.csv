@@ -1,0 +1,14 @@
+id,name,model_id,group_id/id,operation,domain
+access_dental_appointment_type,dental.appointment.type,dental.appointment.type,base.group_user,r,
+access_dental_appointment_type_manager,dental.appointment.type.manager,dental.appointment.type,dental_base.group_dental_manager,crud,
+access_dental_appointment,dental.appointment,dental.appointment,dental_base.group_dental_receptionist,crud,
+access_dental_appointment_dentist,dental.appointment.dentist,dental.appointment,dental_base.group_dental_dentist,ru,
+access_dental_appointment_manager,dental.appointment.manager,dental.appointment,dental_base.group_dental_manager,crud,
+access_dental_waiting_list,dental.waiting.list,dental.waiting.list,dental_base.group_dental_receptionist,crud,
+access_dental_recall_rule,dental.recall.rule,dental.recall.rule,base.group_user,r,
+access_dental_recall_rule_manager,dental.recall.rule.manager,dental.recall.rule,dental_base.group_dental_manager,crud,
+access_dental_recall,dental.recall,dental.recall,dental_base.group_dental_receptionist,crud,
+access_dental_follow_up,dental.follow.up,dental.follow.up,dental_base.group_dental_receptionist,crud,
+access_dental_follow_up_dentist,dental.follow.up.dentist,dental.follow.up,dental_base.group_dental_dentist,crud,
+rule_dental_appointment_branch,Dental Appointment Branch Rule,dental.appointment,dental_base.group_dental_receptionist,crud,"['|', ('branch_id', '=', False), ('branch_id', 'in', company_ids)]"
+rule_dental_appointment_all_branches,Dental Appointment All Branches,dental.appointment,dental_base.group_dental_manager,crud,"[(1, '=', 1)]"

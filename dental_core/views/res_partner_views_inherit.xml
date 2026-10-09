@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_res_partner_form_inherit_dental_core" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.dental.core</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="dental_patient.view_partner_form_dental"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button name="action_view_dental_cases" type="object" class="oe_stat_button" icon="fa-folder-open" invisible="not is_dental_patient">
+                    <field name="dental_case_count" widget="statinfo" string="Cases"/>
+                </button>
+                <button name="action_view_dental_examinations" type="object" class="oe_stat_button" icon="fa-heartbeat" invisible="not is_dental_patient">
+                    <field name="dental_examination_count" widget="statinfo" string="Examinations"/>
+                </button>
+                <button name="action_view_treatment_plans" type="object" class="oe_stat_button" icon="fa-file-text-o" invisible="not is_dental_patient">
+                    <field name="treatment_plan_count" widget="statinfo" string="Treatment Plans"/>
+                </button>
+                <button name="action_view_treatment_sessions" type="object" class="oe_stat_button" icon="fa-clock-o" invisible="not is_dental_patient">
+                    <field name="treatment_session_count" widget="statinfo" string="Sessions"/>
+                </button>
+            </div>
+        </field>
+    </record>
+</odoo>

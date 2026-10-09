@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,for_read,for_write,for_create,for_unlink,domain
+access_dental_treatment_category_manager,dental.treatment.category.manager,model_dental_treatment_category,dental_base.group_dental_manager,1,1,1,1,
+access_dental_treatment_category_admin,dental.treatment.category.admin,model_dental_treatment_category,dental_base.group_dental_admin,1,1,1,1,
+access_dental_treatment_category_user,dental.treatment.category.user,model_dental_treatment_category,base.group_user,1,0,0,0,

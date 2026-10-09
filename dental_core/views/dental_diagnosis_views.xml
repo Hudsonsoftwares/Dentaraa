@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Master Diagnosis Views -->
+    <record id="view_dental_diagnosis_form" model="ir.ui.view">
+        <field name="name">dental.diagnosis.form</field>
+        <field name="model">dental.diagnosis</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Diagnosis Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="code"/>
+                        <field name="active"/>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_dental_diagnosis_list" model="ir.ui.view">
+        <field name="name">dental.diagnosis.list</field>
+        <field name="model">dental.diagnosis</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_dental_diagnosis" model="ir.actions.act_window">
+        <field name="name">Diagnosis Master</field>
+        <field name="res_model">dental.diagnosis</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Patient Diagnosis Views -->
+    <record id="view_dental_patient_diagnosis_form" model="ir.ui.view">
+        <field name="name">dental.patient.diagnosis.form</field>
+        <field name="model">dental.patient.diagnosis</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="status" widget="statusbar" statusbar_visible="suspected,confirmed,resolved"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="diagnosis_id"/>
+                            <field name="patient_id"/>
+                            <field name="case_id"/>
+                            <field name="examination_id"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                            <field name="doctor_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Notes">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_dental_patient_diagnosis_list" model="ir.ui.view">
+        <field name="name">dental.patient.diagnosis.list</field>
+        <field name="model">dental.patient.diagnosis</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="diagnosis_id"/>
+                <field name="patient_id"/>
+                <field name="date"/>
+                <field name="doctor_id"/>
+                <field name="status"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_dental_patient_diagnosis" model="ir.actions.act_window">
+        <field name="name">Patient Diagnoses</field>
+        <field name="res_model">dental.patient.diagnosis</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

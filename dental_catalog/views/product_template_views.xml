@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Extend standard product.template form to add Dental Treatment fields -->
+    <record id="view_product_template_form_inherit_dental" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.dental</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <!-- Add a new page in the notebook for Dental Treatment details -->
+            <xpath expr="//notebook" position="inside">
+                <page name="dental_treatment" string="Dental Treatment" invisible="not is_dental_treatment">
+                    <group>
+                        <group string="Treatment Details">
+                            <field name="treatment_code"/>
+                            <field name="dental_treatment_category_id"/>
+                            <field name="treatment_duration" widget="float_time"/>
+                            <field name="number_of_visits"/>
+                            <field name="followup_interval"/>
+                        </group>
+                        <group string="Requirements">
+                            <field name="is_lab_required"/>
+                            <field name="is_consent_required"/>
+                        </group>
+                    </group>
+                    <group string="Materials &amp; Consumables">
+                        <field name="material_ids" widget="many2many_tags"/>
+                    </group>
+                </page>
+            </xpath>
+
+            <!-- Add "Is Dental Treatment" to the header or options div -->
+            <xpath expr="//div[@name='options']" position="inside">
+                <span class="d-inline-block">
+                    <field name="is_dental_treatment"/>
+                    <label for="is_dental_treatment"/>
+                </span>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Filter for Dental Treatments in standard search -->
+    <record id="view_product_template_search_inherit_dental" model="ir.ui.view">
+        <field name="name">product.template.search.inherit.dental</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='filter_to_sell']" position="after">
+                <filter string="Dental Treatments" name="filter_dental_treatment" domain="[('is_dental_treatment', '=', True)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Action specifically for Dental Treatments -->
+    <record id="action_dental_treatments" model="ir.actions.act_window">
+        <field name="name">Dental Treatments</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">kanban,list,form,activity</field>
+        <field name="context">{'default_is_dental_treatment': True, 'default_type': 'service'}</field>
+        <field name="domain">[('is_dental_treatment', '=', True)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Dental Treatment
+            </p>
+            <p>
+                Define the treatments you offer in your clinic.
+            </p>
+        </field>
+    </record>
+</odoo>

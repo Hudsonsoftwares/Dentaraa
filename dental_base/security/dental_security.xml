@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Dental Category -->
+    <record id="module_category_dental_clinic" model="ir.module.category">
+        <field name="name">Dental Clinic</field>
+        <field name="description">Access rights and roles for Dental Clinic Management System</field>
+        <field name="sequence">50</field>
+    </record>
+
+    <record model="res.groups.privilege" id="res_groups_privilege_dental">
+        <field name="name">Dental Roles</field>
+        <field name="sequence">10</field>
+        <field name="category_id" ref="dental_base.module_category_dental_clinic"/>
+    </record>
+
+    <!-- Dental Assistant -->
+    <record id="group_dental_assistant" model="res.groups">
+        <field name="name">Dental Assistant</field>
+        <field name="privilege_id" ref="dental_base.res_groups_privilege_dental"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="comment">Assists dentists, prepares visits, manages non-financial operations.</field>
+    </record>
+
+    <!-- Receptionist -->
+    <record id="group_dental_receptionist" model="res.groups">
+        <field name="name">Receptionist</field>
+        <field name="privilege_id" ref="dental_base.res_groups_privilege_dental"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="comment">Handles patient registration, appointments, front desk check-in, and billing summary.</field>
+    </record>
+
+    <!-- Lab Technician -->
+    <record id="group_dental_lab_technician" model="res.groups">
+        <field name="name">Lab Technician</field>
+        <field name="privilege_id" ref="dental_base.res_groups_privilege_dental"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="comment">Handles dental laboratory orders, prosthetic fabrication, and delivery tracking.</field>
+    </record>
+
+    <!-- Pharmacist -->
+    <record id="group_dental_pharmacist" model="res.groups">
+        <field name="name">Pharmacist</field>
+        <field name="privilege_id" ref="dental_base.res_groups_privilege_dental"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="comment">Manages medicine dispensing, stock batches, and pharmacy inventory.</field>
+    </record>
+
+    <!-- Dentist -->
+    <record id="group_dental_dentist" model="res.groups">
+        <field name="name">Dentist</field>
+        <field name="privilege_id" ref="dental_base.res_groups_privilege_dental"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="comment">Doctor: Clinical consultation, odontogram charting, diagnosis, treatment plans, prescriptions, and imaging.</field>
+    </record>
+
+    <!-- Clinic Manager -->
+    <record id="group_dental_manager" model="res.groups">
+        <field name="name">Clinic Manager</field>
+        <field name="privilege_id" ref="dental_base.res_groups_privilege_dental"/>
+        <field name="implied_ids" eval="[(4, ref('group_dental_dentist')), (4, ref('group_dental_receptionist')), (4, ref('group_dental_assistant'))]"/>
+        <field name="comment">Manages branch operations, clinic staff schedules, and operational approvals.</field>
+    </record>
+
+    <!-- Dental Administrator -->
+    <record id="group_dental_admin" model="res.groups">
+        <field name="name">Dental Administrator</field>
+        <field name="privilege_id" ref="dental_base.res_groups_privilege_dental"/>
+        <field name="implied_ids" eval="[(4, ref('group_dental_manager')), (4, ref('group_dental_pharmacist')), (4, ref('group_dental_lab_technician'))]"/>
+        <field name="user_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        <field name="comment">Full system administrator for dental clinic master data, branch configuration, settings, and permissions.</field>
+    </record>
+</odoo>

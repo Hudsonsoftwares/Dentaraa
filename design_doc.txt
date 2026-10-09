@@ -1,0 +1,1602 @@
+Dental Clinic Management on Odoo 20 – Design Document
+
+Dental Clinic Management on Odoo 20 –
+Design Document
+
+Draft v1 · 7 October 2026 · Platform: Odoo 20 Community · Sources: Smart Dental Clinic
+Management System (feature spec) and Dental Product: Full Workflow Plan, Revision 3
+
+1. Purpose and scope
+
+This document describes how to build a cloud (SaaS) dental clinic management product
+
+on Odoo 20 Community. It merges the two source documents:
+
+Feature spec (29 modules): rich clinical depth – odontogram, per-tooth history,
+implants, crowns, orthodontics, consent, insurance, sterilization, patient portal,
+
+feedback.
+
+Workflow Plan Rev 3 (6 phases): the delivery plan – onboarding, branches,
+
+appointments, consultation, billing, pharmacy, lab, reports, notification wallet, GST, HR
+
+and payroll via Hudson modules.
+
+The goal is one design: what we reuse from Odoo, what we build, how data is structured,
+
+who can do what, and in which phase each item ships. Section 5 is the key table: standard
+
+Odoo vs custom build.
+
+2. Design principles
+
+1. Reuse before build. Contacts, calendar, accounting, inventory, purchase, mail, portal
+
+and HR come from Odoo. We build only dental-specific screens and rules.
+
+2. One record per patient, one per staff member. Patient = a partner extended with
+dental data; staff = employee linked to user. No double entry between phases.
+
+3. Tooth-centric clinical model. Every diagnosis, treatment, image and follow-up can link
+
+to a tooth. This powers the per-tooth history, which the spec calls the major
+differentiator.
+
+4. Configurable, not hard-coded. Treatments, drop-down lists, templates, message rules,
+
+numbering system and permissions are settings.
+
+5. Mobile first. All screens work on phone and tablet; the odontogram is a standalone
+
+web component.
+
+6. Phase-wise release. Each phase works on its own; modules have clean dependencies.
+
+Page 1 of 16
+
+Dental Clinic Management on Odoo 20 – Design Document
+
+7. Multi-branch and multi-tenant ready. Branch-level prices, letterhead, tax number,
+
+stock and figures.
+
+3. Assumptions and Odoo 20 Community constraints
+
+Odoo 20 is expected around October 2026. Before each phase, confirm the stable
+branch and the behaviour of every reused module. Hudson HRMS modules were built
+for Odoo 19 and need porting and testing.
+
+Community has no Studio, no Enterprise Appointments, Sign, Documents, Helpdesk or
+Payroll apps. We therefore build: our own booking logic, signature capture (consent
+and estimates), document attachments, and use Hudson modules for payroll.
+
+Community includes: Contacts, Calendar, Sales, Purchase, Inventory,
+Invoicing/Accounting basics, Website, Portal, Discuss/Mail, Employees, Time Off,
+
+Attendance, Point of Sale (optional). Confirm exact feature set (for example
+
+reconciliation, reports) on Odoo 20.
+
+Messaging (WhatsApp, SMS) needs an external provider and template approval; start
+
+this in Phase 1.
+
+Markets: India first, Gulf possible. This decides GST/VAT setup, languages, RTL, payroll
+
+rules and hosting region.
+
+4. Actors and roles
+
+Role
+
+Source Main responsibilities
+
+Access summary
+
+Administrator /
+Owner
+
+Both
+
+Setup, prices, permissions,
+approvals, reports
+
+Full, across branches
+
+Clinic Manager
+
+Spec
+
+Branch operations, staff,
+schedules
+
+Branch-wide, no system
+settings
+
+Dentist
+
+Both
+
+Consultation, chart, plans,
+prescriptions, imaging
+
+Own patients and cases,
+edits medical notes
+
+Dental Assistant
+
+Both
+
+Prepares visit, treatment
+assistance, consumables,
+sterilization
+
+Creates but cannot delete;
+no money; cannot edit
+medical notes
+
+Page 2 of 16
+
+Dental Clinic Management on Odoo 20 – Design Document
+
+Role
+
+Source Main responsibilities
+
+Access summary
+
+Receptionist
+
+Both
+
+Appointments, check-in,
+billing, payments, recall calls
+
+Accountant
+
+Spec
+
+Invoices, expenses,
+insurance claims, tax
+reports
+
+Patients, appointments,
+billing; read-only clinical
+summary
+
+Accounting, read-only
+clinical totals
+
+Lab Technician
+
+Spec
+
+Lab order status, delivery
+
+Lab orders only
+
+Inventory Manager /
+Pharmacist
+
+Both
+
+Stock, purchase,
+dispensing, expiry
+
+Inventory and pharmacy
+
+Patient / Guardian
+
+Spec
+
+Portal self-service
+
+External: Lab,
+Insurer, Supplier
+
+Both
+
+Vendors and claim
+counterparties
+
+Own records only; guardian
+for minors
+
+No login (vendor records)
+
+Permissions are owner-editable groups (not fixed code). Two-step login and a login history
+
+are required for all staff.
+
+5. Standard Odoo vs custom build
+
+Legend: Std = use as is, Ext = extend a standard model/view, New = custom build.
+
+#
+
+1
+
+2
+
+3
+
+Feature (source)
+
+Odoo base
+
+Approach Custom work
+
+Phase
+
+Patient profile, Patient ID, photo,
+contacts (Spec 1)
+
+res.partner
+
+Ext
+
+Duplicate detection, search by
+first digits of phone (Both)
+
+Medical and dental information,
+alerts (Both)
+
+–
+
+–
+
+New
+
+New
+
+1
+
+1
+
+1
+
+Dental fields, auto
+Patient ID sequence,
+family/shared phone,
+guardian link
+
+Matching on
+phone/name/DOB,
+merge wizard, fast
+search
+
+Allergy, conditions,
+medications,
+surgeries, habits;
+alert banner on every
+screen
+
+Page 3 of 16
+
+Dental Clinic Management on Odoo 20 – Design Document
+
+#
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+Feature (source)
+
+Odoo base
+
+Approach Custom work
+
+Phase
+
+Patient timeline, attachments
+(Spec)
+
+mail.thread,
+ir.attachment
+
+Ext
+
+Spreadsheet import of old
+patients with checks and undo
+(Plan)
+
+Clinic, branches, onboarding
+checklist (Plan)
+
+base_import
+
+Ext
+
+res.company
+
+Ext
+
+Doctor profile, specialization,
+registration no., signature (Spec
+2)
+
+hr.employee,
+res.users
+
+Ext
+
+Timeline view
+aggregating visits,
+images, invoices
+
+Import wizard with
+validation and
+rollback
+
+Onboarding wizard,
+per-branch
+letterhead, tax
+number
+
+Doctor fields, fee,
+signature and stamp
+image
+
+Staff, leave, attendance, payroll,
+statutory deductions (Plan)
+
+hr, hr_holidays,
+hr_attendance,
+
+Std +
+Hudson
+
+Port Hudson to Odoo
+20; doctor
+
+Hudson
+
+commission feed
+
+Treatment master with prices,
+duration, visits, follow-up
+interval (Both)
+
+product.template
+
+Ext
+
+11
+
+Appointments (Both)
+
+calendar.event
+
+Ext
+
+12
+
+13
+
+14
+
+15
+
+16
+
+Doctor double-booking guard
+(Plan)
+
+Check-in, token, queue,
+emergency priority, waiting
+board (Both)
+
+Waiting list, walk-in quick add,
+no-show tracking (Plan)
+
+–
+
+–
+
+–
+
+New
+
+New
+
+New
+
+Online booking link (Plan)
+
+website, portal
+
+Ext
+
+Recall by interval, follow-up with
+reminders (Both)
+
+mail.activity, ir.cron Ext
+
+1
+
+1
+
+1
+
+1
+
+1
+
+1
+
+2
+
+2
+
+2
+
+2
+
+2
+
+2
+
+Page 4 of 16
+
+Dental category,
+branch and dated
+prices, packages,
+materials (BoM-like),
+lab-required flag
+
+Dental appointment
+model, status flow,
+type, priority, leave
+and working-hour
+blocking
+
+SQL/constraint plus
+UI conflict message
+
+Token sequence per
+branch/day, queue
+ordering, live board
+
+Waiting list auto-offer
+when a slot opens
+
+Public booking page
+respecting
+availability
+
+Recall rules per
+treatment, overdue
+list, call result notes
+
+Dental Clinic Management on Odoo 20 – Design Document
+
+Feature (source)
+
+Odoo base
+
+Approach Custom work
+
+Phase
+
+#
+
+17
+
+18
+
+19
+
+20
+
+22
+
+23
+
+24
+
+25
+
+26
+
+27
+
+28
+
+Message templates,
+WhatsApp/SMS/email, opt in/out
+(Plan)
+
+General and clinical examination
+(Spec 6)
+
+Case sheet, chief complaint,
+history, shared drop-downs
+(Both)
+
+Odontogram:
+FDI/Universal/Palmer, status,
+surfaces (Spec 7)
+
+21
+
+Per-tooth history (Spec 8)
+
+Diagnosis master and patient
+diagnosis (Spec 9)
+
+mail.template, sms
+
+Ext
+
+–
+
+–
+
+–
+
+–
+
+–
+
+New
+
+New
+
+New
+
+New
+
+New
+
+Treatment plan, estimate,
+approval, plan board (Both)
+
+sale.order
+
+Ext
+
+Treatment execution sessions
+(Spec 12)
+
+Specialty charts: root canal
+table, orthodontic log (Plan)
+
+Dental imaging
+IOPA/OPG/CBCT/ceph/photos,
+compare dates (Both)
+
+Consent management with
+signature (Both)
+
+–
+
+–
+
+New
+
+New
+
+ir.attachment
+
+Ext
+
+–
+
+New
+
+Prescription, medicine list,
+warnings, PDF (Both)
+
+product
+
+Ext
+
+Provider gateway,
+delivery status,
+language per patient
+
+Structured exam
+form, rich-text notes
+
+Case sheet, visit
+notes, suggestion
+lists (most-used first)
+
+Web component,
+child and adult
+charts, numbering
+switch
+
+Tooth event ledger
+linked to all clinical
+records
+
+Master with codes
+and treatment
+suggestions; per-
+tooth diagnosis
+
+Plan lines per tooth,
+staged billing, patient
+approval with
+signature
+
+Session records,
+materials used, next
+visit
+
+Canal table, per-visit
+ortho log
+
+Image model with
+tooth link, viewer,
+zoom, comparison
+
+Templates, signature
+capture, consent
+date, PDF
+
+Rx model, allergy
+check, repeat Rx,
+signature and stamp
+
+2
+
+3
+
+3
+
+3
+
+3
+
+3
+
+3
+
+3
+
+3
+
+3
+
+3
+
+4
+
+Page 5 of 16
+
+Dental Clinic Management on Odoo 20 – Design Document
+
+Feature (source)
+
+Odoo base
+
+Approach Custom work
+
+Phase
+
+#
+
+29
+
+30
+
+31
+
+32
+
+33
+
+34
+
+35
+
+36
+
+37
+
+Invoicing, GST, credit notes,
+refunds (Both)
+
+account.move
+
+Ext
+
+Payments: cash, UPI, card, bank,
+insurance (Both)
+
+account.payment
+
+Ext
+
+Instalment plans, advance, dues
+list (Both)
+
+payment terms
+
+Ext
+
+Insurance: provider, policy, claim,
+approved amount (Spec 22)
+
+–
+
+Expenses, transactions page,
+cash closing (Plan)
+
+account
+
+New
+
+Ext
+
+Consumables, batches, expiry,
+low stock alerts (Both)
+
+stock, purchase
+
+Std + Ext
+
+Pharmacy dispensing against
+prescription (Plan)
+
+stock
+
+Lab order, crown and prosthetic
+tracking (Both)
+
+purchase
+
+Ext
+
+Ext
+
+Invoice from
+completed
+treatments, per-
+branch GST, discount
+approval
+
+Journals per method,
+transaction ID,
+receipts
+
+Plan with milestones,
+overdue tracking,
+reminders
+
+Policy, claim lifecycle,
+patient payable split
+
+Expense categories,
+day-end closing with
+
+difference check
+
+Consumables per
+treatment, expiry and
+reorder automations
+
+Dispense from Rx,
+auto stock reduction
+
+Lab order, shade,
+material, margin,
+abutment, pontic,
+status
+
+Vendors, bills, vendor ledger
+(Both)
+
+res.partner,
+account
+
+Std + Ext
+
+Category, code,
+scanned bill upload
+
+38
+
+Implant management (Spec 17)
+
+39
+
+Orthodontic case management
+(Spec 18)
+
+40
+
+Sterilization cycle log (Both)
+
+–
+
+–
+
+–
+
+New
+
+New
+
+New
+
+Brand, model, serial,
+size, bone graft,
+healing, follow-up
+
+Case, appliance,
+archwire, bracket,
+elastic, retainer,
+adjustments
+
+Cycle, autoclave,
+operator,
+temperature,
+pressure, result
+
+4
+
+4
+
+4
+
+4
+
+4
+
+5
+
+5
+
+5
+
+5
+
+5
+
+3 or 5
+
+5
+
+Page 6 of 16
+
+Feature (source)
+
+Odoo base
+
+Approach Custom work
+
+Phase
+
+Dental Clinic Management on Odoo 20 – Design Document
+
+#
+
+41
+
+42
+
+43
+
+Dashboards and reports,
+CSV/PDF export (Plan)
+
+graph/pivot views
+
+Ext
+
+Notification wallet, top-up by
+UPI, message log (Plan)
+
+Subscription plans switching
+features per clinic (Plan)
+
+–
+
+–
+
+44
+
+Patient portal (Spec 28)
+
+portal
+
+New
+
+New
+
+Ext
+
+45
+
+Patient feedback and Google
+review request (Both)
+
+survey (if available)
+or custom
+
+Ext/New
+
+Doctor, treatment,
+branch, source
+reports
+
+Wallet ledger, per-
+message rate,
+balance alerts
+
+Feature flags per
+tenant
+
+Appointments,
+odontogram view, Rx,
+invoices, plan
+acceptance, lab
+status
+
+Ratings per doctor,
+staff, waiting time,
+
+cleanliness
+
+6
+
+6
+
+6
+
+6
+
+6
+
+6. Module architecture
+
+Module
+
+Depends on
+
+Contents
+
+dental_base
+
+base, mail, hr, contacts
+
+dental_patient
+
+dental_base, contacts
+
+dental_catalog
+
+dental_base, product
+
+Clinic/branch settings, roles,
+sequences, shared lists
+
+Patient, guardian, medical alerts,
+duplicates, import, timeline
+
+Treatments, packages, branch and
+dated prices, diagnosis master,
+materials
+
+dental_onboarding
+
+dental_base
+
+First-day wizard and checklist
+
+dental_core
+
+the above
+
+Bundle for Phase 1
+
+dental_appointment
+
+dental_patient, calendar
+
+dental_notify
+
+dental_base, mail, sms
+
+Appointments, check-in token and
+queue, waiting list, recall, follow-up
+
+Templates, channels, wallet, message
+log
+
+Page 7 of 16
+
+Dental Clinic Management on Odoo 20 – Design Document
+
+Module
+
+Depends on
+
+Contents
+
+dental_chart
+
+dental_patient,
+dental_catalog
+
+Odontogram, tooth history, case sheet,
+exam, diagnosis, plan board, sessions,
+consent, ortho charts
+
+dental_imaging
+
+dental_chart
+
+Image types, viewer, compare
+
+dental_rx
+
+dental_chart, product
+
+Prescription, advice, warnings
+
+dental_billing
+
+dental_chart, account
+
+dental_pharmacy
+
+dental_rx, stock
+
+dental_lab
+
+dental_chart, purchase
+
+Invoices, payments, instalments,
+refunds, expenses, day-end, insurance
+
+Medicine stock, batches, expiry,
+dispensing
+
+Lab orders, crown and prosthetic,
+vendors
+
+dental_implant
+
+dental_chart
+
+Implant records and follow-up
+
+dental_sterilization
+
+dental_base, stock
+
+Cycle log and instrument sets
+
+dental_portal
+
+portal, dental_*
+
+Patient and guardian portal
+
+dental_feedback
+
+dental_appointment
+
+Feedback and review requests
+
+dental_reports
+
+all above
+
+Dashboards, exports, subscription
+plans
+
+7. Key data model
+
+7.1 Patient
+
+dental.patient (extends res.partner): patient_id (auto), photo, dob, age (computed),
+gender, blood_group, phone, whatsapp, email, address, emergency contact, guardian
+
+(partner), preferred language, marketing source, consent date, active branch.
+
+dental.medical.history: allergies, existing conditions, medications, previous surgeries,
+
+notes.
+
+dental.dental.history: previous treatment, last visit, oral hygiene, smoking, tobacco,
+brushing frequency.
+
+Page 8 of 16
+
+Dental Clinic Management on Odoo 20 – Design Document
+
+dental.alert: alert type and text, severity; shown as banner on every clinical and billing
+
+screen.
+
+Several patients may share one phone number; search matches on the first digits.
+
+7.2 Appointment and queue
+
+dental.appointment: number, patient, doctor, date, start, end, type, reason/complaint,
+priority, notes, status (pending, confirmed, checked-in, in consultation, completed, no-
+show, cancelled).
+
+dental.checkin: appointment or walk-in, token number, check-in time, queue priority,
+emergency flag, waiting time (computed), called time.
+
+dental.waitlist: patient, preferred doctor/time window, status.
+
+7.3 Clinical
+
+dental.case: case sheet per patient and doctor; chief complaint, history, examination;
+several treatment plans per case.
+
+dental.exam: general (oral hygiene, gingiva, tongue, palate, mucosa, TMJ) and clinical
+(tooth condition, mobility, caries, sensitivity, bleeding, probing depth, fracture) plus
+rich-text notes.
+
+dental.tooth.state: patient, tooth (stored in FDI), surface set, status (healthy, caries,
+
+filled, missing, extracted, RCT, crown, implant, fractured, impacted), updated by event.
+
+dental.tooth.event (tooth history ledger): patient, tooth, event type, source record
+(diagnosis, treatment session, image, lab, implant, follow-up), date, doctor. This one
+
+ledger gives the 36 example: diagnosis → treatment → X-ray → RCT → crown → follow-
+up.
+
+dental.diagnosis.master: name, code, description, category, suggested treatments.
+dental.diagnosis: patient, tooth, diagnosis, severity, date, doctor, notes.
+
+dental.plan: plan number, patient, doctor, state; dental.plan.line: diagnosis, treatment,
+tooth/surface/scope (single, several, full mouth, arch, side), quantity, price, discount,
+tax, total, expected duration, visits required, visit counter, status (planned, in progress,
+
+completed), billed flag.
+
+dental.session: treatment, tooth, doctor, date, procedure, materials used, notes,
+duration, next visit.
+
+dental.image: patient, tooth, type (IOPA, OPG, CBCT, cephalometric, intraoral,
+extraoral, before/after), date, doctor, notes, attachment.
+
+Page 9 of 16
+
+Dental Clinic Management on Odoo 20 – Design Document
+
+dental.consent.template and dental.consent: type (extraction, RCT, implant, surgery,
+
+anesthesia, photography, orthodontic), signature, date, PDF.
+
+dental.ortho.case and dental.ortho.visit: case number, orthodontist, appliance, start,
+expected completion; per visit wire, brackets, elastics, retainer, next date.
+
+dental.rct.canal: working length, file size, taper per canal.
+
+7.4 Prescription, lab, implant
+
+dental.prescription and lines: medicine (product, stock batch optional), dosage,
+frequency, duration, route, before/after food, instructions, custom item. Allergy check
+
+against dental.alert at save.
+
+dental.lab.order: number, patient, doctor, tooth, treatment, lab (vendor), material,
+shade, due date, cost, status; crown fields: type, margin, abutment, pontic, delivery
+
+date. Materials: zirconia, e-max, PFM, ceramic, metal.
+
+dental.implant: brand, model, serial, diameter, length, tooth, placement date, bone
+graft, abutment, crown, healing period, follow-up.
+
+7.5 Money
+
+Invoice lines created from completed plan lines, medicines and other charges
+(account.move extended with patient, doctor, plan link).
+
+dental.payment.plan: total, milestones (initial, procedure, final), paid, due, overdue,
+next date. Example: ₹60,000 = ₹20,000 + ₹20,000 + ₹20,000.
+
+dental.insurance.policy and dental.claim: provider, policy number, coverage, validity,
+claim amount, approved amount, patient payable, status.
+
+Day-end closing: expected vs counted cash, difference, reason.
+
+7.6 Stock and sterilization
+
+Products with lots and expiry (batch number, manufacturing date, expiry, supplier,
+
+quantity); purchase and selling price.
+
+Automations: expiry within 30 days, below minimum stock.
+
+dental.sterilization.cycle: cycle ID, instrument/set, autoclave, operator, start, end,
+
+temperature, pressure, result.
+
+Page 10 of 16
+
+Dental Clinic Management on Odoo 20 – Design Document
+
+7.7 Recall, follow-up, feedback, wallet
+
+dental.recall.rule: treatment, interval (cleaning 6 months, RCT 7 days, implant 2 weeks,
+braces 4 weeks). On plan line completion the system creates a recall activity.
+
+dental.followup: date, treatment, doctor, reason, status, notes; reminder before due
+date.
+
+dental.feedback: overall rating, doctor, staff, waiting time, cleanliness, comments.
+
+dental.wallet and dental.wallet.txn: balance, top-ups, per-message debits, message
+log.
+
+8. Business rules
+
+1. A doctor cannot have two overlapping appointments or be double-booked; slots
+
+outside working hours or on approved leave are blocked.
+
+2. A patient ID is generated automatically and never reused. Duplicate warnings appear
+
+on phone, name plus DOB match.
+
+3. Assistants can create but not delete clinical records, see no financial totals, and
+
+cannot edit medical notes. Reception sees a read-only summary.
+
+4. Medical alerts show on every consultation, prescription and billing screen. Prescribing
+
+a medicine that clashes with an allergy raises a blocking warning that needs a doctor
+override with reason.
+
+5. Completed plan lines move to billing; stage-wise billing is allowed for multi-visit
+
+treatments.
+
+6. Discounts above a threshold require owner approval. Refunds create credit notes.
+
+7. Completing a treatment with a recall rule creates a recall activity automatically; the
+
+recall list is reviewed by reception and marked called with a result.
+
+8. Consent must exist for configured treatments (extraction, RCT, implant, surgery,
+
+anesthesia) before the session can be marked completed (configurable).
+
+9. Prescriptions dispensed from clinic stock reduce stock by batch, first-expiry-first-out.
+
+10. Every tooth event is immutable; corrections add a new event. All clinical edits are
+
+logged in the activity record.
+
+11. Prices are resolved by branch and date. Tax and letterhead follow the branch.
+
+12. Messages deduct from the notification wallet; sending stops when balance is zero and
+
+the owner is alerted at a low balance.
+
+Page 11 of 16
+
+Dental Clinic Management on Odoo 20 – Design Document
+
+9. Key workflows
+
+Appointment to payment. Book (search phone, choose doctor, time) → pending →
+
+confirmed (message sent) → patient arrives → check-in gives token → waiting queue
+(emergency first) → doctor starts consultation → case sheet and examination →
+odontogram marking and diagnosis → treatment plan and estimate approved → sessions
+
+executed with materials → prescription and advice → invoice from completed lines →
+payment or instalment → recall and follow-up created → feedback request.
+
+Lab/crown. Plan line flagged lab required → lab order with shade and material → vendor
+
+assigned → due date alerts → delivery recorded → fitted in a session → tooth event added
+→ follow-up.
+
+Implant. Plan → consent → implant record at placement → healing period timer →
+abutment and crown lab order → follow-up schedule.
+
+Insurance. Policy captured at registration → estimate shows insured and patient parts →
+claim submitted → approved amount recorded → patient payable invoiced.
+
+10. Screens by role
+
+Admin: onboarding, branches, staff and permissions, treatment and price lists,
+templates, message rules, discount approvals, expenses, day-end, reports, wallet,
+
+plans.
+
+Doctor: dashboard (own appointments, check-ins), waiting queue, case sheet,
+odontogram, tooth history, plan board, imaging, prescription, lab order, own leave,
+attendance and payslip.
+
+Reception: patient search and registration, appointment calendar (day, week, doctor-
+wise), check-in and token board, recall list, billing and receipts, dues list, cash counter.
+
+Pharmacist / Inventory: stock, batches, expiry alerts, purchase orders, dispensing.
+
+Patient portal: profile, book and view appointments, history, odontogram,
+prescriptions, invoices and payments, documents, plan acceptance, lab status.
+
+11. Notifications and integrations
+
+Templates per event: booking confirmation, next-day reminder, recall, follow-up
+reminder, payment receipt, advice after visit, lab ready, review request, daily and
+monthly report to owner.
+
+Page 12 of 16
+
+Dental Clinic Management on Odoo 20 – Design Document
+
+Channels: WhatsApp, SMS, email, with opt-in/out per patient, language per patient and
+
+delivery status.
+
+Payment: UPI and card gateways for wallet top-up and optional portal payments.
+
+Accounting: GST invoices per branch (India); VAT variant for the Gulf if confirmed.
+
+Export: patient data export, CSV and PDF reports.
+
+12. Security, privacy and compliance
+
+Role-based groups and record rules by branch and by doctor; field-level restriction for
+
+medical notes and salary.
+
+Two-step login, login history, activity record for clinical and money changes.
+
+Encrypted backups; hosting region chosen by where patient data must live.
+
+Consent date and privacy terms stored per patient; legal review per market.
+
+Minors handled through guardian link and guardian consent.
+
+13. Non-functional requirements
+
+Responsive on phone and tablet; the odontogram supports touch.
+
+Chart loads under 2 seconds for a full-history patient (tooth events indexed by patient
+and tooth).
+
+Large images stored as attachments with thumbnails; CBCT files handled as
+downloads or external storage.
+
+Automated tests per module; separate modules and pull-request review as in Revision
+
+2.
+
+Multi-tenant provisioning with feature flags per subscription plan.
+
+14. Phase mapping
+
+Phase
+
+Weeks
+
+Scope
+
+1 Dental Core
+
+8 (+2
+optional)
+
+Clinic, branches, onboarding, patients, alerts,
+import, staff, treatment catalog, leave,
+attendance, payroll
+
+Page 13 of 16
+
+Dental Clinic Management on Odoo 20 – Design Document
+
+Phase
+
+Weeks
+
+Scope
+
+2 Appointments and recall
+
+4
+
+3 Consultation and chart
+
+4 Prescription and billing
+
+5 Pharmacy, lab, vendors
+
+6
+
+5
+
+5
+
+Appointments, check-in token and queue,
+waiting list, recall, follow-up, notifications,
+booking link
+
+Case sheet, exam, odontogram, tooth history,
+diagnosis, plan board, sessions, imaging,
+consent, specialty charts
+
+Rx, invoices, payments, instalments,
+insurance, expenses, day-end
+
+Stock, batches, lab and crown, vendors,
+sterilization, implant management
+
+6 Reports, wallet, plans,
+portal
+
+4 + about 3
+
+Dashboards, wallet, subscription plans,
+patient portal, feedback
+
+Note: the spec items insurance, implants, crown tracking, sterilization, per-tooth
+history, diagnosis master, token queue, patient portal and feedback are not in Revision
+3. Adding them extends the estimate; the table above places them where they fit best.
+Portal and insurance add roughly 3 to 4 weeks together and should be confirmed with
+management.
+
+15. Differences between the two sources and proposed decisions
+
+Topic
+
+Queue
+
+Spec says
+
+Plan says
+
+Proposal
+
+Token, priority,
+emergency
+
+Live waiting-room
+board
+
+Combine: token plus
+board
+
+Accounting
+
+Integrate with
+Odoo Accounting
+
+Odoo accounting
+with GST per branch
+
+Insurance
+
+Full module
+
+Not covered
+
+Tooth
+numbering
+
+FDI, Universal,
+Palmer
+
+Child and adult chart
+
+Use Community
+accounting; confirm
+reports needed
+
+Add in Phase 4, simple
+claim tracking first
+
+Store FDI; display setting
+per clinic
+
+Page 14 of 16
+
+Dental Clinic Management on Odoo 20 – Design Document
+
+Topic
+
+Portal
+
+Sterilization,
+implant
+
+Spec says
+
+Plan says
+
+Proposal
+
+Full patient portal
+
+Online booking link
+only
+
+Booking link in Phase 2,
+portal in Phase 6
+
+Detailed modules
+
+Sterilization log only
+
+Add both in Phase 5
+
+HR and payroll
+
+Not covered
+
+Hudson modules
+
+SaaS features
+
+Not covered
+
+Wallet, plans, tenant
+creation
+
+Keep Hudson; port to
+Odoo 20
+
+Keep in Phase 6
+
+16. Risks
+
+Odoo 20 maturity and porting Hudson modules: test reused modules early.
+
+Odontogram complexity: build as an isolated web component in early Phase 3 and test
+with real dentists.
+
+Scope for two developers: the spec adds many modules; keep extras optional until
+management decides.
+
+Provider approvals for WhatsApp and SMS: start in Phase 1.
+
+Community limits (no Sign, Documents, Appointments): custom signature, document
+and booking features add effort.
+
+Sensitive data: access rules, backups, hosting region, legal review.
+
+17. Open questions
+
+1. First market: India only or Gulf too (tax, language, RTL, payroll)?
+
+2. First public release after Phase 2 or Phase 4?
+
+3. Which spec modules are in the first version (insurance, implants, portal)?
+
+4. Which messaging provider and per-message price?
+
+5. Native mobile app timing?
+
+6. Feature split across subscription plans?
+
+7. Hosting provider and region?
+
+8. Pilot clinics for each phase?
+
+9. Tooth numbering default (FDI or Universal)?
+
+Page 15 of 16
+
+Dental Clinic Management on Odoo 20 – Design Document
+
+10. Should consent be mandatory before treatment completion?
+
+Page 16 of 16
+
+

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Top-Level Root Menu -->
+    <menuitem
+        id="menu_dental_root"
+        name="Dental Clinic"
+        web_icon="dental_base,static/description/icon.png"
+        groups="dental_base.group_dental_assistant,dental_base.group_dental_receptionist,dental_base.group_dental_dentist,dental_base.group_dental_lab_technician,dental_base.group_dental_pharmacist,dental_base.group_dental_manager,dental_base.group_dental_admin"
+        sequence="65"/>
+
+    <!-- Configuration Menu (Parent for Settings, Branches, Staff) -->
+    <menuitem
+        id="menu_dental_configuration"
+        name="Configuration"
+        parent="dental_base.menu_dental_root"
+        groups="dental_base.group_dental_manager,dental_base.group_dental_admin"
+        sequence="100"/>
+
+    <!-- Settings Action Menu -->
+    <menuitem
+        id="menu_dental_settings"
+        name="Settings"
+        parent="dental_base.menu_dental_configuration"
+        action="action_dental_config_settings"
+        groups="dental_base.group_dental_admin"
+        sequence="10"/>
+
+    <!-- Clinic Branches Menu -->
+    <menuitem
+        id="menu_dental_branches"
+        name="Clinic Branches (Companies)"
+        parent="dental_base.menu_dental_configuration"
+        action="base.action_res_company_form"
+        groups="dental_base.group_dental_manager,dental_base.group_dental_admin"
+        sequence="20"/>
+
+    <!-- Staff & Doctors Menu -->
+    <menuitem
+        id="menu_dental_staff"
+        name="Staff &amp; Doctors"
+        parent="dental_base.menu_dental_configuration"
+        action="action_dental_staff"
+        groups="dental_base.group_dental_manager,dental_base.group_dental_admin"
+        sequence="30"/>
+</odoo>

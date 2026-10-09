@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dental_appointment_form" model="ir.ui.view">
+        <field name="name">dental.appointment.form</field>
+        <field name="model">dental.appointment</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_confirm" string="Confirm" type="object" class="oe_highlight" invisible="state != 'pending'"/>
+                    <button name="action_check_in" string="Check In" type="object" class="oe_highlight" invisible="state != 'confirmed'"/>
+                    <button name="action_start_consultation" string="Start Consultation" type="object" class="oe_highlight" invisible="state != 'checked_in'"/>
+                    <button name="action_complete" string="Complete" type="object" class="oe_highlight" invisible="state != 'in_consultation'"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state in ('completed', 'cancelled')"/>
+                    <button name="action_no_show" string="No Show" type="object" invisible="state not in ('confirmed', 'checked_in')"/>
+                    <button name="action_reschedule" string="Reschedule" type="object" invisible="state not in ('cancelled', 'no_show')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="pending,confirmed,checked_in,in_consultation,completed"/>
+                </header>
+                <sheet>
+                    <div name="button_box" class="oe_button_box"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="patient_id"/>
+                            <field name="doctor_id"/>
+                            <field name="treatment_id"/>
+                            <field name="appointment_type_id"/>
+                            <field name="is_emergency"/>
+                        </group>
+                        <group>
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                            <field name="duration" widget="float_time"/>
+                            <field name="branch_id"/>
+                            <field name="priority" widget="priority"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Reason &amp; Notes">
+                            <group>
+                                <field name="reason"/>
+                                <field name="notes"/>
+                            </group>
+                        </page>
+                        <page string="Queue Information" invisible="state in ('pending', 'confirmed')">
+                            <group>
+                                <field name="token_number"/>
+                                <field name="queue_priority"/>
+                                <field name="check_in_time"/>
+                                <field name="called_time"/>
+                                <field name="waiting_time"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_dental_appointment_tree" model="ir.ui.view">
+        <field name="name">dental.appointment.tree</field>
+        <field name="model">dental.appointment</field>
+        <field name="arch" type="xml">
+            <list decoration-info="state == 'pending'" decoration-success="state == 'completed'" decoration-warning="state == 'checked_in'" decoration-danger="state == 'cancelled'">
+                <field name="name"/>
+                <field name="date_start"/>
+                <field name="patient_id"/>
+                <field name="doctor_id"/>
+                <field name="treatment_id"/>
+                <field name="state"/>
+                <field name="token_number" optional="show"/>
+                <field name="is_emergency" optional="show"/>
+                <button name="action_check_in" string="Check In" type="object" class="oe_highlight" invisible="state != 'confirmed'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dental_appointment_calendar" model="ir.ui.view">
+        <field name="name">dental.appointment.calendar</field>
+        <field name="model">dental.appointment</field>
+        <field name="arch" type="xml">
+            <calendar string="Appointments" date_start="date_start" date_stop="date_end" color="doctor_id" event_open_popup="True" mode="week">
+                <field name="patient_id"/>
+                <field name="doctor_id"/>
+                <field name="state"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="view_dental_appointment_search" model="ir.ui.view">
+        <field name="name">dental.appointment.search</field>
+        <field name="model">dental.appointment</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="patient_id"/>
+                <field name="doctor_id"/>
+                <field name="branch_id"/>
+                <field name="treatment_id"/>
+                
+                <filter string="Appointment Date" name="filter_date_start" date="date_start"/>
+                <filter string="Upcoming" name="upcoming" domain="[('state', 'in', ('pending', 'confirmed'))]"/>
+                <separator/>
+                <filter string="Completed" name="completed" domain="[('state', '=', 'completed')]"/>
+                <filter string="Cancelled" name="cancelled" domain="[('state', '=', 'cancelled')]"/>
+                <filter string="No Show" name="no_show" domain="[('state', '=', 'no_show')]"/>
+                <separator/>
+                <filter string="My Appointments" name="my_appointments" domain="[('doctor_id.user_id', '=', uid)]"/>
+                
+                <group>
+                    <filter string="Doctor" name="group_doctor" context="{'group_by': 'doctor_id'}"/>
+                    <filter string="Patient" name="group_patient" context="{'group_by': 'patient_id'}"/>
+                    <filter string="Status" name="group_status" context="{'group_by': 'state'}"/>
+                    <filter string="Appointment Type" name="group_type" context="{'group_by': 'appointment_type_id'}"/>
+                    <filter string="Branch" name="group_branch" context="{'group_by': 'branch_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_dental_appointment_queue_tree" model="ir.ui.view">
+        <field name="name">dental.appointment.queue.tree</field>
+        <field name="model">dental.appointment</field>
+        <field name="arch" type="xml">
+            <list create="false" decoration-danger="is_emergency == True" decoration-warning="state == 'checked_in'" default_order="queue_priority desc, check_in_time asc">
+                <field name="token_number"/>
+                <field name="patient_id"/>
+                <field name="doctor_id"/>
+                <field name="check_in_time"/>
+                <field name="waiting_time"/>
+                <field name="is_emergency"/>
+                <field name="state"/>
+                <button name="action_start_consultation" string="Call" type="object" class="oe_highlight" invisible="state != 'checked_in'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_dental_appointment" model="ir.actions.act_window">
+        <field name="name">Appointments</field>
+        <field name="res_model">dental.appointment</field>
+        <field name="view_mode">calendar,list,form</field>
+        <field name="context">{'search_default_upcoming': 1}</field>
+    </record>
+    
+    <record id="action_dental_appointment_queue" model="ir.actions.act_window">
+        <field name="name">Queue Board</field>
+        <field name="res_model">dental.appointment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', 'in', ('checked_in', 'in_consultation'))]</field>
+        <field name="view_id" ref="view_dental_appointment_queue_tree"/>
+    </record>
+</odoo>

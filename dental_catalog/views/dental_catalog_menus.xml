@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Main Treatments Menu (Parent) -->
+    <menuitem
+        id="menu_dental_treatments_main"
+        name="Treatments"
+        parent="dental_base.menu_dental_root"
+        sequence="20"
+        groups="dental_base.group_dental_dentist,dental_base.group_dental_manager,dental_base.group_dental_admin,dental_base.group_dental_assistant"/>
+
+    <!-- Treatments Action Menu -->
+    <menuitem
+        id="menu_dental_treatments"
+        name="Treatments"
+        parent="menu_dental_treatments_main"
+        action="action_dental_treatments"
+        sequence="10"
+        groups="dental_base.group_dental_dentist,dental_base.group_dental_manager,dental_base.group_dental_admin,dental_base.group_dental_assistant"/>
+
+    <!-- Treatment Categories Action Menu -->
+    <menuitem
+        id="menu_dental_treatment_categories"
+        name="Treatment Categories"
+        parent="menu_dental_treatments_main"
+        action="action_dental_treatment_category"
+        sequence="20"
+        groups="dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+</odoo>

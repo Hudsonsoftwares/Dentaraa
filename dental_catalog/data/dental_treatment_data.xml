@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Treatment Categories -->
+        <record id="category_general" model="dental.treatment.category">
+            <field name="name">General Dentistry</field>
+        </record>
+        <record id="category_orthodontics" model="dental.treatment.category">
+            <field name="name">Orthodontics</field>
+        </record>
+        <record id="category_endodontics" model="dental.treatment.category">
+            <field name="name">Endodontics</field>
+        </record>
+        <record id="category_surgery" model="dental.treatment.category">
+            <field name="name">Oral Surgery</field>
+        </record>
+        <record id="category_prosthodontics" model="dental.treatment.category">
+            <field name="name">Prosthodontics</field>
+        </record>
+
+        <!-- Dental Treatments (Products) -->
+        <record id="treatment_consultation" model="product.template">
+            <field name="name">Consultation</field>
+            <field name="type">service</field>
+            <field name="is_dental_treatment">True</field>
+            <field name="treatment_code">T-CONS</field>
+            <field name="dental_treatment_category_id" ref="category_general"/>
+            <field name="list_price">50.0</field>
+            <field name="treatment_duration">0.5</field>
+        </record>
+
+        <record id="treatment_scaling" model="product.template">
+            <field name="name">Scaling</field>
+            <field name="type">service</field>
+            <field name="is_dental_treatment">True</field>
+            <field name="treatment_code">T-SCA</field>
+            <field name="dental_treatment_category_id" ref="category_general"/>
+            <field name="list_price">100.0</field>
+            <field name="treatment_duration">0.75</field>
+        </record>
+
+        <record id="treatment_dental_filling" model="product.template">
+            <field name="name">Dental Filling</field>
+            <field name="type">service</field>
+            <field name="is_dental_treatment">True</field>
+            <field name="treatment_code">T-FIL</field>
+            <field name="dental_treatment_category_id" ref="category_general"/>
+            <field name="list_price">150.0</field>
+            <field name="treatment_duration">1.0</field>
+            <field name="is_consent_required">True</field>
+        </record>
+
+        <record id="treatment_root_canal" model="product.template">
+            <field name="name">Root Canal Treatment</field>
+            <field name="type">service</field>
+            <field name="is_dental_treatment">True</field>
+            <field name="treatment_code">T-RCT</field>
+            <field name="dental_treatment_category_id" ref="category_endodontics"/>
+            <field name="list_price">500.0</field>
+            <field name="treatment_duration">2.0</field>
+            <field name="number_of_visits">2</field>
+            <field name="is_consent_required">True</field>
+        </record>
+
+        <record id="treatment_extraction" model="product.template">
+            <field name="name">Tooth Extraction</field>
+            <field name="type">service</field>
+            <field name="is_dental_treatment">True</field>
+            <field name="treatment_code">T-EXT</field>
+            <field name="dental_treatment_category_id" ref="category_surgery"/>
+            <field name="list_price">200.0</field>
+            <field name="treatment_duration">1.0</field>
+            <field name="is_consent_required">True</field>
+        </record>
+
+        <record id="treatment_crown" model="product.template">
+            <field name="name">Crown</field>
+            <field name="type">service</field>
+            <field name="is_dental_treatment">True</field>
+            <field name="treatment_code">T-CRO</field>
+            <field name="dental_treatment_category_id" ref="category_prosthodontics"/>
+            <field name="list_price">800.0</field>
+            <field name="treatment_duration">1.5</field>
+            <field name="number_of_visits">2</field>
+            <field name="is_lab_required">True</field>
+            <field name="is_consent_required">True</field>
+        </record>
+
+        <record id="treatment_bridge" model="product.template">
+            <field name="name">Bridge</field>
+            <field name="type">service</field>
+            <field name="is_dental_treatment">True</field>
+            <field name="treatment_code">T-BRI</field>
+            <field name="dental_treatment_category_id" ref="category_prosthodontics"/>
+            <field name="list_price">1500.0</field>
+            <field name="treatment_duration">2.0</field>
+            <field name="number_of_visits">2</field>
+            <field name="is_lab_required">True</field>
+            <field name="is_consent_required">True</field>
+        </record>
+
+        <record id="treatment_implant" model="product.template">
+            <field name="name">Dental Implant</field>
+            <field name="type">service</field>
+            <field name="is_dental_treatment">True</field>
+            <field name="treatment_code">T-IMP</field>
+            <field name="dental_treatment_category_id" ref="category_surgery"/>
+            <field name="list_price">2500.0</field>
+            <field name="treatment_duration">2.5</field>
+            <field name="number_of_visits">3</field>
+            <field name="is_lab_required">True</field>
+            <field name="is_consent_required">True</field>
+        </record>
+
+        <record id="treatment_braces" model="product.template">
+            <field name="name">Braces</field>
+            <field name="type">service</field>
+            <field name="is_dental_treatment">True</field>
+            <field name="treatment_code">T-BRA</field>
+            <field name="dental_treatment_category_id" ref="category_orthodontics"/>
+            <field name="list_price">3000.0</field>
+            <field name="treatment_duration">1.0</field>
+            <field name="number_of_visits">10</field>
+            <field name="is_consent_required">True</field>
+        </record>
+
+        <record id="treatment_whitening" model="product.template">
+            <field name="name">Teeth Whitening</field>
+            <field name="type">service</field>
+            <field name="is_dental_treatment">True</field>
+            <field name="treatment_code">T-WHI</field>
+            <field name="dental_treatment_category_id" ref="category_general"/>
+            <field name="list_price">400.0</field>
+            <field name="treatment_duration">1.5</field>
+        </record>
+    </data>
+</odoo>
