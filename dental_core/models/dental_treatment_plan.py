@@ -8,7 +8,7 @@ class DentalTreatmentPlan(models.Model):
     name = fields.Char(string='Plan Number', required=True, copy=False, readonly=True, default=lambda self: _('New'))
     patient_id = fields.Many2one('res.partner', string='Patient', required=True, domain=[('is_dental_patient', '=', True)], tracking=True)
     case_id = fields.Many2one('dental.case', string='Dental Case', tracking=True)
-    doctor_id = fields.Many2one('hr.employee', string='Doctor', tracking=True)
+    doctor_id = fields.Many2one('hr.employee.public', string='Doctor', tracking=True)
     appointment_id = fields.Many2one('dental.appointment', string='Appointment', tracking=True)
     branch_id = fields.Many2one('res.company', string='Branch', related='appointment_id.branch_id', store=True)
     
@@ -92,7 +92,7 @@ class DentalTreatmentSession(models.Model):
     plan_id = fields.Many2one('dental.treatment.plan', string='Treatment Plan', tracking=True)
     plan_line_id = fields.Many2one('dental.treatment.plan.line', string='Treatment Plan Line', required=True, tracking=True)
     
-    doctor_id = fields.Many2one('hr.employee', string='Doctor', tracking=True)
+    doctor_id = fields.Many2one('hr.employee.public', string='Doctor', tracking=True)
     appointment_id = fields.Many2one('dental.appointment', string='Appointment', tracking=True)
     
     session_date = fields.Datetime(string='Session Date', default=fields.Datetime.now, required=True, tracking=True)

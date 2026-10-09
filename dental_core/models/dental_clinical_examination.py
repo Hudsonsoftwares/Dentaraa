@@ -8,7 +8,7 @@ class DentalClinicalExamination(models.Model):
     name = fields.Char(string='Examination Number', required=True, copy=False, readonly=True, default=lambda self: _('New'))
     patient_id = fields.Many2one('res.partner', string='Patient', required=True, domain=[('is_dental_patient', '=', True)], tracking=True)
     case_id = fields.Many2one('dental.case', string='Dental Case', required=True, tracking=True)
-    doctor_id = fields.Many2one('hr.employee', string='Doctor', tracking=True)
+    doctor_id = fields.Many2one('hr.employee.public', string='Doctor', tracking=True)
     examination_date = fields.Datetime(string='Examination Date', default=fields.Datetime.now, required=True, tracking=True)
     
     chief_complaint = fields.Text(string='Chief Complaint')

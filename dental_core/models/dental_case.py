@@ -7,7 +7,7 @@ class DentalCase(models.Model):
 
     name = fields.Char(string='Case Number', required=True, copy=False, readonly=True, default=lambda self: _('New'))
     patient_id = fields.Many2one('res.partner', string='Patient', required=True, domain=[('is_dental_patient', '=', True)], tracking=True)
-    doctor_id = fields.Many2one('hr.employee', string='Doctor', tracking=True)
+    doctor_id = fields.Many2one('hr.employee.public', string='Doctor', tracking=True)
     appointment_id = fields.Many2one('dental.appointment', string='Related Appointment', tracking=True)
     branch_id = fields.Many2one('res.company', string='Branch', related='appointment_id.branch_id', store=True)
     
