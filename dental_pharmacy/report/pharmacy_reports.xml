@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Prescription PDF Report Action -->
+    <record id="action_report_dental_prescription" model="ir.actions.report">
+        <field name="name">Prescription Slip (Rx)</field>
+        <field name="model">dental.prescription</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">dental_pharmacy.report_prescription_template</field>
+        <field name="print_report_name">'Prescription - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_dental_prescription"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Dispense Receipt PDF Report Action -->
+    <record id="action_report_dispense_receipt" model="ir.actions.report">
+        <field name="name">Pharmacy Dispense Receipt</field>
+        <field name="model">dental.pharmacy.dispense</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">dental_pharmacy.report_dispense_receipt_template</field>
+        <field name="print_report_name">'Dispense Receipt - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_dental_pharmacy_dispense"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

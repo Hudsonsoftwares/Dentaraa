@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- hudson.loan List View -->
+    <record id="view_hudson_loan_tree" model="ir.ui.view">
+        <field name="name">hudson.loan.tree</field>
+        <field name="model">hudson.loan</field>
+        <field name="arch" type="xml">
+            <list string="Loans">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="amount_borrowed"/>
+                <field name="outstanding_balance"/>
+                <field name="state" widget="badge" 
+                       decoration-info="state == 'draft'" 
+                       decoration-success="state == 'running'"
+                       decoration-primary="state == 'closed'"
+                       decoration-muted="state == 'cancelled'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- hudson.loan Form View -->
+    <record id="view_hudson_loan_form" model="ir.ui.view">
+        <field name="name">hudson.loan.form</field>
+        <field name="model">hudson.loan</field>
+        <field name="arch" type="xml">
+            <form string="Loan">
+                <header>
+                    <button name="action_confirm" string="Confirm" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_compute" string="Compute" type="object" invisible="state != 'draft'"/>
+                    <button name="action_close" string="Close Loan" type="object" class="oe_highlight" invisible="state != 'running'"/>
+                    <button name="action_reset_to_draft" string="Reset to Draft" type="object" invisible="state != 'cancelled'"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state not in ('draft', 'running')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,running,closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_entries" type="object" class="oe_stat_button" icon="fa-bars" invisible="move_count == 0">
+                            <field name="move_count" widget="statinfo" string="Loan Entries"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="Loan name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="amount_borrowed"/>
+                            <field name="interest"/>
+                            <field name="outstanding_balance"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                            <field name="duration"/>
+                            <field name="asset_group"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Amortization schedule" name="schedule">
+                            <field name="line_ids" readonly="state != 'draft'">
+                                <list string="Amortization schedule" editable="bottom" decoration-muted="is_posted == True">
+                                    <field name="date"/>
+                                    <field name="principal" sum="Total Principal"/>
+                                    <field name="interest" sum="Total Interest"/>
+                                    <field name="payment" sum="Total Payments"/>
+                                    <field name="balance"/>
+                                    <field name="is_posted" readonly="1" widget="boolean_toggle"/>
+                                    <field name="move_id" column_invisible="True"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Loan Settings" name="settings">
+                            <group>
+                                <group>
+                                    <field name="long_term_account_id" readonly="state != 'draft'"/>
+                                    <field name="short_term_account_id" readonly="state != 'draft'"/>
+                                    <field name="expense_account_id" readonly="state != 'draft'"/>
+                                    <field name="journal_id" readonly="state != 'draft'"/>
+                                </group>
+                                <group>
+                                    <field name="skip_until_date" placeholder="1st amortization schedule" readonly="state != 'draft'"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- hudson.loan Action -->
+    <record id="action_hudson_loan" model="ir.actions.act_window">
+        <field name="name">Loans</field>
+        <field name="res_model">hudson.loan</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Loan
+            </p>
+        </field>
+    </record>
+
+    <!-- hudson.loan Analysis Graph / Pivot -->
+    <record id="view_hudson_loan_pivot" model="ir.ui.view">
+        <field name="name">hudson.loan.pivot</field>
+        <field name="model">hudson.loan</field>
+        <field name="arch" type="xml">
+            <pivot string="Loans Analysis">
+                <field name="date" interval="month" type="row"/>
+                <field name="state" type="col"/>
+                <field name="amount_borrowed" type="measure"/>
+                <field name="outstanding_balance" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_hudson_loan_graph" model="ir.ui.view">
+        <field name="name">hudson.loan.graph</field>
+        <field name="model">hudson.loan</field>
+        <field name="arch" type="xml">
+            <graph string="Loans Analysis" type="bar">
+                <field name="name"/>
+                <field name="outstanding_balance" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="action_hudson_loan_analysis" model="ir.actions.act_window">
+        <field name="name">Loans Analysis</field>
+        <field name="res_model">hudson.loan</field>
+        <field name="view_mode">graph,pivot,list,form</field>
+    </record>
+
+</odoo>

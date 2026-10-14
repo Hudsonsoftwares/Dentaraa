@@ -1,0 +1,26 @@
+
+/* Fix Chrome PDF viewer drawing unwanted table borders (phantom grid) */
+/* wkhtmltopdf + border-collapse: collapse causes Chrome PDFium to draw faint lines */
+.o_report_layout_standard table {
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+}
+
+/* Fix Chrome PDF Viewer links misalignment and interactivity issues */
+.o_report_layout_standard a, 
+.o_report_layout_standard a[href^="#"] {
+    display: inline-block;
+    position: relative;
+    z-index: 1000;
+}
+
+/* Ensure link targets (IDs) have block context for wkhtmltopdf to anchor correctly */
+.o_report_layout_standard [id] {
+    position: relative;
+    z-index: 1;
+}
+
+/* Avoid page breaks inside rows which can corrupt Chrome's PDF rendering */
+.o_report_layout_standard tr {
+    page-break-inside: avoid;
+}

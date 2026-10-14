@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Search View for Analytic Reporting -->
+        <!-- Note: Filters limited to fields available on base account.analytic.line in Odoo 20.
+             Fields from sale_timesheet/hr_timesheet (project_id, task_id, employee_id, department_id,
+             manager_id, so_line, timesheet_invoice_id, timesheet_invoice_type, general_account_id)
+             were removed as they no longer exist on the base model. -->
+        <record id="view_account_analytic_line_search_reporting" model="ir.ui.view">
+            <field name="name">account.analytic.line.search.reporting</field>
+            <field name="model">account.analytic.line</field>
+            <field name="arch" type="xml">
+                <search string="Analytic Reporting">
+                    <field name="name"/>
+                    <field name="account_id"/>
+                    <field name="partner_id"/>
+                    <filter name="group_by_date" string="Date" context="{'group_by':'date:month'}"/>
+                    <separator/>
+                    <filter name="account_id" string="Project Plan" context="{'group_by':'account_id'}"/>
+                    <separator/>
+                    <filter name="group_by_category" string="Category" context="{'group_by':'category'}"/>
+                    <filter name="group_by_product" string="Product" context="{'group_by':'product_id'}"/>
+                    <filter name="group_by_partner" string="Partner" context="{'group_by':'partner_id'}"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- Pivot View for Analytic Reporting -->
+        <record id="view_account_analytic_line_pivot_reporting" model="ir.ui.view">
+            <field name="name">account.analytic.line.pivot.reporting</field>
+            <field name="model">account.analytic.line</field>
+            <field name="arch" type="xml">
+                <pivot string="Analytic Reporting" sample="1">
+                    <field name="account_id" type="row"/>
+                    <field name="date" type="col" interval="month"/>
+                    <field name="amount" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- Graph View for Analytic Reporting -->
+        <record id="view_account_analytic_line_graph_reporting" model="ir.ui.view">
+            <field name="name">account.analytic.line.graph.reporting</field>
+            <field name="model">account.analytic.line</field>
+            <field name="arch" type="xml">
+                <graph string="Analytic Reporting" sample="1">
+                    <field name="account_id"/>
+                    <field name="amount" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- Override standard action by creating a new one to force cache bust -->
+        <record id="action_analytic_reporting_new" model="ir.actions.act_window">
+            <field name="name">Analytic Reporting</field>
+            <field name="res_model">account.analytic.line</field>
+            <field name="view_mode">pivot,graph,list,form</field>
+            <field name="search_view_id" ref="view_account_analytic_line_search_reporting"/>
+            <field name="context">{'search_default_account_id': 1}</field>
+        </record>
+
+        <!-- Force the views to belong to the new action -->
+        <record id="action_analytic_reporting_view_pivot" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">pivot</field>
+            <field name="view_id" ref="view_account_analytic_line_pivot_reporting"/>
+            <field name="act_window_id" ref="action_analytic_reporting_new"/>
+        </record>
+        <record id="action_analytic_reporting_view_graph" model="ir.actions.act_window.view">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">graph</field>
+            <field name="view_id" ref="view_account_analytic_line_graph_reporting"/>
+            <field name="act_window_id" ref="action_analytic_reporting_new"/>
+        </record>
+
+        <!-- Analytic Report Dynamic Action -->
+        <record id="action_hudson_analytic_report_dynamic" model="ir.actions.client">
+            <field name="name">Analytic Report</field>
+            <field name="tag">hudson_dynamic_reports.dynamic_report</field>
+            <field name="params" eval="{'model_name': 'account.analytic.report'}"/>
+        </record>
+
+        <!-- Point the existing menu to the dynamic report action -->
+        <record id="account.menu_action_analytic_reporting" model="ir.ui.menu">
+            <field name="name">Analytic Report</field>
+            <field name="action" ref="action_hudson_analytic_report_dynamic"/>
+        </record>
+    </data>
+</odoo>

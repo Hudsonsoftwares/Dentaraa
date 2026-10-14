@@ -1,0 +1,59 @@
+/* Dental Pharmacy Dashboard Stylesheet */
+
+.o_pharmacy_dashboard {
+    background-color: #f8fafc;
+    min-height: 100vh;
+
+    .bg-gradient-header {
+        background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0284c7 100%);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .kpi-card {
+        transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        background: #ffffff;
+
+        &:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.08), 0 6px 8px -3px rgba(0, 0, 0, 0.03) !important;
+        }
+    }
+
+    .icon-circle {
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+    }
+
+    .cursor-pointer {
+        cursor: pointer;
+    }
+
+    .tracking-wider {
+        letter-spacing: 0.04em;
+    }
+
+    .table {
+        th {
+            font-weight: 600;
+            color: #475569;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+        }
+
+        td {
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+        }
+    }
+
+    .badge {
+        font-weight: 500;
+    }
+}

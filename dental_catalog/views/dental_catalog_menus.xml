@@ -1,28 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Main Treatments Menu (Parent) -->
-    <menuitem
-        id="menu_dental_treatments_main"
-        name="Treatments"
-        parent="dental_base.menu_dental_root"
-        sequence="20"
-        groups="dental_base.group_dental_dentist,dental_base.group_dental_manager,dental_base.group_dental_admin,dental_base.group_dental_assistant"/>
+    <!-- Deactivate obsolete top-level Treatments parent to keep main navbar clean and compact -->
+    <record id="menu_dental_treatments_main" model="ir.ui.menu">
+        <field name="active" eval="False"/>
+    </record>
 
-    <!-- Treatments Action Menu -->
+    <!-- Treatment Catalog placed cleanly under Configuration -->
     <menuitem
         id="menu_dental_treatments"
-        name="Treatments"
-        parent="menu_dental_treatments_main"
+        name="Treatment Catalog"
+        parent="dental_base.menu_dental_configuration"
         action="action_dental_treatments"
-        sequence="10"
-        groups="dental_base.group_dental_dentist,dental_base.group_dental_manager,dental_base.group_dental_admin,dental_base.group_dental_assistant"/>
+        sequence="70"
+        groups="dental_base.group_dental_manager,dental_base.group_dental_admin"/>
 
-    <!-- Treatment Categories Action Menu -->
+    <!-- Treatment Categories placed cleanly under Configuration -->
     <menuitem
         id="menu_dental_treatment_categories"
         name="Treatment Categories"
-        parent="menu_dental_treatments_main"
+        parent="dental_base.menu_dental_configuration"
         action="action_dental_treatment_category"
-        sequence="20"
+        sequence="75"
         groups="dental_base.group_dental_manager,dental_base.group_dental_admin"/>
 </odoo>

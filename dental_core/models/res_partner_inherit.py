@@ -17,6 +17,14 @@ class ResPartner(models.Model):
     
     treatment_session_ids = fields.One2many('dental.treatment.session', 'patient_id', string='Treatment Sessions')
     treatment_session_count = fields.Integer(compute='_compute_treatment_session_count')
+    
+    tooth_finding_ids = fields.One2many('dental.tooth.finding', 'patient_id', string='Tooth Findings')
+    tooth_finding_count = fields.Integer(compute='_compute_tooth_finding_count')
+
+    @api.depends('tooth_finding_ids')
+    def _compute_tooth_finding_count(self):
+        for partner in self:
+            partner.tooth_finding_count = len(partner.tooth_finding_ids)
 
     @api.depends('dental_case_ids')
     def _compute_dental_case_count(self):

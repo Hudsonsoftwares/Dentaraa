@@ -41,7 +41,19 @@ export class DentistDashboard extends Component {
 
     async loadData() {
         const uid = user.userId;
-        const todayStr = new Date().toISOString().split('T')[0];
+        const formatUTC = (d) => {
+            return d.getUTCFullYear() + '-' + 
+                   String(d.getUTCMonth() + 1).padStart(2, '0') + '-' + 
+                   String(d.getUTCDate()).padStart(2, '0') + ' ' + 
+                   String(d.getUTCHours()).padStart(2, '0') + ':' + 
+                   String(d.getUTCMinutes()).padStart(2, '0') + ':' + 
+                   String(d.getUTCSeconds()).padStart(2, '0');
+        };
+        const now = new Date();
+        const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
+        const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
+        const utcStartStr = formatUTC(startOfDay);
+        const utcEndStr = formatUTC(endOfDay);
         
         try {
             // 1. Appointments
@@ -49,8 +61,8 @@ export class DentistDashboard extends Component {
                 "dental.appointment",
                 [
                     ["doctor_id.user_id", "=", uid],
-                    ["date_start", ">=", todayStr + " 00:00:00"],
-                    ["date_start", "<=", todayStr + " 23:59:59"]
+                    ["date_start", ">=", utcStartStr],
+                    ["date_start", "<=", utcEndStr]
                 ],
                 ["patient_id", "date_start", "state", "treatment_id", "waiting_time"],
                 { order: "date_start ASC" }
@@ -63,9 +75,18 @@ export class DentistDashboard extends Component {
             this.state.today_appointments_list = appointments;
             this.state.calendar_events = appointments;
             
-            // 2. Waiting Queue
-            this.state.waiting_queue = appointments.filter(a => ['checked_in', 'in_consultation'].includes(a.state));
-            this.state.stats.waiting_patients = this.state.waiting_queue.length;
+            // 2. Waiting Queue (all patients checked-in/waiting for this doctor right now)
+            const waitingPatients = await this.orm.searchRead(
+                "dental.appointment",
+                [
+                    ["doctor_id.user_id", "=", uid],
+                    ["state", "in", ["checked_in", "in_consultation"]]
+                ],
+                ["patient_id", "date_start", "state", "treatment_id", "waiting_time"],
+                { order: "date_start ASC" }
+            );
+            this.state.waiting_queue = waitingPatients;
+            this.state.stats.waiting_patients = waitingPatients.length;
             
             if (this.state.waiting_queue.length > 0) {
                 let totalWait = 0;
@@ -101,8 +122,8 @@ export class DentistDashboard extends Component {
                 "dental.treatment.session",
                 [
                     ["doctor_id.user_id", "=", uid],
-                    ["session_date", ">=", todayStr + " 00:00:00"],
-                    ["session_date", "<=", todayStr + " 23:59:59"]
+                    ["session_date", ">=", utcStartStr],
+                    ["session_date", "<=", utcEndStr]
                 ],
                 ["name", "patient_id", "state", "plan_line_id", "session_date"],
                 { order: "session_date ASC", limit: 5 }
@@ -112,8 +133,8 @@ export class DentistDashboard extends Component {
                 "dental.treatment.session",
                 [
                     ["doctor_id.user_id", "=", uid],
-                    ["session_date", ">=", todayStr + " 00:00:00"],
-                    ["session_date", "<=", todayStr + " 23:59:59"]
+                    ["session_date", ">=", utcStartStr],
+                    ["session_date", "<=", utcEndStr]
                 ],
                 ["state"]
             );
@@ -143,7 +164,10 @@ export class DentistDashboard extends Component {
     }
 
     startConsultation(id) {
-        this.orm.call("dental.appointment", "action_start_consultation", [[id]]).then(() => {
+        this.orm.call("dental.appointment", "action_start_consultation", [[id]]).then((action) => {
+            if (action && typeof action === 'object') {
+                this.action.doAction(action);
+            }
             this.loadData();
         });
     }

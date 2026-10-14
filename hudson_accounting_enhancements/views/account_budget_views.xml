@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Budget Lines pivot action -->
+    <record id="act_crossovered_budget_lines_pivot_view" model="ir.actions.act_window">
+        <field name="name">Budgets</field>
+        <field name="res_model">account.budget.line</field>
+        <field name="view_mode">pivot,list,form,graph</field>
+        <field name="view_id" eval="False"/>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            Click to create a new budget line.
+          </p>
+        </field>
+    </record>
+
+    <!-- Add Budgets tab to Analytic Account form view matching Enterprise layout -->
+    <record id="view_account_analytic_account_form_inherit_hudson_budget" model="ir.ui.view">
+        <field name="name">account.analytic.account.form.inherit.hudson.budget</field>
+        <field name="model">account.analytic.account</field>
+        <field name="inherit_id" ref="analytic.view_account_analytic_account_form"/>
+        <field name="priority" eval="60"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Budgets" name="budgets">
+                    <field name="budget_line_ids" readonly="1">
+                        <list string="Budgets" create="0" delete="0" edit="0">
+                            <field name="budget_id" string="Budget Analytic"/>
+                            <field name="date_from" string="Start Date"/>
+                            <field name="date_to" string="End Date"/>
+                            <field name="planned_amount" string="Commitment"/>
+                            <field name="theoretical_amount" string="Expected"/>
+                            <field name="practical_amount" string="Achieved"/>
+                            <field name="budget_state" string="Budget State" widget="badge" decoration-info="budget_state == 'draft'" decoration-success="budget_state in ('validate', 'done')" decoration-danger="budget_state == 'cancel'"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

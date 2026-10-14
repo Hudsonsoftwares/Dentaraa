@@ -4,29 +4,56 @@
     font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 
     /* Text Colors */
-    .text-dark-blue { color: #1e293b !important; }
-    .text-muted-blue { color: #64748b !important; }
-    
+    .text-dark-blue {
+        color: #1e293b !important;
+    }
+
+    .text-muted-blue {
+        color: #64748b !important;
+    }
+
     /* Backgrounds & Soft Colors */
-    .bg-primary-soft { background-color: #eff6ff !important; color: #3b82f6 !important; }
-    .bg-success-soft { background-color: #dcfce7 !important; color: #166534 !important; }
-    .bg-warning-soft { background-color: #ffedd5 !important; color: #9a3412 !important; }
-    .bg-info-soft { background-color: #e0f2fe !important; color: #075985 !important; }
-    .bg-purple-soft { background-color: #f3e8ff !important; color: #6b21a8 !important; }
-    
+    .bg-primary-soft {
+        background-color: #eff6ff !important;
+        color: #3b82f6 !important;
+    }
+
+    .bg-success-soft {
+        background-color: #dcfce7 !important;
+        color: #166534 !important;
+    }
+
+    .bg-warning-soft {
+        background-color: #ffedd5 !important;
+        color: #9a3412 !important;
+    }
+
+    .bg-info-soft {
+        background-color: #e0f2fe !important;
+        color: #075985 !important;
+    }
+
+    .bg-purple-soft {
+        background-color: #f3e8ff !important;
+        color: #6b21a8 !important;
+    }
+
     /* Buttons */
     .btn-primary {
         background-color: #3b82f6;
         border-color: #3b82f6;
+
         &:hover {
             background-color: #2563eb;
             border-color: #2563eb;
         }
     }
+
     .btn-light {
         background-color: #f8fafc;
         border-color: #e2e8f0;
         color: #475569;
+
         &:hover {
             background-color: #f1f5f9;
         }
@@ -38,7 +65,7 @@
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    
+
     .dashboard-stat-card {
         &:hover {
             transform: translateY(-3px);
@@ -54,11 +81,12 @@
         justify-content: center;
         font-size: 1.25rem;
     }
-    
+
     /* Tables */
     .table-responsive {
         border-radius: 0 0 16px 16px;
     }
+
     .table {
         th {
             font-weight: 600;
@@ -66,6 +94,7 @@
             padding-top: 12px;
             padding-bottom: 12px;
         }
+
         td {
             padding-top: 12px;
             padding-bottom: 12px;
@@ -73,17 +102,18 @@
             border-bottom: 1px solid #f1f5f9;
         }
     }
-    
+
     .badge {
         font-weight: 600;
         letter-spacing: 0.3px;
     }
-    
+
     /* Calendar timeline styles */
     .timeline-item {
         position: relative;
         padding-left: 1.5rem;
         margin-bottom: 1rem;
+
         &::before {
             content: '';
             position: absolute;
@@ -93,9 +123,11 @@
             width: 2px;
             background-color: #e2e8f0;
         }
+
         &:last-child::before {
             display: none;
         }
+
         .timeline-bullet {
             position: absolute;
             left: -4px;

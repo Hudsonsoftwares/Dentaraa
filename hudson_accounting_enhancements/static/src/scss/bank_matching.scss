@@ -1,0 +1,10 @@
+/* Hide the multiple selection checkbox without breaking table layout */
+.hudson_no_checkbox .o_list_record_selector {
+    /* Make the content invisible so they can't be clicked or seen */
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* We don't use display: none because it corrupts Odoo's fixed table layout,
+   which causes the footer sum to misalign and creates massive right margins.
+   By keeping the cell with visibility: hidden, it acts as a perfect left margin! */

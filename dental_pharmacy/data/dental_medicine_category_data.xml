@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="cat_antibiotics" model="dental.medicine.category">
+            <field name="name">Antibiotics &amp; Antimicrobials</field>
+            <field name="code">ATB</field>
+            <field name="description">Antibacterial agents used to treat acute and chronic odontogenic infections, periapical abscesses, and surgical prophylaxis.</field>
+        </record>
+
+        <record id="cat_analgesics" model="dental.medicine.category">
+            <field name="name">Analgesics &amp; NSAIDs</field>
+            <field name="code">ANL</field>
+            <field name="description">Non-steroidal anti-inflammatory drugs and pain management medicines for post-operative dental pain, pulpal pain, and facial neuralgia.</field>
+        </record>
+
+        <record id="cat_antiseptics" model="dental.medicine.category">
+            <field name="name">Antiseptics &amp; Oral Rinses</field>
+            <field name="code">ASP</field>
+            <field name="description">Topical mouthwashes, chlorhexidine solutions, and periodontal irrigation solutions for plaque control and gingival inflammation.</field>
+        </record>
+
+        <record id="cat_anesthetics" model="dental.medicine.category">
+            <field name="name">Local Anesthetics</field>
+            <field name="code">LA</field>
+            <field name="description">Infiltration and nerve block anesthetic cartridges (Lignocaine, Articaine, Mepivacaine, Bupivacaine) with or without vasoconstrictor.</field>
+        </record>
+
+        <record id="cat_corticosteroids" model="dental.medicine.category">
+            <field name="name">Corticosteroids &amp; Anti-inflammatory Pastes</field>
+            <field name="code">CST</field>
+            <field name="description">Topical oral mucosal ointments and pastes for aphthous ulcers, lichen planus, and post-endodontic inflammation.</field>
+        </record>
+
+        <record id="cat_hemostatics" model="dental.medicine.category">
+            <field name="name">Hemostatics &amp; Coagulants</field>
+            <field name="code">HEM</field>
+            <field name="description">Coagulation accelerators, tranexamic acid, and local styptics for post-extraction bleeding management.</field>
+        </record>
+
+        <record id="cat_antifungals" model="dental.medicine.category">
+            <field name="name">Antifungals</field>
+            <field name="code">AFG</field>
+            <field name="description">Medications for oral candidiasis, denture stomatitis, and angular cheilitis (Clotrimazole, Nystatin, Fluconazole).</field>
+        </record>
+
+        <record id="cat_supplements" model="dental.medicine.category">
+            <field name="name">Supplements, Calcium &amp; Fluorides</field>
+            <field name="code">SUP</field>
+            <field name="description">High-fluoride pastes, calcium remineralizing agents, and vitamin complexes supporting bone and tissue regeneration.</field>
+        </record>
+    </data>
+</odoo>

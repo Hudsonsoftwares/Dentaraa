@@ -24,7 +24,11 @@
     </record>
 
     <!-- Menu Items for Dental Patients -->
-    <menuitem id="menu_dental_patients_root" name="Patients" parent="dental_base.menu_dental_root" sequence="30"/>
+    <menuitem id="menu_dental_patients_root"
+              name="Patients"
+              parent="dental_base.menu_dental_root"
+              sequence="40"
+              groups="dental_base.group_dental_receptionist,dental_base.group_dental_dentist,dental_base.group_dental_manager,dental_base.group_dental_admin,dental_base.group_dental_assistant"/>
     
     <menuitem id="menu_dental_patients"
               name="Patient List"
@@ -79,7 +83,7 @@
                             <field name="active_clinic_id"/>
                         </group>
                     </group>
-                    <group groups="dental_base.group_dental_dentist,dental_base.group_dental_assistant,dental_base.group_dental_manager,dental_base.group_dental_admin">
+                    <group>
                         <group string="Medical History">
                             <field name="allergies"/>
                             <field name="existing_conditions"/>

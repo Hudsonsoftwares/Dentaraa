@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="dental_core.AdminDashboard">
+        <div class="o_action o_dental_dashboard w-100 h-100 overflow-auto p-4">
+            
+            <!-- Top Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="text-dark-blue fw-bold mb-1">Clinic Administration Overview 🏥</h2>
+                    <p class="text-muted-blue fs-6 mb-0"><t t-out="this.currentDateStr"/> &#8226; System Master Control</p>
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-primary px-3 py-2 fw-semibold rounded-pill shadow-sm" t-on-click="() => this.openAction('dental_appointment.action_dental_appointment')">
+                        <i class="fa fa-calendar-plus-o me-2"/> Appointments
+                    </button>
+                    <button class="btn btn-light px-3 py-2 fw-semibold rounded-pill shadow-sm" t-on-click="() => this.openAction('dental_patient.action_dental_patient')">
+                        <i class="fa fa-user-plus me-2"/> Patient Registry
+                    </button>
+                    <button class="btn btn-light px-3 py-2 fw-semibold rounded-pill shadow-sm" t-on-click="() => this.openAction('dental_base.action_dental_config_settings')">
+                        <i class="fa fa-sliders me-2"/> Settings
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats KPI Cards -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-3">
+                    <div class="card border-0 p-4 h-100 dashboard-stat-card cursor-pointer" t-on-click="() => this.openAction('dental_appointment.action_dental_appointment_today')">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="icon-box bg-primary-soft rounded-3 me-3">
+                                <i class="fa fa-calendar-check-o"/>
+                            </div>
+                            <span class="text-primary fw-bold">Today's Visits</span>
+                        </div>
+                        <h1 class="fw-bold text-dark-blue mb-1"><t t-out="this.state.stats.today_appointments"/></h1>
+                        <div class="text-muted-blue" style="font-size: 0.85rem;">
+                            <span class="text-warning fw-semibold"><t t-out="this.state.stats.waiting_patients"/> in Queue</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card border-0 p-4 h-100 dashboard-stat-card cursor-pointer" t-on-click="() => this.openAction('dental_patient.action_dental_patient')">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="icon-box bg-success-soft rounded-3 me-3">
+                                <i class="fa fa-users"/>
+                            </div>
+                            <span class="text-success fw-bold">Total Patients</span>
+                        </div>
+                        <h1 class="fw-bold text-dark-blue mb-1"><t t-out="this.state.stats.total_patients"/></h1>
+                        <div class="text-muted-blue" style="font-size: 0.85rem;">
+                            <span class="text-success fw-semibold">+<t t-out="this.state.stats.new_patients_today"/> registered today</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card border-0 p-4 h-100 dashboard-stat-card cursor-pointer" t-on-click="() => this.openAction('dental_core.action_dental_case')">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="icon-box bg-purple-soft rounded-3 me-3">
+                                <i class="fa fa-stethoscope"/>
+                            </div>
+                            <span class="fw-bold" style="color: #6b21a8 !important;">Active Cases</span>
+                        </div>
+                        <h1 class="fw-bold text-dark-blue mb-1"><t t-out="this.state.stats.active_cases"/></h1>
+                        <div class="text-muted-blue" style="font-size: 0.85rem;">
+                            <span style="color: #6b21a8;"><t t-out="this.state.stats.active_treatments"/> Ongoing Treatment Plans</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card border-0 p-4 h-100 dashboard-stat-card cursor-pointer" t-on-click="() => this.openAction('dental_base.action_dental_staff')">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="icon-box bg-warning-soft rounded-3 me-3">
+                                <i class="fa fa-user-md"/>
+                            </div>
+                            <span class="text-warning fw-bold">Clinic Staff</span>
+                        </div>
+                        <h1 class="fw-bold text-dark-blue mb-1"><t t-out="this.state.stats.total_staff"/></h1>
+                        <div class="text-muted-blue" style="font-size: 0.85rem;">Dentists, Techs &amp; Receptionists</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Two-Column Grid -->
+            <div class="row g-4">
+                <!-- Left: Today's Appointments & Active Cases -->
+                <div class="col-lg-8">
+                    <!-- Today's Appointments -->
+                    <div class="card border-0 mb-4">
+                        <div class="card-header bg-white border-0 pt-4 px-4 pb-2 d-flex justify-content-between align-items-center">
+                            <h5 class="fw-bold text-dark-blue mb-0">Today's Appointment Schedule</h5>
+                            <button class="btn btn-sm btn-light" t-on-click="() => this.openAction('dental_appointment.action_dental_appointment_today')">
+                                View All <i class="fa fa-arrow-right ms-1"/>
+                            </button>
+                        </div>
+                        <div class="table-responsive px-4 pb-3">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead>
+                                    <tr class="text-muted-blue fs-7 text-uppercase">
+                                        <th>Time</th>
+                                        <th>Patient</th>
+                                        <th>Doctor</th>
+                                        <th>Treatment</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-if="this.state.today_appointments_list.length === 0">
+                                        <tr>
+                                            <td colspan="5" class="text-center py-4 text-muted">No appointments scheduled for today.</td>
+                                        </tr>
+                                    </t>
+                                    <t t-foreach="this.state.today_appointments_list" t-as="appt" t-key="appt.id">
+                                        <tr class="cursor-pointer" t-on-click="() => this.openRecord('dental.appointment', appt.id)">
+                                            <td class="fw-semibold text-dark-blue">
+                                                <t t-out="this.formatTime(appt.date_start)"/>
+                                            </td>
+                                            <td>
+                                                <span class="fw-bold text-dark-blue"><t t-out="appt.patient_id ? appt.patient_id[1] : '-'"/></span>
+                                            </td>
+                                            <td>
+                                                <span class="text-muted-blue"><t t-out="appt.doctor_id ? appt.doctor_id[1] : '-'"/></span>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-light text-dark"><t t-out="appt.treatment_id ? appt.treatment_id[1] : 'General'"/></span>
+                                            </td>
+                                            <td>
+                                                <span t-if="appt.state === 'draft'" class="badge bg-secondary">Draft</span>
+                                                <span t-if="appt.state === 'confirmed'" class="badge bg-primary">Confirmed</span>
+                                                <span t-if="appt.state === 'checked_in'" class="badge bg-warning text-dark">Checked In</span>
+                                                <span t-if="appt.state === 'in_consultation'" class="badge bg-info text-white">In Chair</span>
+                                                <span t-if="appt.state === 'completed'" class="badge bg-success">Completed</span>
+                                                <span t-if="appt.state === 'cancelled'" class="badge bg-danger">Cancelled</span>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Active Cases -->
+                    <div class="card border-0">
+                        <div class="card-header bg-white border-0 pt-4 px-4 pb-2 d-flex justify-content-between align-items-center">
+                            <h5 class="fw-bold text-dark-blue mb-0">Recent Clinical Cases</h5>
+                            <button class="btn btn-sm btn-light" t-on-click="() => this.openAction('dental_core.action_dental_case')">
+                                All Cases <i class="fa fa-arrow-right ms-1"/>
+                            </button>
+                        </div>
+                        <div class="table-responsive px-4 pb-3">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead>
+                                    <tr class="text-muted-blue fs-7 text-uppercase">
+                                        <th>Case Number</th>
+                                        <th>Patient</th>
+                                        <th>Doctor</th>
+                                        <th>Complaint</th>
+                                        <th>State</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-if="this.state.recent_cases.length === 0">
+                                        <tr>
+                                            <td colspan="5" class="text-center py-4 text-muted">No open cases at this moment.</td>
+                                        </tr>
+                                    </t>
+                                    <t t-foreach="this.state.recent_cases" t-as="c" t-key="c.id">
+                                        <tr class="cursor-pointer" t-on-click="() => this.openRecord('dental.case', c.id)">
+                                            <td class="fw-bold text-primary"><t t-out="c.name"/></td>
+                                            <td><t t-out="c.patient_id ? c.patient_id[1] : '-'"/></td>
+                                            <td><t t-out="c.doctor_id ? c.doctor_id[1] : '-'"/></td>
+                                            <td class="text-muted-blue"><t t-out="c.chief_complaint or '-'"/></td>
+                                            <td>
+                                                <span t-if="c.state === 'open'" class="badge bg-info text-white">Open</span>
+                                                <span t-if="c.state === 'under_treatment'" class="badge bg-warning text-dark">Under Treatment</span>
+                                                <span t-if="c.state === 'closed'" class="badge bg-success">Closed</span>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Quick Operations & Staff Roster -->
+                <div class="col-lg-4">
+                    <!-- Quick Operations Card -->
+                    <div class="card border-0 mb-4 p-4">
+                        <h5 class="fw-bold text-dark-blue mb-3">Department Shortcuts</h5>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-light text-start py-2 px-3 fw-semibold rounded-3 d-flex justify-content-between align-items-center"
+                                    t-on-click="() => this.openAction('dental_core.action_reception_professional_dashboard')">
+                                <span><i class="fa fa-id-card-o text-primary me-2"/> Reception Desk</span>
+                                <i class="fa fa-angle-right text-muted"/>
+                            </button>
+                            <button class="btn btn-light text-start py-2 px-3 fw-semibold rounded-3 d-flex justify-content-between align-items-center"
+                                    t-on-click="() => this.openAction('dental_core.action_dentist_professional_dashboard')">
+                                <span><i class="fa fa-stethoscope text-success me-2"/> Dentist Workspace</span>
+                                <i class="fa fa-angle-right text-muted"/>
+                            </button>
+                            <button class="btn btn-light text-start py-2 px-3 fw-semibold rounded-3 d-flex justify-content-between align-items-center"
+                                    t-on-click="() => this.openAction('dental_pharmacy.action_pharmacy_dashboard')">
+                                <span><i class="fa fa-medkit text-danger me-2"/> Pharmacy Management</span>
+                                <i class="fa fa-angle-right text-muted"/>
+                            </button>
+                            <button class="btn btn-light text-start py-2 px-3 fw-semibold rounded-3 d-flex justify-content-between align-items-center"
+                                    t-on-click="() => this.openAction('account.open_account_journal_dashboard_kanban')">
+                                <span><i class="fa fa-credit-card text-info me-2"/> Billing &amp; Accounting</span>
+                                <i class="fa fa-angle-right text-muted"/>
+                            </button>
+                            <button class="btn btn-light text-start py-2 px-3 fw-semibold rounded-3 d-flex justify-content-between align-items-center"
+                                    t-on-click="() => this.openAction('dental_base.action_dental_config_settings')">
+                                <span><i class="fa fa-cogs text-secondary me-2"/> Clinic Settings &amp; Rules</span>
+                                <i class="fa fa-angle-right text-muted"/>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Staff & Doctors On Record -->
+                    <div class="card border-0 p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="fw-bold text-dark-blue mb-0">Clinical Staff</h5>
+                            <button class="btn btn-sm btn-light" t-on-click="() => this.openAction('dental_base.action_dental_staff')">
+                                All Staff <i class="fa fa-arrow-right ms-1"/>
+                            </button>
+                        </div>
+                        <div class="list-group list-group-flush">
+                            <t t-if="this.state.staff_list.length === 0">
+                                <div class="text-muted small py-2">No clinical staff configured yet.</div>
+                            </t>
+                            <t t-foreach="this.state.staff_list" t-as="st" t-key="st.id">
+                                <div class="list-group-item px-0 py-2 border-0 d-flex justify-content-between align-items-center cursor-pointer"
+                                     t-on-click="() => this.openRecord('hr.employee', st.id)">
+                                    <div>
+                                        <div class="fw-bold text-dark-blue"><t t-out="st.name"/></div>
+                                        <div class="text-muted-blue small text-capitalize"><t t-out="st.dental_role or 'Staff'"/></div>
+                                    </div>
+                                    <span class="badge bg-light text-dark"><i class="fa fa-id-badge"/> Profile</span>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </t>
+</templates>

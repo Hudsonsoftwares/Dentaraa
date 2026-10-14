@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Dispense Lines Pivot View -->
+    <record id="view_pharmacy_dispense_line_pivot" model="ir.ui.view">
+        <field name="name">dental.pharmacy.dispense.line.pivot</field>
+        <field name="model">dental.pharmacy.dispense.line</field>
+        <field name="arch" type="xml">
+            <pivot string="Dispensing Analysis" sample="1">
+                <field name="medicine_id" type="row"/>
+                <field name="dispense_id" type="col"/>
+                <field name="qty_to_dispense" type="measure"/>
+                <field name="subtotal" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Dispense Lines Graph View -->
+    <record id="view_pharmacy_dispense_line_graph" model="ir.ui.view">
+        <field name="name">dental.pharmacy.dispense.line.graph</field>
+        <field name="model">dental.pharmacy.dispense.line</field>
+        <field name="arch" type="xml">
+            <graph string="Dispensing Volume by Medicine" sample="1">
+                <field name="medicine_id"/>
+                <field name="qty_to_dispense" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Dispense Lines List View -->
+    <record id="view_pharmacy_dispense_line_list" model="ir.ui.view">
+        <field name="name">dental.pharmacy.dispense.line.list</field>
+        <field name="model">dental.pharmacy.dispense.line</field>
+        <field name="arch" type="xml">
+            <list string="Dispensing Records Log">
+                <field name="dispense_id" string="Dispense Order"/>
+                <field name="prescription_line_id" string="Prescription Reference"/>
+                <field name="medicine_id"/>
+                <field name="generic_name"/>
+                <field name="lot_id" string="Batch / Lot"/>
+                <field name="qty_to_dispense" sum="Total Dispensed"/>
+                <field name="unit_price"/>
+                <field name="subtotal" sum="Total Value"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Action: Dispensing History Analysis -->
+    <record id="action_pharmacy_dispense_analysis" model="ir.actions.act_window">
+        <field name="name">Dispensing Analysis &amp; History</field>
+        <field name="res_model">dental.pharmacy.dispense.line</field>
+        <field name="view_mode">pivot,graph,list</field>
+        <field name="domain">[('state', '=', 'dispensed')]</field>
+    </record>
+
+    <!-- Action: Pharmacy Linked Invoices -->
+    <record id="action_dental_pharmacy_invoices" model="ir.actions.act_window">
+        <field name="name">Pharmacy Invoices &amp; Charges</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('is_pharmacy_invoice', '=', True)]</field>
+        <field name="context">{'default_move_type': 'out_invoice'}</field>
+    </record>
+</odoo>

@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Prescription Form View -->
+    <record id="view_dental_prescription_form" model="ir.ui.view">
+        <field name="name">dental.prescription.form</field>
+        <field name="model">dental.prescription</field>
+        <field name="arch" type="xml">
+            <form string="Dental Prescription">
+                <header>
+                    <button name="action_confirm" string="Confirm Prescription" type="object" class="btn-primary" 
+                            invisible="state != 'draft'" groups="dental_base.group_dental_dentist,dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+                    <button name="action_dispense" string="Dispense Medication" type="object" class="btn-success" 
+                            invisible="state not in ('confirmed', 'partially_dispensed')" groups="dental_base.group_dental_pharmacist,dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+                    <button name="action_draft" string="Reset to Draft" type="object" 
+                            invisible="state not in ('confirmed', 'cancelled') or total_dispensed_qty &gt; 0"
+                            groups="dental_base.group_dental_dentist,dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+                    <button name="action_cancel" string="Cancel" type="object" class="btn-secondary" 
+                            invisible="state in ('cancelled', 'fully_dispensed')"
+                            groups="dental_base.group_dental_dentist,dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,partially_dispensed,fully_dispensed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_dispenses" type="object" class="oe_stat_button" icon="fa-cubes">
+                            <field name="dispense_count" widget="statinfo" string="Dispenses"/>
+                        </button>
+                        <button name="action_view_invoices" type="object" class="oe_stat_button" icon="fa-pencil-square-o">
+                            <field name="invoice_count" widget="statinfo" string="Invoices"/>
+                        </button>
+                    </div>
+
+                    <widget name="web_ribbon" title="FULLY DISPENSED" bg_color="text-bg-success" invisible="state != 'fully_dispensed'"/>
+                    <widget name="web_ribbon" title="PARTIALLY DISPENSED" bg_color="text-bg-warning" invisible="state != 'partially_dispensed'"/>
+                    <widget name="web_ribbon" title="CANCELLED" bg_color="text-bg-danger" invisible="state != 'cancelled'"/>
+
+                    <div class="oe_title">
+                        <label for="name" string="Prescription Number"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+
+                    <!-- Medical Alert & Allergy Callout Banner -->
+                    <div class="alert alert-warning mb-3" role="alert" invisible="not patient_allergies">
+                        <div class="d-flex align-items-center">
+                            <i class="fa fa-exclamation-triangle fa-2x me-3 text-danger"/>
+                            <div>
+                                <strong class="text-danger fs-6">PATIENT MEDICAL ALERTS &amp; ALLERGIES:</strong>
+                                <div class="mt-1"><field name="patient_allergies" readonly="1"/></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <group>
+                        <group string="Patient Information">
+                            <field name="patient_id" readonly="state != 'draft'" options="{'no_create': True}"/>
+                            <field name="patient_dental_id"/>
+                            <field name="patient_age"/>
+                            <field name="patient_gender"/>
+                            <field name="patient_phone"/>
+                        </group>
+                        <group string="Clinical Reference">
+                            <field name="dentist_id" readonly="state != 'draft'" options="{'no_create': True}"/>
+                            <field name="dentist_reg_no"/>
+                            <field name="dentist_specialization"/>
+                            <field name="prescription_date" readonly="state != 'draft'"/>
+                            <field name="case_id" readonly="state != 'draft'" options="{'no_create': True}"/>
+                            <field name="appointment_id" readonly="state != 'draft'" options="{'no_create': True}"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+
+                    <group string="Clinical Indication / Diagnosis">
+                        <field name="diagnosis" readonly="state != 'draft'" placeholder="e.g. Acute Irreversible Pulpitis, Periapical Abscess tooth #46, Post-Surgical Prophylaxis"/>
+                    </group>
+
+                    <notebook>
+                        <page string="Prescribed Medications">
+                            <field name="line_ids" readonly="state in ('fully_dispensed', 'cancelled')">
+                                <list editable="bottom">
+                                    <field name="medicine_id" options="{'no_create': True}"/>
+                                    <field name="generic_name"/>
+                                    <field name="dosage_form"/>
+                                    <field name="strength"/>
+                                    <field name="dose"/>
+                                    <field name="route"/>
+                                    <field name="frequency"/>
+                                    <field name="duration"/>
+                                    <field name="quantity" sum="Total Prescribed"/>
+                                    <field name="uom_id"/>
+                                    <field name="instructions"/>
+                                    <field name="dispensed_qty" sum="Total Dispensed"/>
+                                    <field name="remaining_qty" sum="Total Remaining"/>
+                                </list>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="total_prescribed_qty"/>
+                                <field name="total_dispensed_qty"/>
+                                <field name="total_remaining_qty" class="oe_subtotal_footer_separator fw-bold text-primary"/>
+                            </group>
+                        </page>
+                        <page string="Clinical Advice &amp; Instructions">
+                            <field name="clinical_notes" readonly="state in ('fully_dispensed', 'cancelled')" placeholder="Advice regarding medication timing, food intake, oral hygiene, warm saline rinses..."/>
+                        </page>
+                        <page string="Doctor Credentials &amp; Digital Signature">
+                            <group>
+                                <group>
+                                    <field name="dentist_reg_no"/>
+                                    <field name="dentist_specialization"/>
+                                </group>
+                                <group>
+                                    <field name="dentist_signature" widget="image" class="oe_avatar" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Prescription List View -->
+    <record id="view_dental_prescription_list" model="ir.ui.view">
+        <field name="name">dental.prescription.list</field>
+        <field name="model">dental.prescription</field>
+        <field name="arch" type="xml">
+            <list string="Dental Prescriptions">
+                <field name="name"/>
+                <field name="prescription_date"/>
+                <field name="patient_id"/>
+                <field name="dentist_id"/>
+                <field name="case_id"/>
+                <field name="diagnosis"/>
+                <field name="total_prescribed_qty" sum="Prescribed"/>
+                <field name="total_dispensed_qty" sum="Dispensed"/>
+                <field name="total_remaining_qty" sum="Remaining"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'confirmed'"
+                       decoration-warning="state == 'partially_dispensed'"
+                       decoration-success="state == 'fully_dispensed'"
+                       decoration-muted="state == 'draft'"
+                       decoration-danger="state == 'cancelled'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Prescription Kanban View -->
+    <record id="view_dental_prescription_kanban" model="ir.ui.view">
+        <field name="name">dental.prescription.kanban</field>
+        <field name="model">dental.prescription</field>
+        <field name="arch" type="xml">
+            <kanban string="Prescriptions" default_group_by="state" sample="1">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="patient_id"/>
+                <field name="dentist_id"/>
+                <field name="prescription_date"/>
+                <field name="state"/>
+                <field name="total_remaining_qty"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <h5 class="mb-1 fw-bold text-primary"><field name="name"/></h5>
+                                <div class="text-muted"><field name="patient_id"/></div>
+                            </div>
+                            <span t-if="record.state.raw_value == 'confirmed'" class="badge text-bg-info">Ready</span>
+                            <span t-elif="record.state.raw_value == 'partially_dispensed'" class="badge text-bg-warning">Partial</span>
+                            <span t-elif="record.state.raw_value == 'fully_dispensed'" class="badge text-bg-success">Done</span>
+                            <span t-elif="record.state.raw_value == 'draft'" class="badge text-bg-secondary">Draft</span>
+                        </div>
+                        <div class="small text-muted mb-2">
+                            <i class="fa fa-user-md me-1"/><field name="dentist_id"/>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center pt-2 border-top">
+                            <span class="small text-muted"><field name="prescription_date"/></span>
+                            <span class="badge text-bg-light border">Remaining: <field name="total_remaining_qty"/></span>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Prescription Search View -->
+    <record id="view_dental_prescription_search" model="ir.ui.view">
+        <field name="name">dental.prescription.search</field>
+        <field name="model">dental.prescription</field>
+        <field name="arch" type="xml">
+            <search string="Search Prescriptions">
+                <field name="name" string="Prescription / Patient" filter_domain="['|', ('name', 'ilike', self), ('patient_id', 'ilike', self)]"/>
+                <field name="patient_id"/>
+                <field name="dentist_id"/>
+                <field name="case_id"/>
+                <field name="diagnosis"/>
+                <separator/>
+                <filter string="Today's Prescriptions" name="filter_today" domain="[('prescription_date', '=', context_today())]"/>
+                <filter string="Pending Dispense (Ready)" name="filter_pending" domain="[('state', 'in', ('confirmed', 'partially_dispensed'))]"/>
+                <filter string="Partially Dispensed" name="filter_partial" domain="[('state', '=', 'partially_dispensed')]"/>
+                <filter string="Fully Dispensed" name="filter_done" domain="[('state', '=', 'fully_dispensed')]"/>
+                <filter string="Draft" name="filter_draft" domain="[('state', '=', 'draft')]"/>
+                <separator/>
+                <filter string="Group By: Patient" name="group_by_patient" context="{'group_by': 'patient_id'}"/>
+                <filter string="Group By: Prescribing Dentist" name="group_by_dentist" context="{'group_by': 'dentist_id'}"/>
+                <filter string="Group By: Status" name="group_by_status" context="{'group_by': 'state'}"/>
+                <filter string="Group By: Prescription Date" name="group_by_date" context="{'group_by': 'prescription_date:month'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action: All Prescriptions -->
+    <record id="action_dental_prescription" model="ir.actions.act_window">
+        <field name="name">Prescriptions Queue</field>
+        <field name="res_model">dental.prescription</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="search_view_id" ref="view_dental_prescription_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create clinical prescriptions for dental patients!
+            </p>
+        </field>
+    </record>
+
+    <!-- Action: Pending Prescriptions (Pharmacist Queue) -->
+    <record id="action_dental_prescription_pending" model="ir.actions.act_window">
+        <field name="name">Prescriptions Pending Dispense</field>
+        <field name="res_model">dental.prescription</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('state', 'in', ('confirmed', 'partially_dispensed'))]</field>
+        <field name="search_view_id" ref="view_dental_prescription_search"/>
+        <field name="context">{'search_default_filter_pending': 1}</field>
+    </record>
+
+    <!-- Action: Fully Dispensed Prescriptions -->
+    <record id="action_dental_prescription_dispensed" model="ir.actions.act_window">
+        <field name="name">Dispensed Prescriptions History</field>
+        <field name="res_model">dental.prescription</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('state', '=', 'fully_dispensed')]</field>
+        <field name="search_view_id" ref="view_dental_prescription_search"/>
+    </record>
+</odoo>

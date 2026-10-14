@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Custom Tree View for Bank Matching -->
+    <record id="view_hudson_bank_matching_tree" model="ir.ui.view">
+        <field name="name">account.bank.statement.line.matching.tree</field>
+        <field name="model">account.bank.statement.line</field>
+        <field name="arch" type="xml">
+            <list string="Bank Matching" editable="top" js_class="account_tree" decoration-muted="is_reconciled == True" decoration-info="id == False">
+                <header>
+                    <button name="action_hudson_dummy_upload" string="Upload" type="object" class="btn-primary"/>
+                </header>
+                
+                <field name="date" readonly="id != False" class="fw-bold"/>
+                <field name="payment_ref" string="Label" readonly="id != False"/>
+                
+                <!-- Partner Column -->
+                <field name="partner_id" invisible="id != False and partner_id == False" string="Partner"/>
+                <button name="action_set_partner" type="object" string="Set Partner" class="btn-hudson-purple btn-sm" invisible="partner_id != False or id == False"/>
+                
+                <!-- Account Column -->
+                <field name="hudson_account_id" invisible="id != False" string="Account"/>
+                <button name="action_set_account" type="object" string="Set Account" class="btn-hudson-purple btn-sm" invisible="is_reconciled == True or id == False"/>
+                
+                <!-- Matching Status Indicators -->
+                <button name="action_needs_attention" type="object" icon="fa-exclamation" title="Needs Attention" class="btn btn-sm btn-light text-secondary" invisible="is_reconciled == True or id == False"/>
+                <button icon="fa-check" title="Matched" class="btn btn-sm btn-link text-success" invisible="is_reconciled == False or id == False"/>
+                <field name="hudson_matched_account_name" readonly="1" invisible="is_reconciled == False or id == False"/>
+                <button name="action_hudson_reset" type="object" icon="fa-undo" title="Reset Match" class="btn btn-sm btn-link text-muted" invisible="is_reconciled == False or id == False"/>
+                
+                <!-- Hidden Dependencies -->
+                <field name="is_reconciled" column_invisible="1"/>
+                <field name="hudson_has_matches" column_invisible="1"/>
+                
+                <!-- Amount (Read-only when saved) -->
+                <field name="amount" sum="Current Balance" decoration-danger="amount &lt; 0" decoration-bf="1" class="text-end" readonly="id != False"/>
+                
+                <!-- 3-Dots Menu -->
+                <field name="hudson_action_dummy" widget="bank_rec_action_dropdown" string=" " invisible="is_reconciled == True or id == False"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hudson_bank_matching_search" model="ir.ui.view">
+        <field name="name">account.bank.statement.line.matching.search</field>
+        <field name="model">account.bank.statement.line</field>
+        <field name="arch" type="xml">
+            <search string="Search Bank Transactions">
+                <field name="payment_ref" string="Label"/>
+                <field name="date"/>
+                <field name="amount"/>
+                <field name="partner_id"/>
+                <field name="journal_id"/>
+                <field name="statement_id"/>
+                
+                <filter string="Deposits" name="deposits" domain="[('amount', '&gt;', 0)]"/>
+                <filter string="Payments" name="payments" domain="[('amount', '&lt;', 0)]"/>
+                <separator/>
+                <filter string="To Review" name="to_review" domain="[('is_reconciled', '=', False)]"/>
+                <separator/>
+                <filter string="No statement" name="no_statement" domain="[('statement_id', '=', False)]"/>
+                <filter string="Invalid statements" name="invalid_statements" domain="['|', ('statement_id.is_valid', '=', False), ('statement_id.is_complete', '=', False)]"/>
+                <separator/>
+                <filter string="Matched" name="matched" domain="[('is_reconciled', '=', True)]"/>
+                <filter string="Not Matched" name="not_matched" domain="[('is_reconciled', '=', False)]"/>
+                <filter string="With Activities" name="activities_my" domain="[('activity_ids', '!=', False)]"/>
+                <separator/>
+                <filter string="Date" name="date_filter" date="date"/>
+                
+                <group>
+                    <filter string="Journal" name="group_by_journal" context="{'group_by': 'journal_id'}"/>
+                    <filter string="Partner" name="group_by_partner" context="{'group_by': 'partner_id'}"/>
+                    <filter string="Date" name="group_by_date" context="{'group_by': 'date'}"/>
+                    <filter string="Statement" name="group_by_statement" context="{'group_by': 'statement_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action for the custom Bank Matching view -->
+    <record id="action_hudson_bank_matching_tree" model="ir.actions.act_window">
+        <field name="name">Bank Matching</field>
+        <field name="res_model">account.bank.statement.line</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_hudson_bank_matching_tree"/>
+        <field name="search_view_id" ref="view_hudson_bank_matching_search"/>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Dental Branch List View -->
+    <record id="view_dental_branch_list" model="ir.ui.view">
+        <field name="name">dental.branch.list</field>
+        <field name="model">dental.branch</field>
+        <field name="arch" type="xml">
+            <list string="Clinic Branches">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="manager_id"/>
+                <field name="phone"/>
+                <field name="city"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="staff_count"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Dental Branch Form View -->
+    <record id="view_dental_branch_form" model="ir.ui.view">
+        <field name="name">dental.branch.form</field>
+        <field name="model">dental.branch</field>
+        <field name="arch" type="xml">
+            <form string="Clinic Branch">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_staff" type="object" class="oe_stat_button" icon="fa-user-md">
+                            <field name="staff_count" widget="statinfo" string="Staff &amp; Doctors"/>
+                        </button>
+                    </div>
+                    <field name="active" invisible="1"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <field name="logo" widget="image" class="oe_avatar" options="{'preview_image': 'logo'}"/>
+                    <div class="oe_title">
+                        <label for="name" string="Branch Name"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Downtown Dental Care"/>
+                        </h1>
+                        <div class="d-flex align-items-baseline">
+                            <span class="me-2 text-muted">Branch Code:</span>
+                            <field name="code" placeholder="BR-001" class="oe_inline fw-bold"/>
+                        </div>
+                    </div>
+                    <group>
+                        <group string="Branch Administration">
+                            <field name="manager_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="registration_number"/>
+                            <field name="tax_identifier"/>
+                        </group>
+                        <group string="Contact &amp; Timings">
+                            <field name="phone" widget="phone"/>
+                            <field name="mobile" widget="phone"/>
+                            <field name="email" widget="email"/>
+                            <field name="website" widget="url"/>
+                            <label for="opening_time" string="Operating Hours"/>
+                            <div class="o_row">
+                                <field name="opening_time" widget="float_time" class="oe_inline"/>
+                                <span class="mx-2">to</span>
+                                <field name="closing_time" widget="float_time" class="oe_inline"/>
+                            </div>
+                            <field name="working_days"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Address" name="address">
+                            <group>
+                                <group>
+                                    <label for="street" string="Address"/>
+                                    <div class="o_address_format">
+                                        <field name="street" placeholder="Street..." class="o_address_street"/>
+                                        <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                                        <field name="city" placeholder="City" class="o_address_city"/>
+                                        <field name="state_id" class="o_address_state" placeholder="State" options="{'no_open': True}"/>
+                                        <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                                        <field name="country_id" placeholder="Country" class="o_address_country" options="{'no_open': True}"/>
+                                    </div>
+                                </group>
+                                <group>
+                                    <field name="color" widget="color_picker"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Letterhead &amp; Branding" name="letterhead">
+                            <group>
+                                <field name="letterhead_header" placeholder="Header text or clinic registration details for prescriptions and bills..."/>
+                                <field name="letterhead_footer" placeholder="Footer terms, payment details, emergency hotline..."/>
+                            </group>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes" placeholder="Internal instructions, clinic specific policies..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Dental Branch Kanban View -->
+    <record id="view_dental_branch_kanban" model="ir.ui.view">
+        <field name="name">dental.branch.kanban</field>
+        <field name="model">dental.branch</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="manager_id"/>
+                <field name="phone"/>
+                <field name="city"/>
+                <field name="staff_count"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="d-flex align-items-center mb-2">
+                            <img t-att-src="kanban_image('dental.branch', 'logo', record.id.raw_value)" class="o_image_40_cover rounded me-2" alt="Branch Logo"/>
+                            <div class="flex-grow-1">
+                                <h5 class="mb-0"><field name="name"/></h5>
+                                <span class="badge text-bg-primary"><field name="code"/></span>
+                            </div>
+                        </div>
+                        <div class="text-muted small">
+                            <div t-if="record.city.raw_value"><i class="fa fa-map-marker me-1"/> <field name="city"/></div>
+                            <div t-if="record.phone.raw_value"><i class="fa fa-phone me-1"/> <field name="phone"/></div>
+                            <div t-if="record.manager_id.raw_value"><i class="fa fa-user me-1"/> Manager: <field name="manager_id"/></div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top">
+                            <span class="badge text-bg-secondary"><field name="staff_count"/> Staff</span>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Dental Branch Search View -->
+    <record id="view_dental_branch_search" model="ir.ui.view">
+        <field name="name">dental.branch.search</field>
+        <field name="model">dental.branch</field>
+        <field name="arch" type="xml">
+            <search string="Search Clinic Branches">
+                <field name="name" filter_domain="['|', ('name', 'ilike', self), ('code', 'ilike', self)]"/>
+                <field name="code"/>
+                <field name="manager_id"/>
+                <field name="city"/>
+                <separator/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <group>
+                    <filter string="Company" name="group_by_company" domain="[]" context="{'group_by': 'company_id'}" groups="base.group_multi_company"/>
+                    <filter string="City" name="group_by_city" domain="[]" context="{'group_by': 'city'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Dental Branch Action -->
+    <record id="action_dental_branch" model="ir.actions.act_window">
+        <field name="name">Clinic Branches</field>
+        <field name="res_model">dental.branch</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="search_view_id" ref="view_dental_branch_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Register your first Dental Clinic Branch!
+            </p>
+            <p>
+                Configure multi-branch locations, operational hours, contact details, and branch-specific branding.
+            </p>
+        </field>
+    </record>
+</odoo>

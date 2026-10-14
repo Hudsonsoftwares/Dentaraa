@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dental_case_form_inherit_pharmacy" model="ir.ui.view">
+        <field name="name">dental.case.form.inherit.pharmacy</field>
+        <field name="model">dental.case</field>
+        <field name="inherit_id" ref="dental_core.view_dental_case_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <!-- Smart Buttons can be placed inside sheet if div button_box exists or we add button_box -->
+            </xpath>
+            <xpath expr="//div[hasclass('oe_title')]" position="before">
+                <div class="oe_button_box" name="button_box">
+                    <button name="action_view_prescriptions" type="object" class="oe_stat_button" icon="fa-medkit">
+                        <field name="prescription_count" widget="statinfo" string="Prescriptions"/>
+                    </button>
+                </div>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                <button name="action_new_prescription" string="New Prescription" type="object" class="btn-secondary"
+                        invisible="state in ('completed', 'cancelled')"
+                        groups="dental_base.group_dental_dentist,dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Prescriptions (Rx)" name="prescriptions">
+                    <field name="prescription_ids">
+                        <list>
+                            <field name="name"/>
+                            <field name="prescription_date"/>
+                            <field name="dentist_id"/>
+                            <field name="diagnosis"/>
+                            <field name="total_prescribed_qty"/>
+                            <field name="total_dispensed_qty"/>
+                            <field name="total_remaining_qty"/>
+                            <field name="state" widget="badge"
+                                   decoration-info="state == 'confirmed'"
+                                   decoration-warning="state == 'partially_dispensed'"
+                                   decoration-success="state == 'fully_dispensed'"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

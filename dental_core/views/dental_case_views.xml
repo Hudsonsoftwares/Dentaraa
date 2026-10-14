@@ -4,8 +4,9 @@
         <field name="name">dental.case.form</field>
         <field name="model">dental.case</field>
         <field name="arch" type="xml">
-            <form>
+            <form class="o_dental_case_form_view">
                 <header>
+                    <button name="action_complete_consultation" string="Complete Consultation" type="object" class="oe_highlight" invisible="state in ('completed', 'cancelled')"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,open,under_treatment,completed"/>
                 </header>
                 <sheet>
@@ -28,16 +29,16 @@
                     <notebook>
                         <page string="Clinical Info">
                             <group>
-                                <field name="chief_complaint"/>
-                                <field name="clinical_notes"/>
+                                <field name="chief_complaint" readonly="state in ('completed', 'cancelled')"/>
+                                <field name="clinical_notes" readonly="state in ('completed', 'cancelled')"/>
                             </group>
                         </page>
                         <page string="Medical History">
                             <group>
-                                <field name="medical_history_summary"/>
-                                <field name="allergies"/>
-                                <field name="current_medications"/>
-                                <field name="dental_history_summary"/>
+                                <field name="medical_history_summary" readonly="state in ('completed', 'cancelled')"/>
+                                <field name="allergies" readonly="state in ('completed', 'cancelled')"/>
+                                <field name="current_medications" readonly="state in ('completed', 'cancelled')"/>
+                                <field name="dental_history_summary" readonly="state in ('completed', 'cancelled')"/>
                             </group>
                         </page>
                         <page string="Examinations">
@@ -48,6 +49,9 @@
                                     <field name="doctor_id"/>
                                 </list>
                             </field>
+                        </page>
+                        <page string="Odontogram" name="odontogram">
+                            <field name="odontogram_chart" widget="dental_odontogram_3d" nolabel="1"/>
                         </page>
                         <page string="Diagnoses">
                             <field name="diagnosis_ids">

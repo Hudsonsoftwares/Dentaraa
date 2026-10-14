@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_dispense_receipt_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-family: Arial, sans-serif; font-size: 13px; color: #222;">
+                        <!-- Header -->
+                        <div class="row pb-3 mb-3 border-bottom align-items-center">
+                            <div class="col-7">
+                                <h3 class="fw-bold text-success mb-1">
+                                    <span t-esc="doc.company_id.name"/> - Dental Pharmacy
+                                </h3>
+                                <div class="text-muted small">
+                                    Pharmacy Dispensing &amp; Batch Verification Receipt
+                                </div>
+                            </div>
+                            <div class="col-5 text-end">
+                                <h4 class="fw-bold mb-0 text-dark"><span t-esc="doc.name"/></h4>
+                                <div class="text-muted small">Dispensed On: <span t-esc="doc.dispense_date"/></div>
+                                <div class="text-muted small">Rx Ref: <span t-esc="doc.prescription_id.name"/></div>
+                            </div>
+                        </div>
+
+                        <!-- Details Grid -->
+                        <div class="row p-3 mb-4 rounded bg-light border">
+                            <div class="col-6">
+                                <div><strong>Patient Name:</strong> <span class="fw-bold" t-esc="doc.patient_id.name"/></div>
+                                <div><strong>Patient ID:</strong> <span t-esc="doc.patient_dental_id or 'N/A'"/></div>
+                                <div><strong>Prescribing Doctor:</strong> <span t-esc="doc.dentist_id.name or 'N/A'"/></div>
+                            </div>
+                            <div class="col-6 text-end">
+                                <div><strong>Dispensing Pharmacist:</strong> <span t-esc="doc.pharmacist_id.name"/></div>
+                                <div><strong>Stock Location:</strong> <span t-esc="doc.location_id.complete_name"/></div>
+                                <div t-if="doc.invoice_id">
+                                    <strong>Invoice Ref:</strong> <span class="badge text-bg-primary" t-esc="doc.invoice_id.name"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dispensed Lines Table -->
+                        <h5 class="fw-bold text-dark mb-2">Dispensed Pharmaceuticals</h5>
+                        <table class="table table-sm table-bordered mb-4">
+                            <thead class="table-light">
+                                <tr class="text-center">
+                                    <th style="width: 5%;">#</th>
+                                    <th style="width: 32%; text-align: left;">Medicine</th>
+                                    <th style="width: 18%;">Batch / Lot #</th>
+                                    <th style="width: 15%;">Expiry Date</th>
+                                    <th style="width: 10%;">Qty</th>
+                                    <th style="width: 10%; text-align: right;">Unit Price</th>
+                                    <th style="width: 10%; text-align: right;">Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="idx" t-value="1"/>
+                                <tr t-foreach="doc.line_ids" t-as="line">
+                                    <td class="text-center" t-esc="idx"/>
+                                    <td>
+                                        <div class="fw-bold" t-esc="line.medicine_id.name"/>
+                                        <div class="text-muted small" t-if="line.strength"><span t-esc="line.strength"/></div>
+                                    </td>
+                                    <td class="text-center fw-bold text-primary">
+                                        <span t-esc="line.lot_id.name or 'N/A'"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="line.lot_expiry_date or 'N/A'"/>
+                                    </td>
+                                    <td class="text-center fw-bold">
+                                        <span t-esc="line.qty_to_dispense"/>
+                                    </td>
+                                    <td class="text-end">
+                                        <span t-esc="line.unit_price" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                                    </td>
+                                    <td class="text-end fw-bold">
+                                        <span t-esc="line.subtotal" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                                    </td>
+                                    <t t-set="idx" t-value="idx + 1"/>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Totals Summary -->
+                        <div class="row mb-4">
+                            <div class="col-7">
+                                <div t-if="doc.notes" class="p-2 border rounded bg-white small">
+                                    <strong>Counseling &amp; Storage Notes:</strong>
+                                    <div t-esc="doc.notes"/>
+                                </div>
+                            </div>
+                            <div class="col-5">
+                                <div class="p-3 bg-light border rounded text-end">
+                                    <div class="fs-5 fw-bold text-success">
+                                        Total Amount: <span t-esc="doc.amount_total" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                                    </div>
+                                    <div class="small text-muted mt-1">
+                                        Status: <b><span t-esc="dict(doc._fields['state'].selection).get(doc.state, '')"/></b>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Verification Signatures -->
+                        <div class="row pt-5 mt-4">
+                            <div class="col-6">
+                                <div class="border-top pt-1 d-inline-block" style="min-width: 180px;">
+                                    <strong>Patient / Representative Signature</strong>
+                                </div>
+                            </div>
+                            <div class="col-6 text-end">
+                                <div class="border-top pt-1 d-inline-block" style="min-width: 180px;">
+                                    <strong>Pharmacist Verification &amp; Stamp</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

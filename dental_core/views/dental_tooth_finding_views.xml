@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dental_tooth_finding_tree" model="ir.ui.view">
+        <field name="name">dental.tooth.finding.list</field>
+        <field name="model">dental.tooth.finding</field>
+        <field name="arch" type="xml">
+            <list string="Tooth Findings">
+                <field name="finding_date"/>
+                <field name="name"/>
+                <field name="patient_id"/>
+                <field name="case_id"/>
+                <field name="tooth_number"/>
+                <field name="tooth_name"/>
+                <field name="condition"/>
+                <field name="surfaces"/>
+                <field name="severity"/>
+                <field name="doctor_id"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dental_tooth_finding_form" model="ir.ui.view">
+        <field name="name">dental.tooth.finding.form</field>
+        <field name="model">dental.tooth.finding</field>
+        <field name="arch" type="xml">
+            <form string="Tooth Finding">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Tooth Identification">
+                            <field name="tooth_number"/>
+                            <field name="tooth_name"/>
+                            <field name="universal_number"/>
+                            <field name="palmer_notation"/>
+                        </group>
+                        <group string="Clinical Context">
+                            <field name="patient_id"/>
+                            <field name="case_id"/>
+                            <field name="doctor_id"/>
+                            <field name="finding_date"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Diagnostic Finding">
+                            <field name="condition"/>
+                            <field name="surfaces"/>
+                            <field name="severity"/>
+                            <field name="state"/>
+                        </group>
+                        <group string="Proposed Treatment">
+                            <field name="treatment_indicated"/>
+                            <field name="treatment_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Clinical Notes">
+                            <field name="notes" placeholder="Enter detailed findings, periapical notes, sensitivity or observations..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_dental_tooth_finding_search" model="ir.ui.view">
+        <field name="name">dental.tooth.finding.search</field>
+        <field name="model">dental.tooth.finding</field>
+        <field name="arch" type="xml">
+            <search string="Search Tooth Findings">
+                <field name="name"/>
+                <field name="patient_id"/>
+                <field name="tooth_number"/>
+                <field name="condition"/>
+                <field name="doctor_id"/>
+                <field name="case_id"/>
+                <filter string="Caries" name="filter_caries" domain="[('condition', '=', 'caries')]"/>
+                <filter string="Restored" name="filter_restoration" domain="[('condition', '=', 'restoration')]"/>
+                <filter string="Active Findings" name="filter_active" domain="[('state', '=', 'active')]"/>
+                <filter string="Group By: Patient" name="group_patient" context="{'group_by': 'patient_id'}"/>
+                <filter string="Group By: Tooth Number" name="group_tooth" context="{'group_by': 'tooth_number'}"/>
+                <filter string="Group By: Condition" name="group_condition" context="{'group_by': 'condition'}"/>
+                <filter string="Group By: Doctor" name="group_doctor" context="{'group_by': 'doctor_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_dental_tooth_finding" model="ir.actions.act_window">
+        <field name="name">Tooth Findings</field>
+        <field name="res_model">dental.tooth.finding</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_dental_tooth_finding_search"/>
+    </record>
+</odoo>

@@ -6,8 +6,8 @@
             <!-- Top Header -->
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h2 class="text-dark-blue fw-bold mb-1">Good Morning, Dr. <t t-esc="this.userName"/> ☀️</h2>
-                    <p class="text-muted-blue fs-6 mb-0"><t t-esc="this.currentDateStr"/></p>
+                    <h2 class="text-dark-blue fw-bold mb-1">Good Morning, Dr. <t t-out="this.userName"/> ☀️</h2>
+                    <p class="text-muted-blue fs-6 mb-0"><t t-out="this.currentDateStr"/></p>
                 </div>
                 <div>
                     <!-- Branch/Clinic selector placeholder or similar actions could go here -->
@@ -24,9 +24,9 @@
                             </div>
                             <span class="text-success fw-bold" style="color: #0369a1 !important;">Today's Appointments</span>
                         </div>
-                        <h1 class="fw-bold text-dark-blue mb-1"><t t-esc="this.state.stats.today_appointments"/></h1>
+                        <h1 class="fw-bold text-dark-blue mb-1"><t t-out="this.state.stats.today_appointments"/></h1>
                         <div class="text-muted-blue" style="font-size: 0.85rem;">
-                            <span class="text-primary"><t t-esc="this.state.stats.completed_appointments"/> Completed</span> • <t t-esc="this.state.stats.pending_appointments"/> Pending
+                            <span class="text-primary"><t t-out="this.state.stats.completed_appointments"/> Completed</span> • <t t-out="this.state.stats.pending_appointments"/> Pending
                         </div>
                     </div>
                 </div>
@@ -38,9 +38,9 @@
                             </div>
                             <span class="text-success fw-bold">Waiting Patients</span>
                         </div>
-                        <h1 class="fw-bold text-dark-blue mb-1"><t t-esc="this.state.stats.waiting_patients"/></h1>
+                        <h1 class="fw-bold text-dark-blue mb-1"><t t-out="this.state.stats.waiting_patients"/></h1>
                         <div class="text-muted-blue" style="font-size: 0.85rem;">
-                            Avg. Waiting Time <t t-esc="this.state.stats.avg_waiting_time"/> mins
+                            Avg. Waiting Time <t t-out="this.state.stats.avg_waiting_time"/> mins
                         </div>
                     </div>
                 </div>
@@ -52,9 +52,9 @@
                             </div>
                             <span class="fw-bold" style="color: #6b21a8 !important;">Active Dental Cases</span>
                         </div>
-                        <h1 class="fw-bold text-dark-blue mb-1"><t t-esc="this.state.stats.active_cases"/></h1>
+                        <h1 class="fw-bold text-dark-blue mb-1"><t t-out="this.state.stats.active_cases"/></h1>
                         <div class="text-muted-blue" style="font-size: 0.85rem;">
-                            <t t-esc="this.state.stats.under_treatment_cases"/> Under Treatment
+                            <t t-out="this.state.stats.under_treatment_cases"/> Under Treatment
                         </div>
                     </div>
                 </div>
@@ -66,9 +66,9 @@
                             </div>
                             <span class="fw-bold" style="color: #9a3412 !important;">Today's Procedures</span>
                         </div>
-                        <h1 class="fw-bold text-dark-blue mb-1"><t t-esc="this.state.stats.today_sessions"/></h1>
+                        <h1 class="fw-bold text-dark-blue mb-1"><t t-out="this.state.stats.today_sessions"/></h1>
                         <div class="text-muted-blue" style="font-size: 0.85rem;">
-                            <span class="text-warning" style="color: #ea580c !important;"><t t-esc="this.state.stats.completed_sessions"/> Completed</span> • <t t-esc="this.state.stats.pending_sessions"/> Pending
+                            <span class="text-warning" style="color: #ea580c !important;"><t t-out="this.state.stats.completed_sessions"/> Completed</span> • <t t-out="this.state.stats.pending_sessions"/> Pending
                         </div>
                     </div>
                 </div>
@@ -84,7 +84,7 @@
                         <div class="card-header bg-white border-0 pt-4 pb-2 d-flex justify-content-between align-items-center">
                             <h5 class="fw-bold text-dark-blue mb-0">
                                 <div class="d-inline-flex align-items-center justify-content-center bg-primary-soft rounded text-primary me-2" style="width:28px; height:28px; font-size:14px;"><i class="fa fa-stethoscope"/></div>
-                                Today's Appointments (<t t-esc="this.state.stats.today_appointments"/>)
+                                Today's Appointments (<t t-out="this.state.stats.today_appointments"/>)
                             </h5>
                             <a href="#" class="text-primary text-decoration-none fw-bold" style="font-size:0.9rem;" t-on-click.prevent="() =&gt; this.openAction('dental_core.action_dentist_workspace_todays_appointments')">View Calendar <i class="fa fa-chevron-right ms-1" style="font-size:0.75rem;"/></a>
                         </div>
@@ -105,18 +105,18 @@
                                             <td colspan="5" class="text-center text-muted py-4">No appointments for today.</td>
                                         </tr>
                                         <tr t-foreach="this.state.today_appointments_list" t-as="appt" t-key="appt.id" class="border-bottom">
-                                            <td class="ps-4 text-muted-blue fw-semibold" style="font-size: 0.95rem;"><t t-esc="this.formatTime(appt.date_start)"/></td>
+                                            <td class="ps-4 text-muted-blue fw-semibold" style="font-size: 0.95rem;"><t t-out="this.formatTime(appt.date_start)"/></td>
                                             <td>
                                                 <div class="d-flex align-items-center">
                                                     <img class="rounded-circle me-3" t-attf-src="/web/image?model=res.partner&amp;field=avatar_128&amp;id={{appt.patient_id[0]}}" style="width: 40px; height: 40px; object-fit: cover; border: 1px solid #e2e8f0;"/>
                                                     <div>
-                                                        <div class="fw-bold text-dark-blue"><t t-esc="appt.patient_id[1]"/></div>
-                                                        <div class="text-muted-blue" style="font-size: 0.8rem;">ID: <t t-esc="appt.patient_id[0]"/></div>
+                                                        <div class="fw-bold text-dark-blue"><t t-out="appt.patient_id[1]"/></div>
+                                                        <div class="text-muted-blue" style="font-size: 0.8rem;">ID: <t t-out="appt.patient_id[0]"/></div>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td class="text-muted-blue" style="font-size: 0.95rem;">
-                                                <t t-esc="appt.treatment_id ? appt.treatment_id[1] : 'Consultation'"/>
+                                                <t t-out="appt.treatment_id ? appt.treatment_id[1] : 'Consultation'"/>
                                             </td>
                                             <td>
                                                 <span t-if="appt.state == 'pending'" class="badge rounded-pill bg-light text-muted-blue border px-3 py-2">Scheduled</span>
@@ -167,9 +167,9 @@
                                                     <td colspan="4" class="text-center text-muted py-3">No recent cases.</td>
                                                 </tr>
                                                 <tr t-foreach="this.state.recent_cases" t-as="c" t-key="c.id" class="border-bottom">
-                                                    <td class="ps-4 fw-semibold text-primary cursor-pointer" t-on-click="() =&gt; this.openRecord('dental.case', c.id)"><t t-esc="c.name"/></td>
-                                                    <td class="text-dark-blue"><t t-esc="c.patient_id[1]"/></td>
-                                                    <td class="text-muted-blue"><t t-esc="c.chief_complaint ? c.chief_complaint.substring(0,20) : 'None'"/></td>
+                                                    <td class="ps-4 fw-semibold text-primary cursor-pointer" t-on-click="() =&gt; this.openRecord('dental.case', c.id)"><t t-out="c.name"/></td>
+                                                    <td class="text-dark-blue"><t t-out="c.patient_id[1]"/></td>
+                                                    <td class="text-muted-blue"><t t-out="c.chief_complaint ? c.chief_complaint.substring(0,20) : 'None'"/></td>
                                                     <td class="pe-4">
                                                         <span t-if="c.state == 'open'" class="badge rounded-pill bg-info-soft px-2 py-1" style="font-size: 0.7rem;">Open</span>
                                                         <span t-if="c.state == 'under_treatment'" class="badge rounded-pill bg-warning-soft px-2 py-1" style="font-size: 0.7rem;">Under Treatment</span>
@@ -208,9 +208,9 @@
                                                     <td colspan="4" class="text-center text-muted py-3">No sessions today.</td>
                                                 </tr>
                                                 <tr t-foreach="this.state.today_sessions_list" t-as="sess" t-key="sess.id" class="border-bottom cursor-pointer" t-on-click="() =&gt; this.openRecord('dental.treatment.session', sess.id)">
-                                                    <td class="ps-4 text-muted-blue fw-semibold"><t t-esc="this.formatTime(sess.session_date)"/></td>
-                                                    <td class="text-dark-blue"><t t-esc="sess.patient_id[1]"/></td>
-                                                    <td class="text-muted-blue"><t t-esc="sess.plan_line_id ? sess.plan_line_id[1] : ''"/></td>
+                                                    <td class="ps-4 text-muted-blue fw-semibold"><t t-out="this.formatTime(sess.session_date)"/></td>
+                                                    <td class="text-dark-blue"><t t-out="sess.patient_id[1]"/></td>
+                                                    <td class="text-muted-blue"><t t-out="sess.plan_line_id ? sess.plan_line_id[1] : ''"/></td>
                                                     <td class="pe-4">
                                                         <span t-if="sess.state == 'planned'" class="badge rounded-pill bg-light border text-muted-blue px-2 py-1" style="font-size: 0.7rem;">Planned</span>
                                                         <span t-if="sess.state == 'in_progress'" class="badge rounded-pill bg-info-soft px-2 py-1" style="font-size: 0.7rem;">In Progress</span>
@@ -244,14 +244,14 @@
                             </div>
                             <div t-foreach="this.state.waiting_queue" t-as="wait" t-key="wait.id" class="d-flex align-items-center mb-4 cursor-pointer" t-on-click="() =&gt; this.openRecord('dental.appointment', wait.id)">
                                 <div class="bg-primary-soft text-primary rounded-circle d-flex justify-content-center align-items-center fw-bold me-3" style="width: 44px; height: 44px; font-size: 1.1rem;">
-                                    <t t-esc="wait_index + 1"/>
+                                    <t t-out="wait_index + 1"/>
                                 </div>
                                 <div class="flex-grow-1">
-                                    <div class="fw-bold text-dark-blue mb-1" style="font-size: 0.95rem;"><t t-esc="wait.patient_id[1]"/></div>
-                                    <div class="text-muted-blue" style="font-size: 0.8rem;"><t t-esc="this.formatTime(wait.date_start)"/> • <t t-esc="wait.treatment_id ? wait.treatment_id[1] : 'Consultation'"/></div>
+                                    <div class="fw-bold text-dark-blue mb-1" style="font-size: 0.95rem;"><t t-out="wait.patient_id[1]"/></div>
+                                    <div class="text-muted-blue" style="font-size: 0.8rem;"><t t-out="this.formatTime(wait.date_start)"/> • <t t-out="wait.treatment_id ? wait.treatment_id[1] : 'Consultation'"/></div>
                                 </div>
                                 <div class="text-danger fw-bold text-end" style="font-size: 0.85rem; color: #ea580c !important;">
-                                    <t t-esc="wait.formatted_waiting_time"/> mins
+                                    <t t-out="wait.formatted_waiting_time"/> mins
                                 </div>
                             </div>
                         </div>
@@ -272,12 +272,12 @@
                             </div>
                             <div t-foreach="this.state.calendar_events" t-as="evt" t-key="evt.id" class="d-flex mb-3 timeline-item">
                                 <div class="text-muted-blue fw-semibold text-end pe-3" style="font-size: 0.8rem; width: 70px; flex-shrink: 0;">
-                                    <t t-esc="this.formatTime(evt.date_start)"/>
+                                    <t t-out="this.formatTime(evt.date_start)"/>
                                 </div>
                                 <div class="timeline-bullet"/>
                                 <div class="flex-grow-1 ms-2 p-2 rounded-3" t-att-class="evt.state == 'completed' ? 'bg-success-soft' : (evt.state == 'in_consultation' ? 'bg-info-soft' : (evt.state == 'checked_in' ? 'bg-warning-soft' : 'bg-primary-soft'))">
-                                    <div class="fw-bold" style="font-size: 0.85rem; color: #1e293b;"><t t-esc="evt.patient_id[1]"/></div>
-                                    <div style="font-size: 0.75rem; opacity: 0.8;"><t t-esc="evt.treatment_id ? evt.treatment_id[1] : 'Consultation'"/></div>
+                                    <div class="fw-bold" style="font-size: 0.85rem; color: #1e293b;"><t t-out="evt.patient_id[1]"/></div>
+                                    <div style="font-size: 0.75rem; opacity: 0.8;"><t t-out="evt.treatment_id ? evt.treatment_id[1] : 'Consultation'"/></div>
                                 </div>
                             </div>
                         </div>

@@ -1,3 +1,4 @@
+# pyrefly: ignore [missing-import]
 from odoo import models, fields
 
 class DentalDiagnosisMaster(models.Model):
@@ -19,6 +20,7 @@ class DentalPatientDiagnosis(models.Model):
     examination_id = fields.Many2one('dental.clinical.examination', string='Examination', tracking=True)
     doctor_id = fields.Many2one('hr.employee.public', string='Doctor', tracking=True)
     diagnosis_id = fields.Many2one('dental.diagnosis', string='Diagnosis', required=True, tracking=True)
+    tooth_reference = fields.Char(string='Tooth Reference', tracking=True)
     notes = fields.Text(string='Notes')
     date = fields.Date(string='Date', default=fields.Date.context_today, required=True)
     status = fields.Selection([

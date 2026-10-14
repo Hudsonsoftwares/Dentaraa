@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- 1. Augmentin 625mg (Amoxicillin + Clavulanic Acid) -->
+        <record id="product_med_augmentin_625" model="product.product">
+            <field name="name">Augmentin 625 Duo</field>
+            <field name="is_medicine">True</field>
+            <field name="generic_name">Amoxicillin (500mg) + Clavulanic Acid (125mg)</field>
+            <field name="medicine_category_id" ref="dental_pharmacy.cat_antibiotics"/>
+            <field name="dosage_form">tablet</field>
+            <field name="strength">625 mg</field>
+            <field name="manufacturer_name">GlaxoSmithKline Pharmaceuticals</field>
+            <field name="dosage_unit">Tablets</field>
+            <field name="prescription_required">True</field>
+            <field name="list_price">22.50</field>
+            <field name="standard_price">15.00</field>
+            <field name="reorder_level">20.0</field>
+            <field name="barcode">8901030010011</field>
+            <field name="tracking">lot</field>
+        </record>
+
+        <!-- 2. Metrogyl 400mg (Metronidazole) -->
+        <record id="product_med_metrogyl_400" model="product.product">
+            <field name="name">Metrogyl 400</field>
+            <field name="is_medicine">True</field>
+            <field name="generic_name">Metronidazole</field>
+            <field name="medicine_category_id" ref="dental_pharmacy.cat_antibiotics"/>
+            <field name="dosage_form">tablet</field>
+            <field name="strength">400 mg</field>
+            <field name="manufacturer_name">J.B. Chemicals &amp; Pharmaceuticals</field>
+            <field name="dosage_unit">Tablets</field>
+            <field name="prescription_required">True</field>
+            <field name="list_price">6.80</field>
+            <field name="standard_price">4.20</field>
+            <field name="reorder_level">15.0</field>
+            <field name="barcode">8901030010028</field>
+            <field name="tracking">lot</field>
+        </record>
+
+        <!-- 3. Combiflam (Ibuprofen + Paracetamol) -->
+        <record id="product_med_combiflam" model="product.product">
+            <field name="name">Combiflam Tablet</field>
+            <field name="is_medicine">True</field>
+            <field name="generic_name">Ibuprofen (400mg) + Paracetamol (325mg)</field>
+            <field name="medicine_category_id" ref="dental_pharmacy.cat_analgesics"/>
+            <field name="dosage_form">tablet</field>
+            <field name="strength">400mg / 325mg</field>
+            <field name="manufacturer_name">Sanofi India Limited</field>
+            <field name="dosage_unit">Tablets</field>
+            <field name="prescription_required">True</field>
+            <field name="list_price">5.50</field>
+            <field name="standard_price">3.20</field>
+            <field name="reorder_level">30.0</field>
+            <field name="barcode">8901030010035</field>
+            <field name="tracking">lot</field>
+        </record>
+
+        <!-- 4. Ketorol-DT 10mg (Ketorolac Tromethamine) -->
+        <record id="product_med_ketorol_dt" model="product.product">
+            <field name="name">Ketorol DT</field>
+            <field name="is_medicine">True</field>
+            <field name="generic_name">Ketorolac Tromethamine (Dispersible)</field>
+            <field name="medicine_category_id" ref="dental_pharmacy.cat_analgesics"/>
+            <field name="dosage_form">tablet</field>
+            <field name="strength">10 mg</field>
+            <field name="manufacturer_name">Dr. Reddy's Laboratories</field>
+            <field name="dosage_unit">Tablets</field>
+            <field name="prescription_required">True</field>
+            <field name="list_price">14.00</field>
+            <field name="standard_price">8.50</field>
+            <field name="reorder_level">15.0</field>
+            <field name="barcode">8901030010042</field>
+            <field name="tracking">lot</field>
+        </record>
+
+        <!-- 5. Clohex ADS Mouthwash (Chlorhexidine Gluconate 0.2%) -->
+        <record id="product_med_chlohex_mouthwash" model="product.product">
+            <field name="name">Clohex ADS Oral Rinse (150ml)</field>
+            <field name="is_medicine">True</field>
+            <field name="generic_name">Chlorhexidine Gluconate (0.2% w/v)</field>
+            <field name="medicine_category_id" ref="dental_pharmacy.cat_antiseptics"/>
+            <field name="dosage_form">mouthwash</field>
+            <field name="strength">0.2% w/v (150 ml bottle)</field>
+            <field name="manufacturer_name">ICPA Health Products</field>
+            <field name="dosage_unit">Bottles</field>
+            <field name="prescription_required">False</field>
+            <field name="list_price">120.00</field>
+            <field name="standard_price">78.00</field>
+            <field name="reorder_level">10.0</field>
+            <field name="barcode">8901030010059</field>
+            <field name="tracking">lot</field>
+        </record>
+
+        <!-- 6. Lignox 2% Cartridges (Lignocaine + Adrenaline) -->
+        <record id="product_med_lignox_2" model="product.product">
+            <field name="name">Lignox 2% Dental Cartridges (1.8ml)</field>
+            <field name="is_medicine">True</field>
+            <field name="generic_name">Lignocaine Hydrochloride 2% + Adrenaline 1:80,000</field>
+            <field name="medicine_category_id" ref="dental_pharmacy.cat_anesthetics"/>
+            <field name="dosage_form">injection</field>
+            <field name="strength">2% with 1:80,000</field>
+            <field name="manufacturer_name">Indoco Remedies Ltd</field>
+            <field name="dosage_unit">Cartridges</field>
+            <field name="prescription_required">True</field>
+            <field name="list_price">35.00</field>
+            <field name="standard_price">22.00</field>
+            <field name="reorder_level">50.0</field>
+            <field name="barcode">8901030010066</field>
+            <field name="tracking">lot</field>
+        </record>
+
+        <!-- 7. Kenacort 0.1% Oral Paste (Triamcinolone Acetonide) -->
+        <record id="product_med_kenacort_paste" model="product.product">
+            <field name="name">Kenacort 0.1% Oral Paste (5g)</field>
+            <field name="is_medicine">True</field>
+            <field name="generic_name">Triamcinolone Acetonide</field>
+            <field name="medicine_category_id" ref="dental_pharmacy.cat_corticosteroids"/>
+            <field name="dosage_form">paste</field>
+            <field name="strength">0.1% w/w (5g tube)</field>
+            <field name="manufacturer_name">Abbott Healthcare</field>
+            <field name="dosage_unit">Tubes</field>
+            <field name="prescription_required">True</field>
+            <field name="list_price">95.00</field>
+            <field name="standard_price">62.00</field>
+            <field name="reorder_level">8.0</field>
+            <field name="barcode">8901030010073</field>
+            <field name="tracking">lot</field>
+        </record>
+
+        <!-- 8. Pause 500 (Tranexamic Acid) -->
+        <record id="product_med_pause_500" model="product.product">
+            <field name="name">Pause 500 Tablet</field>
+            <field name="is_medicine">True</field>
+            <field name="generic_name">Tranexamic Acid</field>
+            <field name="medicine_category_id" ref="dental_pharmacy.cat_hemostatics"/>
+            <field name="dosage_form">tablet</field>
+            <field name="strength">500 mg</field>
+            <field name="manufacturer_name">Emcure Pharmaceuticals</field>
+            <field name="dosage_unit">Tablets</field>
+            <field name="prescription_required">True</field>
+            <field name="list_price">42.00</field>
+            <field name="standard_price">28.00</field>
+            <field name="reorder_level">10.0</field>
+            <field name="barcode">8901030010080</field>
+            <field name="tracking">lot</field>
+        </record>
+    </data>
+</odoo>

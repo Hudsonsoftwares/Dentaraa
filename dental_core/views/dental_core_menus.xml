@@ -1,12 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Clinical Main Menu -->
-    <menuitem
-        id="menu_dental_clinical"
-        name="Clinical"
-        parent="dental_base.menu_dental_root"
-        sequence="30"
-        groups="dental_base.group_dental_dentist,dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+    <record id="menu_dental_clinical" model="ir.ui.menu">
+        <field name="name">Clinical</field>
+        <field name="parent_id" ref="dental_base.menu_dental_root"/>
+        <field name="sequence" eval="50"/>
+        <field name="group_ids" eval="[(6, 0, [ref('dental_base.group_dental_dentist'), ref('dental_base.group_dental_manager'), ref('dental_base.group_dental_admin')])]"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <!-- Action for Clinical X-rays & Diagnostic Imaging -->
+    <record id="action_dental_clinical_images" model="ir.actions.act_window">
+        <field name="name">X-ray / Images</field>
+        <field name="res_model">ir.attachment</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('res_model', 'in', ('dental.case', 'dental.clinical.examination', 'dental.treatment.plan', 'res.partner'))]</field>
+        <field name="context">{'default_res_model': 'dental.case'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Upload dental X-rays, intraoral scans, and clinical photographs.
+            </p>
+        </field>
+    </record>
 
     <!-- Clinical Sub-Menus -->
     <menuitem
@@ -23,6 +38,14 @@
         parent="menu_dental_clinical"
         action="action_dental_clinical_examination"
         sequence="20"
+        groups="dental_base.group_dental_dentist,dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+
+    <menuitem
+        id="menu_dental_tooth_finding"
+        name="Tooth Findings"
+        parent="menu_dental_clinical"
+        action="action_dental_tooth_finding"
+        sequence="25"
         groups="dental_base.group_dental_dentist,dental_base.group_dental_manager,dental_base.group_dental_admin"/>
 
     <menuitem
@@ -49,12 +72,20 @@
         sequence="50"
         groups="dental_base.group_dental_dentist,dental_base.group_dental_manager,dental_base.group_dental_admin"/>
 
+    <menuitem
+        id="menu_dental_clinical_images"
+        name="X-ray / Images"
+        parent="menu_dental_clinical"
+        action="action_dental_clinical_images"
+        sequence="60"
+        groups="dental_base.group_dental_dentist,dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+
     <!-- Configuration Menu Items -->
     <menuitem
         id="menu_dental_diagnosis_config"
         name="Diagnosis Master"
         parent="dental_base.menu_dental_configuration"
         action="action_dental_diagnosis"
-        sequence="40"
-        groups="dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+        sequence="60"
+        groups="dental_base.group_dental_admin"/>
 </odoo>

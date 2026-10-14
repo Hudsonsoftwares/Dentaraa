@@ -8,7 +8,7 @@
         groups="dental_base.group_dental_assistant,dental_base.group_dental_receptionist,dental_base.group_dental_dentist,dental_base.group_dental_lab_technician,dental_base.group_dental_pharmacist,dental_base.group_dental_manager,dental_base.group_dental_admin"
         sequence="65"/>
 
-    <!-- Configuration Menu (Parent for Settings, Branches, Staff) -->
+    <!-- Configuration Menu (Parent for Clinic Settings, Branches, Staff, Users, System) -->
     <menuitem
         id="menu_dental_configuration"
         name="Configuration"
@@ -16,25 +16,25 @@
         groups="dental_base.group_dental_manager,dental_base.group_dental_admin"
         sequence="100"/>
 
-    <!-- Settings Action Menu -->
+    <!-- 1. Clinic Settings -->
     <menuitem
         id="menu_dental_settings"
-        name="Settings"
+        name="Clinic Settings"
         parent="dental_base.menu_dental_configuration"
         action="action_dental_config_settings"
         groups="dental_base.group_dental_admin"
         sequence="10"/>
 
-    <!-- Clinic Branches Menu -->
+    <!-- 2. Clinic Branches -->
     <menuitem
         id="menu_dental_branches"
-        name="Clinic Branches (Companies)"
+        name="Clinic Branches"
         parent="dental_base.menu_dental_configuration"
         action="base.action_res_company_form"
         groups="dental_base.group_dental_manager,dental_base.group_dental_admin"
         sequence="20"/>
 
-    <!-- Staff & Doctors Menu -->
+    <!-- 3. Staff & Doctors -->
     <menuitem
         id="menu_dental_staff"
         name="Staff &amp; Doctors"
@@ -42,4 +42,22 @@
         action="action_dental_staff"
         groups="dental_base.group_dental_manager,dental_base.group_dental_admin"
         sequence="30"/>
+
+    <!-- 4. User & Role Management -->
+    <menuitem
+        id="menu_dental_users"
+        name="User &amp; Role Management"
+        parent="dental_base.menu_dental_configuration"
+        action="base.action_res_users"
+        groups="dental_base.group_dental_admin"
+        sequence="90"/>
+
+    <!-- 5. Email & Notifications -->
+    <menuitem
+        id="menu_dental_email_notifications"
+        name="Email &amp; Notifications"
+        parent="dental_base.menu_dental_configuration"
+        action="mail.action_view_mail_mail"
+        groups="dental_base.group_dental_admin"
+        sequence="100"/>
 </odoo>

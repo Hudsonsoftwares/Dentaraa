@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Dental Medicine Batches List View -->
+    <record id="view_dental_stock_lot_list" model="ir.ui.view">
+        <field name="name">stock.lot.medicine.list</field>
+        <field name="model">stock.lot</field>
+        <field name="priority">25</field>
+        <field name="arch" type="xml">
+            <list string="Medicine Batches &amp; Expiry">
+                <field name="name" string="Batch / Lot Number"/>
+                <field name="product_id" string="Medicine"/>
+                <field name="manufacturing_date"/>
+                <field name="expiry_date"/>
+                <field name="days_to_expiry" string="Days Left"/>
+                <field name="expiry_status" widget="badge"
+                       decoration-success="expiry_status == 'valid'"
+                       decoration-warning="expiry_status == 'near_expiry'"
+                       decoration-danger="expiry_status == 'expired'"/>
+                <field name="available_qty" string="Physical Stock"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Dental Medicine Batches Form View -->
+    <record id="view_dental_stock_lot_form" model="ir.ui.view">
+        <field name="name">stock.lot.medicine.form</field>
+        <field name="model">stock.lot</field>
+        <field name="priority">25</field>
+        <field name="arch" type="xml">
+            <form string="Medicine Batch">
+                <sheet>
+                    <widget name="web_ribbon" title="EXPIRED" bg_color="text-bg-danger" invisible="expiry_status != 'expired'"/>
+                    <widget name="web_ribbon" title="NEAR EXPIRY" bg_color="text-bg-warning" invisible="expiry_status != 'near_expiry'"/>
+                    <div class="oe_title">
+                        <label for="name" string="Batch / Lot Number"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. BATCH-2026-AUG01"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Medicine Association">
+                            <field name="product_id" domain="[('is_medicine', '=', True)]" string="Pharmaceutical Product"/>
+                            <field name="is_medicine" invisible="1"/>
+                            <field name="available_qty" string="Available Stock"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group string="Expiry &amp; Quality Dates">
+                            <field name="manufacturing_date"/>
+                            <field name="expiry_date" required="is_medicine"/>
+                            <field name="alert_date"/>
+                            <field name="days_to_expiry"/>
+                            <field name="expiry_status" widget="badge"
+                                   decoration-success="expiry_status == 'valid'"
+                                   decoration-warning="expiry_status == 'near_expiry'"
+                                   decoration-danger="expiry_status == 'expired'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Batch Notes &amp; Manufacturer Certificate">
+                            <field name="note" placeholder="Add quality control certificate number, manufacturer batch notes..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Dental Medicine Batches Search View -->
+    <record id="view_dental_stock_lot_search" model="ir.ui.view">
+        <field name="name">stock.lot.medicine.search</field>
+        <field name="model">stock.lot</field>
+        <field name="priority">25</field>
+        <field name="arch" type="xml">
+            <search string="Search Medicine Batches">
+                <field name="name" string="Batch" filter_domain="['|', ('name', 'ilike', self), ('ref', 'ilike', self)]"/>
+                <field name="product_id" string="Medicine"/>
+                <separator/>
+                <filter string="Expired Batches" name="filter_expired" domain="[('expiry_status', '=', 'expired')]"/>
+                <filter string="Near Expiry (≤ 60 Days)" name="filter_near_expiry" domain="[('expiry_status', '=', 'near_expiry')]"/>
+                <filter string="Valid &amp; Safe Batches" name="filter_valid" domain="[('expiry_status', '=', 'valid')]"/>
+                <separator/>
+                <filter string="Group By: Medicine" name="group_by_product" context="{'group_by': 'product_id'}"/>
+                <filter string="Group By: Expiry Status" name="group_by_status" context="{'group_by': 'expiry_status'}"/>
+                <filter string="Group By: Expiry Date" name="group_by_expiry" context="{'group_by': 'expiry_date:month'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action: All Medicine Batches -->
+    <record id="action_dental_stock_lot" model="ir.actions.act_window">
+        <field name="name">Batches &amp; Expiry Tracking</field>
+        <field name="res_model">stock.lot</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('is_medicine', '=', True)]</field>
+        <field name="context">{'default_is_medicine': True}</field>
+        <field name="search_view_id" ref="view_dental_stock_lot_search"/>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('view_dental_stock_lot_list')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('view_dental_stock_lot_form')})]"/>
+    </record>
+
+    <!-- Filtered Action: Critical Expiry Alerts -->
+    <record id="action_dental_expiry_alerts" model="ir.actions.act_window">
+        <field name="name">Batch Expiry Alerts</field>
+        <field name="res_model">stock.lot</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('is_medicine', '=', True), ('expiry_status', 'in', ('expired', 'near_expiry'))]</field>
+        <field name="context">{'default_is_medicine': True, 'search_default_filter_near_expiry': 1}</field>
+        <field name="search_view_id" ref="view_dental_stock_lot_search"/>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('view_dental_stock_lot_list')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('view_dental_stock_lot_form')})]"/>
+    </record>
+</odoo>

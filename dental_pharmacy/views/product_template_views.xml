@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Medicine Catalog List View -->
+    <record id="view_dental_medicine_list" model="ir.ui.view">
+        <field name="name">product.template.medicine.list</field>
+        <field name="model">product.template</field>
+        <field name="priority">25</field>
+        <field name="arch" type="xml">
+            <list string="Dental Medicines Catalog">
+                <field name="name" string="Medicine Name"/>
+                <field name="generic_name"/>
+                <field name="medicine_category_id"/>
+                <field name="dosage_form"/>
+                <field name="strength"/>
+                <field name="dosage_unit"/>
+                <field name="list_price" string="Selling Price"/>
+                <field name="qty_available" string="On Hand Qty"/>
+                <field name="reorder_level" string="Min Stock"/>
+                <field name="stock_status" widget="badge" 
+                       decoration-success="stock_status == 'in_stock'"
+                       decoration-warning="stock_status == 'low_stock'"
+                       decoration-danger="stock_status == 'out_of_stock'"/>
+                <field name="prescription_required" widget="boolean_toggle"/>
+                <field name="barcode" optional="hide"/>
+                <field name="active" widget="boolean_toggle" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Medicine Catalog Form View -->
+    <record id="view_dental_medicine_form" model="ir.ui.view">
+        <field name="name">product.template.medicine.form</field>
+        <field name="model">product.template</field>
+        <field name="priority">25</field>
+        <field name="arch" type="xml">
+            <form string="Dental Medicine">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_batches" type="object" class="oe_stat_button" icon="fa-barcode">
+                            <field name="lot_count" widget="statinfo" string="Batches"/>
+                        </button>
+                        <button name="action_open_quants" type="object" class="oe_stat_button" icon="fa-cubes">
+                            <field name="qty_available" widget="statinfo" string="On Hand Qty"/>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Out of Stock" bg_color="text-bg-danger" invisible="stock_status != 'out_of_stock'"/>
+                    <widget name="web_ribbon" title="Low Stock" bg_color="text-bg-warning" invisible="stock_status != 'low_stock'"/>
+                    <div class="oe_title">
+                        <label for="name" string="Medicine Brand / Product Name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Augmentin 625 Duo"/>
+                        </h1>
+                        <div class="o_row">
+                            <field name="generic_name" placeholder="Active Pharmaceutical Ingredient, e.g. Amoxicillin + Clavulanate" class="w-100"/>
+                        </div>
+                    </div>
+                    <group>
+                        <group string="Pharmaceutical Specifications">
+                            <field name="is_medicine" invisible="1"/>
+                            <field name="medicine_category_id" required="is_medicine"/>
+                            <field name="dosage_form" required="is_medicine"/>
+                            <field name="strength" placeholder="e.g. 500 mg, 0.2% w/v"/>
+                            <field name="dosage_unit" placeholder="e.g. Tablets, Capsules, ml, Vials"/>
+                            <field name="prescription_required" widget="boolean_toggle"/>
+                        </group>
+                        <group string="Procurement &amp; Commercial">
+                            <field name="manufacturer_name" placeholder="e.g. GlaxoSmithKline"/>
+                            <field name="manufacturer_id" string="Supplier Vendor"/>
+                            <field name="barcode"/>
+                            <field name="list_price" string="Patient Selling Price"/>
+                            <field name="taxes_id" widget="many2many_tags" string="Customer Taxes"/>
+                            <!-- Sensitive Purchase Cost restricted to Clinic Managers and Dental Administrators -->
+                            <field name="standard_price" string="Purchase Cost"
+                                   groups="dental_base.group_dental_manager,dental_base.group_dental_admin"
+                                   help="Commercial purchase cost. Confidential to pharmacy managers and administrators."/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Inventory &amp; Reorder Management">
+                            <group>
+                                <group string="Stock Monitoring">
+                                    <field name="reorder_level"/>
+                                    <field name="stock_status" widget="badge" 
+                                           decoration-success="stock_status == 'in_stock'"
+                                           decoration-warning="stock_status == 'low_stock'"
+                                           decoration-danger="stock_status == 'out_of_stock'"/>
+                                    <field name="tracking" readonly="1" help="Lots/batches are strictly required for medicines"/>
+                                </group>
+                                <group string="Operational Configuration">
+                                    <field name="uom_id" string="Unit of Measure"/>
+                                    <field name="active" widget="boolean_toggle"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Clinical Guidance &amp; Warnings">
+                            <field name="description" placeholder="Clinical administration notes, patient warnings, adverse interactions..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Medicine Catalog Kanban View -->
+    <record id="view_dental_medicine_kanban" model="ir.ui.view">
+        <field name="name">product.template.medicine.kanban</field>
+        <field name="model">product.template</field>
+        <field name="priority">25</field>
+        <field name="arch" type="xml">
+            <kanban string="Dental Medicines" sample="1">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="generic_name"/>
+                <field name="dosage_form"/>
+                <field name="strength"/>
+                <field name="list_price"/>
+                <field name="qty_available"/>
+                <field name="reorder_level"/>
+                <field name="stock_status"/>
+                <field name="prescription_required"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <h5 class="mb-1 text-primary fw-bold"><field name="name"/></h5>
+                                <div class="text-muted small"><field name="generic_name"/></div>
+                            </div>
+                            <span t-if="record.stock_status.raw_value == 'in_stock'" class="badge text-bg-success">In Stock</span>
+                            <span t-elif="record.stock_status.raw_value == 'low_stock'" class="badge text-bg-warning">Low Stock</span>
+                            <span t-elif="record.stock_status.raw_value == 'out_of_stock'" class="badge text-bg-danger">Out of Stock</span>
+                        </div>
+                        <div class="d-flex gap-2 mb-2 flex-wrap">
+                            <span class="badge text-bg-secondary"><field name="dosage_form"/></span>
+                            <span t-if="record.strength.value" class="badge text-bg-info"><field name="strength"/></span>
+                            <span t-if="record.prescription_required.raw_value" class="badge text-bg-dark">Rx Required</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top">
+                            <span class="fw-bold fs-6"><field name="list_price" widget="monetary"/></span>
+                            <span class="text-muted small">Qty: <b><field name="qty_available"/></b></span>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Medicine Catalog Search View -->
+    <record id="view_dental_medicine_search" model="ir.ui.view">
+        <field name="name">product.template.medicine.search</field>
+        <field name="model">product.template</field>
+        <field name="priority">25</field>
+        <field name="arch" type="xml">
+            <search string="Search Medicines">
+                <field name="name" string="Medicine" filter_domain="['|', '|', ('name', 'ilike', self), ('generic_name', 'ilike', self), ('barcode', 'ilike', self)]"/>
+                <field name="generic_name"/>
+                <field name="medicine_category_id"/>
+                <field name="manufacturer_name"/>
+                <filter string="In Stock" name="filter_in_stock" domain="[('qty_available', '&gt;', 0)]"/>
+                <filter string="Out of Stock" name="filter_out_of_stock" domain="[('qty_available', '&lt;=', 0)]"/>
+                <separator/>
+                <filter string="Prescription Required (Rx)" name="filter_rx" domain="[('prescription_required', '=', True)]"/>
+                <filter string="OTC / Non-Prescription" name="filter_otc" domain="[('prescription_required', '=', False)]"/>
+                <separator/>
+                <separator/>
+                <filter string="Group By: Category" name="group_by_category" context="{'group_by': 'medicine_category_id'}"/>
+                <filter string="Group By: Dosage Form" name="group_by_dosage_form" context="{'group_by': 'dosage_form'}"/>
+                <filter string="Group By: Manufacturer" name="group_by_manufacturer" context="{'group_by': 'manufacturer_name'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Main Action: Medicine Catalog -->
+    <record id="action_dental_medicine_catalog" model="ir.actions.act_window">
+        <field name="name">Medicine Catalog</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('is_medicine', '=', True)]</field>
+        <field name="context">{'default_is_medicine': True, 'default_tracking': 'lot'}</field>
+        <field name="search_view_id" ref="view_dental_medicine_search"/>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('view_dental_medicine_list')}),
+            (0, 0, {'view_mode': 'kanban', 'view_id': ref('view_dental_medicine_kanban')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('view_dental_medicine_form')})]"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add pharmaceuticals to your dental medicine catalog!
+            </p>
+        </field>
+    </record>
+
+    <!-- Filtered Action: Low Stock Medicines -->
+    <record id="action_dental_low_stock" model="ir.actions.act_window">
+        <field name="name">Low Stock &amp; Reorder Alerts</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('is_medicine', '=', True), ('qty_available', '&lt;=', 10)]</field>
+        <field name="context">{'default_is_medicine': True}</field>
+        <field name="search_view_id" ref="view_dental_medicine_search"/>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('view_dental_medicine_list')}),
+            (0, 0, {'view_mode': 'kanban', 'view_id': ref('view_dental_medicine_kanban')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('view_dental_medicine_form')})]"/>
+    </record>
+</odoo>

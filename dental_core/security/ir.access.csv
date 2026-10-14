@@ -21,3 +21,5 @@ access_dental_treatment_session_receptionist,dental.treatment.session.receptioni
 access_dental_treatment_session_dentist,dental.treatment.session.dentist,model_dental_treatment_session,dental_base.group_dental_dentist,1,1,1,0,"['|', ('doctor_id.user_id', '=', user.id), ('doctor_id', '=', False)]"
 access_dental_treatment_session_manager,dental.treatment.session.manager,model_dental_treatment_session,dental_base.group_dental_manager,1,1,1,1,
 access_res_partner_receptionist,res.partner.receptionist,base.model_res_partner,dental_base.group_dental_receptionist,1,1,1,0,
+access_dental_tooth_finding_dentist,dental.tooth.finding.dentist,model_dental_tooth_finding,dental_base.group_dental_dentist,1,1,1,0,
+access_dental_tooth_finding_manager,dental.tooth.finding.manager,model_dental_tooth_finding,dental_base.group_dental_manager,1,1,1,1,

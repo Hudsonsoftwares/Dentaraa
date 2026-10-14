@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Pharmacist implies Inventory User for Batch & Expiry Management -->
+    <record id="dental_base.group_dental_pharmacist" model="res.groups">
+        <field name="implied_ids" eval="[(4, ref('stock.group_stock_user'))]"/>
+    </record>
+
+    <!-- TOP-LEVEL DEDICATED PHARMACY APPLICATION -->
+    <menuitem id="menu_pharmacy_root"
+              name="Pharmacy"
+              web_icon="dental_pharmacy,static/description/icon.png"
+              sequence="68"
+              groups="dental_base.group_dental_pharmacist,dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+
+    <!-- 1. OVERVIEW -->
+    <menuitem id="menu_pharmacy_overview"
+              name="Overview"
+              parent="menu_pharmacy_root"
+              sequence="10"/>
+
+    <menuitem id="menu_pharmacy_dashboard_action"
+              name="Pharmacy Dashboard"
+              parent="menu_pharmacy_overview"
+              action="action_pharmacy_dashboard"
+              sequence="10"/>
+
+    <!-- 2. PRESCRIPTIONS -->
+    <menuitem id="menu_pharmacy_prescriptions"
+              name="Prescriptions"
+              parent="menu_pharmacy_root"
+              sequence="20"/>
+
+    <menuitem id="menu_pharmacy_prescriptions_queue"
+              name="Prescriptions Queue"
+              parent="menu_pharmacy_prescriptions"
+              action="action_dental_prescription"
+              sequence="10"/>
+
+    <menuitem id="menu_pharmacy_prescriptions_pending"
+              name="Pending Dispense"
+              parent="menu_pharmacy_prescriptions"
+              action="action_dental_prescription_pending"
+              sequence="20"/>
+
+    <menuitem id="menu_pharmacy_prescriptions_dispensed"
+              name="Dispensed History"
+              parent="menu_pharmacy_prescriptions"
+              action="action_dental_prescription_dispensed"
+              sequence="30"/>
+
+    <!-- 3. DISPENSING -->
+    <menuitem id="menu_pharmacy_dispensing"
+              name="Dispensing"
+              parent="menu_pharmacy_root"
+              sequence="30"/>
+
+    <menuitem id="menu_pharmacy_dispense_orders"
+              name="Dispense Orders"
+              parent="menu_pharmacy_dispensing"
+              action="action_dental_pharmacy_dispense"
+              sequence="10"/>
+
+    <menuitem id="menu_pharmacy_dispense_history"
+              name="Completed Dispenses"
+              parent="menu_pharmacy_dispensing"
+              action="action_dental_pharmacy_dispense_history"
+              sequence="20"/>
+
+    <!-- 4. MEDICINES & INVENTORY -->
+    <menuitem id="menu_pharmacy_catalog"
+              name="Medicines &amp; Inventory"
+              parent="menu_pharmacy_root"
+              sequence="40"/>
+
+    <menuitem id="menu_pharmacy_medicines"
+              name="Medicine Catalog"
+              parent="menu_pharmacy_catalog"
+              action="action_dental_medicine_catalog"
+              sequence="10"/>
+
+    <menuitem id="menu_pharmacy_batches"
+              name="Batches &amp; Expiry"
+              parent="menu_pharmacy_catalog"
+              action="action_dental_stock_lot"
+              sequence="20"/>
+
+    <menuitem id="menu_pharmacy_expiry_alerts"
+              name="Batch Expiry Alerts"
+              parent="menu_pharmacy_catalog"
+              action="action_dental_expiry_alerts"
+              sequence="30"/>
+
+    <menuitem id="menu_pharmacy_low_stock"
+              name="Low Stock Alerts"
+              parent="menu_pharmacy_catalog"
+              action="action_dental_low_stock"
+              sequence="40"/>
+
+    <menuitem id="menu_pharmacy_categories"
+              name="Medicine Categories"
+              parent="menu_pharmacy_catalog"
+              action="action_dental_medicine_category"
+              sequence="50"/>
+
+    <menuitem id="menu_pharmacy_stock_moves"
+              name="Stock Transfers"
+              parent="menu_pharmacy_catalog"
+              action="stock.action_picking_tree_all"
+              sequence="60"/>
+
+    <!-- 5. PURCHASES -->
+    <menuitem id="menu_pharmacy_purchases"
+              name="Purchases"
+              parent="menu_pharmacy_root"
+              sequence="50"
+              groups="dental_base.group_dental_pharmacist,dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+
+    <menuitem id="menu_pharmacy_purchase_orders"
+              name="Supplier Orders (PO)"
+              parent="menu_pharmacy_purchases"
+              action="purchase.purchase_rfq"
+              sequence="10"/>
+
+    <!-- 6. BILLING -->
+    <menuitem id="menu_pharmacy_billing"
+              name="Billing"
+              parent="menu_pharmacy_root"
+              sequence="60"
+              groups="dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+
+    <menuitem id="menu_pharmacy_invoices"
+              name="Customer Invoices"
+              parent="menu_pharmacy_billing"
+              action="action_dental_pharmacy_invoices"
+              sequence="10"/>
+
+    <!-- 7. REPORTS -->
+    <menuitem id="menu_pharmacy_reports"
+              name="Reports"
+              parent="menu_pharmacy_root"
+              sequence="70"/>
+
+    <menuitem id="menu_pharmacy_report_dispensing"
+              name="Dispensing Analysis"
+              parent="menu_pharmacy_reports"
+              action="action_pharmacy_dispense_analysis"
+              sequence="10"/>
+
+    <!-- CLINICAL INTEGRATION UNDER DENTAL CLINIC ROOT -->
+    <record id="menu_dental_pharmacy_sub" model="ir.ui.menu">
+        <field name="name">Pharmacy</field>
+        <field name="parent_id" ref="dental_base.menu_dental_root"/>
+        <field name="sequence" eval="60"/>
+        <field name="group_ids" eval="[(6, 0, [ref('dental_base.group_dental_pharmacist'), ref('dental_base.group_dental_manager'), ref('dental_base.group_dental_admin')])]"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <menuitem id="menu_dental_sub_dashboard"
+              name="Pharmacy Dashboard"
+              parent="menu_dental_pharmacy_sub"
+              action="action_pharmacy_dashboard"
+              sequence="10"/>
+
+    <menuitem id="menu_dental_sub_prescriptions"
+              name="Prescriptions"
+              parent="menu_dental_pharmacy_sub"
+              action="action_dental_prescription"
+              sequence="20"/>
+
+    <menuitem id="menu_dental_sub_dispense"
+              name="Dispensing"
+              parent="menu_dental_pharmacy_sub"
+              action="action_dental_pharmacy_dispense"
+              sequence="30"/>
+
+    <menuitem id="menu_dental_sub_catalog"
+              name="Medicine Catalog"
+              parent="menu_dental_pharmacy_sub"
+              action="action_dental_medicine_catalog"
+              sequence="40"/>
+
+    <menuitem id="menu_dental_sub_stock_expiry"
+              name="Stock &amp; Expiry"
+              parent="menu_dental_pharmacy_sub"
+              action="action_dental_stock_lot"
+              sequence="50"/>
+
+    <!-- Pharmacy Configuration under Master Configuration -->
+    <menuitem id="menu_dental_pharmacy_config"
+              name="Pharmacy Configuration"
+              parent="dental_base.menu_dental_configuration"
+              action="action_dental_medicine_category"
+              sequence="80"
+              groups="dental_base.group_dental_admin"/>
+</odoo>

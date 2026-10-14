@@ -1,0 +1,1332 @@
+/* ==========================================================================
+   Clinical 3D Odontogram - Professional Healthcare UI Suite
+   Clean medical aesthetic: light neutral backgrounds, white cards,
+   subtle borders, restrained blue accents, and accessible clinical indicators.
+   ========================================================================== */
+
+.o_dental_odontogram_wrapper {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    color: #1e293b;
+    min-height: 640px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+    position: relative;
+    font-family: inherit;
+
+    /* -------------------------------------------------------------------------
+       1. Header Bar
+       ------------------------------------------------------------------------- */
+    .odontogram-header {
+        background: #ffffff;
+        border-bottom: 1px solid #e2e8f0;
+        padding: 0.85rem 1.25rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        z-index: 10;
+        position: relative;
+
+        .header-title-box {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+
+            .title-icon {
+                width: 38px;
+                height: 38px;
+                background: #0284c7;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #ffffff;
+                font-size: 1.15rem;
+                box-shadow: 0 2px 4px rgba(2, 132, 199, 0.2);
+            }
+
+            .title-text {
+                font-size: 1.1rem;
+                font-weight: 700;
+                color: #0f172a;
+                margin: 0;
+                letter-spacing: -0.01em;
+            }
+
+            .patient-badge {
+                font-size: 0.8rem;
+                color: #64748b;
+                margin-top: 1px;
+            }
+        }
+
+        .stats-pill-group {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            flex-wrap: wrap;
+
+            .stat-pill {
+                padding: 0.25rem 0.65rem;
+                border-radius: 20px;
+                font-size: 0.75rem;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                gap: 0.35rem;
+                background: #f1f5f9;
+                border: 1px solid #e2e8f0;
+                color: #334155;
+                transition: background 0.15s ease;
+
+                .pill-dot {
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 50%;
+                }
+
+                &.pill-sound { .pill-dot { background: #16a34a; } }
+                &.pill-caries { .pill-dot { background: #ef4444; } }
+                &.pill-restoration { .pill-dot { background: #2563eb; } }
+                &.pill-crown { .pill-dot { background: #d97706; } }
+                &.pill-root-canal { .pill-dot { background: #9333ea; } }
+                &.pill-missing { .pill-dot { background: #64748b; } }
+            }
+        }
+    }
+
+    /* -------------------------------------------------------------------------
+       1b. Age-Based Dentition Mode Selection Bar
+       ------------------------------------------------------------------------- */
+    .dentition-selector-bar {
+        background: #f8fafc;
+        border-bottom: 1px solid #e2e8f0;
+        padding: 0.6rem 1.25rem;
+
+        .dentition-options-group {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            flex-wrap: wrap;
+
+            .dentition-btn {
+                background: #ffffff;
+                border: 1px solid #cbd5e1;
+                border-radius: 8px;
+                padding: 0.45rem 0.85rem;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.6rem;
+                cursor: pointer;
+                transition: all 0.15s ease;
+                color: #334155;
+                box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+                position: relative;
+
+                .dentition-icon {
+                    width: 28px;
+                    height: 28px;
+                    border-radius: 6px;
+                    background: #f1f5f9;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: #475569;
+                    font-size: 0.85rem;
+                    transition: all 0.15s ease;
+                }
+
+                .dentition-text-group {
+                    display: flex;
+                    flex-direction: column;
+                    text-align: left;
+
+                    .dentition-title {
+                        font-size: 0.82rem;
+                        font-weight: 700;
+                        line-height: 1.2;
+                    }
+
+                    .dentition-meta {
+                        font-size: 0.68rem;
+                        color: #64748b;
+                        margin-top: 1px;
+                    }
+                }
+
+                .suggested-badge {
+                    background: #dbeafe;
+                    color: #1d4ed8;
+                    border: 1px solid #bfdbfe;
+                    border-radius: 12px;
+                    font-size: 0.62rem;
+                    font-weight: 800;
+                    padding: 0.1rem 0.4rem;
+                    text-transform: uppercase;
+                    letter-spacing: 0.3px;
+                }
+
+                &:hover {
+                    border-color: #0284c7;
+                    background: #f0f9ff;
+                    color: #0284c7;
+
+                    .dentition-icon {
+                        background: #e0f2fe;
+                        color: #0284c7;
+                    }
+                }
+
+                &.active {
+                    background: #0284c7;
+                    border-color: #0284c7;
+                    color: #ffffff;
+                    box-shadow: 0 2px 6px rgba(2, 132, 199, 0.3);
+
+                    .dentition-icon {
+                        background: rgba(255, 255, 255, 0.22);
+                        color: #ffffff;
+                    }
+
+                    .dentition-text-group .dentition-meta {
+                        color: rgba(255, 255, 255, 0.88);
+                    }
+
+                    .suggested-badge {
+                        background: rgba(255, 255, 255, 0.25);
+                        border-color: rgba(255, 255, 255, 0.4);
+                        color: #ffffff;
+                    }
+                }
+            }
+        }
+    }
+
+    /* -------------------------------------------------------------------------
+       2. Full-Arch 2D Quick Selector Strip
+       ------------------------------------------------------------------------- */
+    .odontogram-teeth-bar {
+        background: #ffffff;
+        border-bottom: 1px solid #e2e8f0;
+        padding: 0.5rem 1.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+
+        .arch-strip-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+
+            .arch-badge {
+                font-size: 0.72rem;
+                font-weight: 700;
+                color: #64748b;
+                width: 52px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .quadrant-chips {
+                display: flex;
+                gap: 3px;
+
+                .tooth-chip {
+                    min-width: 28px;
+                    height: 25px;
+                    padding: 0 4px;
+                    border-radius: 5px;
+                    background: #ffffff;
+                    border: 1px solid #cbd5e1;
+                    color: #334155;
+                    font-size: 0.75rem;
+                    font-weight: 700;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                    transition: all 0.12s ease;
+
+                    &:hover {
+                        background: #f0f9ff;
+                        border-color: #0284c7;
+                        color: #0284c7;
+                        transform: translateY(-1px);
+                    }
+
+                    &.active {
+                        background: #0284c7;
+                        color: #ffffff;
+                        border-color: #0284c7;
+                        box-shadow: 0 2px 5px rgba(2, 132, 199, 0.3);
+                    }
+
+                    &.cond-caries { border-color: #f87171; background: #fef2f2; color: #b91c1c; }
+                    &.cond-restoration { border-color: #60a5fa; background: #eff6ff; color: #1d4ed8; }
+                    &.cond-crown { border-color: #fbbf24; background: #fffbeb; color: #b45309; }
+                    &.cond-root_canal { border-color: #c084fc; background: #faf5ff; color: #7e22ce; }
+                    &.cond-missing { border-color: #cbd5e1; background: #f1f5f9; color: #94a3b8; text-decoration: line-through; }
+                }
+            }
+
+            .midline-separator {
+                width: 2px;
+                height: 20px;
+                background: #0284c7;
+                opacity: 0.4;
+                margin: 0 4px;
+                border-radius: 1px;
+            }
+        }
+    }
+
+    /* -------------------------------------------------------------------------
+       3. Main Body: Center Viewport + Right Clinical Panel
+       ------------------------------------------------------------------------- */
+    .odontogram-body {
+        display: flex;
+        min-height: 560px;
+        position: relative;
+        background: #f8fafc;
+        gap: 12px;
+        padding: 12px;
+
+        /* Center Column: Spacious 3D Viewport Card */
+        .odontogram-viewport-card {
+            flex: 1 1 0%;
+            min-width: 480px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+
+            /* Dedicated Toolbar at Top (NEVER Overlaps Teeth!) */
+            .viewport-header-toolbar {
+                background: #f8fafc;
+                border-bottom: 1px solid #e2e8f0;
+                padding: 0.5rem 0.85rem;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                z-index: 5;
+
+                .toolbar-section {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.4rem;
+
+                    .toolbar-label {
+                        font-size: 0.75rem;
+                        font-weight: 700;
+                        color: #64748b;
+                        text-transform: uppercase;
+                        letter-spacing: 0.3px;
+                    }
+                }
+
+                .preset-btn-group {
+                    display: inline-flex;
+                    background: #ffffff;
+                    border: 1px solid #cbd5e1;
+                    border-radius: 6px;
+                    padding: 2px;
+                    gap: 2px;
+
+                    .btn-preset {
+                        border: none;
+                        background: transparent;
+                        color: #475569;
+                        padding: 0.25rem 0.65rem;
+                        font-size: 0.75rem;
+                        font-weight: 600;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 0.35rem;
+                        transition: all 0.12s ease;
+
+                        &:hover {
+                            background: #f1f5f9;
+                            color: #0f172a;
+                        }
+
+                        &.active {
+                            background: #0284c7;
+                            color: #ffffff;
+                            box-shadow: 0 1px 3px rgba(2, 132, 199, 0.25);
+                        }
+                    }
+                }
+
+                .btn-arch-toggle {
+                    background: #ffffff;
+                    border: 1px solid #cbd5e1;
+                    color: #334155;
+                    border-radius: 6px;
+                    padding: 0.25rem 0.65rem;
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                    cursor: pointer;
+                    display: inline-flex;
+                    align-items: center;
+                    transition: all 0.12s ease;
+
+                    &:hover {
+                        background: #f0f9ff;
+                        border-color: #0284c7;
+                        color: #0284c7;
+                    }
+                }
+
+                .action-btn-group {
+                    display: inline-flex;
+                    background: #ffffff;
+                    border: 1px solid #cbd5e1;
+                    border-radius: 6px;
+                    padding: 2px;
+                    gap: 2px;
+
+                    .btn-tool-action {
+                        border: none;
+                        background: transparent;
+                        color: #475569;
+                        width: 28px;
+                        height: 26px;
+                        border-radius: 4px;
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+                        transition: all 0.12s ease;
+
+                        .oi {
+                            font-size: 0.95rem;
+                            line-height: 1;
+                        }
+
+                        &:hover {
+                            background: #e2e8f0;
+                            color: #0f172a;
+                        }
+                    }
+                }
+            }
+
+            /* 3D Canvas Box */
+            .viewport-canvas-wrapper {
+                flex: 1 1 0%;
+                min-height: 500px;
+                position: relative;
+                overflow: hidden;
+                background: #f8fafc;
+
+                .three-canvas-box {
+                    width: 100%;
+                    height: 100%;
+                    min-height: 500px;
+                    cursor: grab;
+
+                    &:active {
+                        cursor: grabbing;
+                    }
+
+                    canvas {
+                        display: block;
+                        width: 100% !important;
+                        height: 100% !important;
+                    }
+                }
+
+                .odontogram-loading-overlay {
+                    position: absolute;
+                    inset: 0;
+                    background: rgba(248, 250, 252, 0.88);
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 20;
+                }
+
+                .odontogram-3d-tooltip {
+                    position: absolute;
+                    pointer-events: none;
+                    background: #0f172a;
+                    color: #f8fafc;
+                    padding: 0.35rem 0.65rem;
+                    border-radius: 6px;
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+                    transform: translate(-50%, -130%);
+                    z-index: 30;
+                    white-space: nowrap;
+
+                    &::after {
+                        content: "";
+                        position: absolute;
+                        bottom: -4px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        border-width: 4px 4px 0 4px;
+                        border-style: solid;
+                        border-color: #0f172a transparent transparent transparent;
+                    }
+                }
+
+                .arch-indicator {
+                    position: absolute;
+                    font-size: 0.68rem;
+                    font-weight: 700;
+                    color: #94a3b8;
+                    letter-spacing: 0.8px;
+                    pointer-events: none;
+                    z-index: 3;
+                    user-select: none;
+
+                    &.upper-arch {
+                        top: 10px;
+                        left: 14px;
+                    }
+
+                    &.lower-arch {
+                        bottom: 34px;
+                        left: 14px;
+                    }
+                }
+
+                .viewport-nav-hint {
+                    position: absolute;
+                    bottom: 8px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: rgba(255, 255, 255, 0.85);
+                    backdrop-filter: blur(4px);
+                    border: 1px solid #e2e8f0;
+                    padding: 0.2rem 0.75rem;
+                    border-radius: 20px;
+                    font-size: 0.7rem;
+                    color: #64748b;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.4rem;
+                    pointer-events: none;
+                    user-select: none;
+                    white-space: nowrap;
+                    z-index: 4;
+
+                    .hint-divider {
+                        color: #cbd5e1;
+                    }
+                }
+            }
+        }
+
+        /* Right Column: Selected Tooth Inspection & Recording Panel */
+        .odontogram-panel {
+            flex: 0 0 390px;
+            max-width: 410px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            overflow-y: auto;
+            max-height: 700px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+            display: flex;
+            flex-direction: column;
+
+            /* Persistent FDI Selector at top of Clinical Panel */
+            .panel-fdi-quick-picker {
+                padding: 0.75rem 1rem;
+                background: #f8fafc;
+                border-bottom: 1px solid #e2e8f0;
+
+                .form-select {
+                    background-color: #ffffff;
+                    border-color: #cbd5e1;
+                    font-size: 0.78rem;
+                    font-weight: 600;
+                    color: #1e293b;
+                    border-radius: 6px;
+
+                    &:focus {
+                        border-color: #0284c7;
+                        box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.15);
+                    }
+                }
+            }
+
+            /* State A: Empty State */
+            .panel-empty-state {
+                padding: 2.2rem 1.5rem;
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+
+                .empty-icon {
+                    width: 60px;
+                    height: 60px;
+                    border-radius: 50%;
+                    background: #f0f9ff;
+                    color: #0284c7;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.6rem;
+                    margin-bottom: 1rem;
+                    border: 1px solid #bae6fd;
+                }
+
+                h5 {
+                    color: #0f172a;
+                    font-weight: 700;
+                    margin-bottom: 0.4rem;
+                    font-size: 1.05rem;
+                }
+
+                .empty-desc {
+                    color: #64748b;
+                    font-size: 0.82rem;
+                    line-height: 1.45;
+                    margin-bottom: 1rem;
+                }
+
+                .clinical-guide-card {
+                    background: #f8fafc;
+                    border: 1px solid #e2e8f0;
+                    width: 100%;
+                    text-align: left;
+                    font-size: 0.78rem;
+
+                    .guide-item {
+                        color: #475569;
+                        margin-bottom: 0.35rem;
+                        display: flex;
+                        align-items: center;
+                        gap: 0.4rem;
+
+                        .badge-dot {
+                            width: 7px;
+                            height: 7px;
+                            border-radius: 50%;
+                            flex-shrink: 0;
+
+                            &.dot-sound { background: #16a34a; }
+                            &.dot-caries { background: #ef4444; }
+                            &.dot-restoration { background: #2563eb; }
+                            &.dot-crown { background: #d97706; }
+                            &.dot-root-canal { background: #9333ea; }
+                            &.dot-missing { background: #64748b; }
+                        }
+                    }
+                }
+            }
+
+            /* State B: Tooth Selected */
+            .panel-tooth-detail {
+                padding: 1rem;
+                display: flex;
+                flex-direction: column;
+                gap: 0.85rem;
+
+                /* Hero Card */
+                .tooth-hero-card {
+                    background: #f8fafc;
+                    border: 1px solid #e2e8f0;
+                    border-radius: 8px;
+                    padding: 0.85rem;
+
+                    .tooth-hero-top {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: flex-start;
+                        margin-bottom: 0.5rem;
+
+                        .tooth-fdi-tag {
+                            font-size: 0.72rem;
+                            font-weight: 800;
+                            color: #0284c7;
+                            text-transform: uppercase;
+                            letter-spacing: 0.5px;
+                        }
+
+                        .tooth-anatomy-name {
+                            font-size: 1rem;
+                            font-weight: 700;
+                            color: #0f172a;
+                            margin-top: 1px;
+                        }
+
+                        .condition-badge {
+                            padding: 0.2rem 0.55rem;
+                            border-radius: 20px;
+                            font-size: 0.72rem;
+                            font-weight: 700;
+
+                            &.cond-sound { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+                            &.cond-caries { background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
+                            &.cond-restoration { background: #dbeafe; color: #1d4ed8; border: 1px solid #bfdbfe; }
+                            &.cond-crown { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+                            &.cond-root_canal { background: #f3e8ff; color: #7e22ce; border: 1px solid #e9d5ff; }
+                            &.cond-missing { background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; }
+                            &.cond-implant { background: #cffafe; color: #0e7490; border: 1px solid #a5f3fc; }
+                            &.cond-fracture { background: #ffedd5; color: #c2410c; border: 1px solid #fed7aa; }
+                            &.cond-impacted { background: #fce7f3; color: #be185d; border: 1px solid #fbcfe8; }
+                            &.cond-extraction_indicated { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+                            &.cond-bridge { background: #e0e7ff; color: #4338ca; border: 1px solid #c7d2fe; }
+                            &.cond-other { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
+                        }
+                    }
+
+                    .notations-row {
+                        display: flex;
+                        gap: 0.85rem;
+                        font-size: 0.75rem;
+                        color: #64748b;
+                        padding-bottom: 0.5rem;
+                        border-bottom: 1px solid #e2e8f0;
+
+                        strong {
+                            color: #1e293b;
+                        }
+                    }
+
+                    /* Quick 1-Click Problem Indication Palette */
+                    .quick-condition-palette {
+                        margin-top: 0.65rem;
+                        padding-top: 0.6rem;
+                        border-top: 1px solid #e2e8f0;
+
+                        .palette-label {
+                            font-size: 0.72rem;
+                            font-weight: 700;
+                            color: #475569;
+                            display: block;
+                            margin-bottom: 0.4rem;
+                        }
+
+                        .quick-condition-grid {
+                            display: grid;
+                            grid-template-columns: repeat(3, 1fr);
+                            gap: 5px;
+
+                            .btn-quick-cond {
+                                display: inline-flex;
+                                align-items: center;
+                                justify-content: center;
+                                gap: 5px;
+                                border: 1px solid #cbd5e1;
+                                background: #ffffff;
+                                padding: 0.35rem 0.25rem;
+                                border-radius: 6px;
+                                font-size: 0.72rem;
+                                font-weight: 700;
+                                color: #334155;
+                                cursor: pointer;
+                                transition: all 0.15s ease;
+
+                                .dot-indicator {
+                                    width: 8px;
+                                    height: 8px;
+                                    border-radius: 50%;
+                                    flex-shrink: 0;
+
+                                    &.dot-caries { background: #ef4444; }
+                                    &.dot-restoration { background: #3b82f6; }
+                                    &.dot-crown { background: #f59e0b; }
+                                    &.dot-root-canal { background: #a855f7; }
+                                    &.dot-missing { background: #94a3b8; }
+                                    &.dot-sound { background: #10b981; }
+                                }
+
+                                &:hover {
+                                    border-color: #0284c7;
+                                    background: #f0f9ff;
+                                    transform: translateY(-1px);
+                                }
+
+                                &.active {
+                                    border-width: 1.5px;
+                                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+
+                                    &.qcond-caries { background: #fef2f2; border-color: #ef4444; color: #b91c1c; }
+                                    &.qcond-restoration { background: #eff6ff; border-color: #3b82f6; color: #1d4ed8; }
+                                    &.qcond-crown { background: #fffbeb; border-color: #f59e0b; color: #b45309; }
+                                    &.qcond-root_canal { background: #faf5ff; border-color: #a855f7; color: #7e22ce; }
+                                    &.qcond-missing { background: #f8fafc; border-color: #94a3b8; color: #475569; }
+                                    &.qcond-sound { background: #ecfdf5; border-color: #10b981; color: #047857; }
+                                }
+                            }
+                        }
+                    }
+
+                    .current-specs-row {
+                        display: flex;
+                        gap: 0.35rem;
+                        flex-wrap: wrap;
+                        margin-top: 0.5rem;
+
+                        .spec-chip {
+                            background: #ffffff;
+                            border: 1px solid #e2e8f0;
+                            border-radius: 4px;
+                            padding: 0.15rem 0.45rem;
+                            font-size: 0.7rem;
+                            color: #475569;
+
+                            strong {
+                                color: #0f172a;
+                            }
+                        }
+                    }
+
+                    /* Interactive 5-Surface Diagram */
+                    .surface-diagram-container {
+                        margin-top: 0.65rem;
+                        padding-top: 0.55rem;
+                        border-top: 1px solid #e2e8f0;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+
+                        .diagram-label {
+                            font-size: 0.7rem;
+                            font-weight: 700;
+                            color: #64748b;
+                            margin-bottom: 0.35rem;
+                            text-transform: uppercase;
+                            letter-spacing: 0.3px;
+                            align-self: flex-start;
+                        }
+
+                        .surface-cross-box {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            gap: 2px;
+
+                            .surf-mid-row {
+                                display: flex;
+                                gap: 2px;
+                            }
+
+                            .surf-cell {
+                                width: 26px;
+                                height: 26px;
+                                border: 1px solid #cbd5e1;
+                                background: #ffffff;
+                                color: #64748b;
+                                font-size: 0.7rem;
+                                font-weight: 700;
+                                border-radius: 4px;
+                                display: inline-flex;
+                                align-items: center;
+                                justify-content: center;
+                                cursor: pointer;
+                                transition: all 0.1s ease;
+
+                                &:hover {
+                                    border-color: #0284c7;
+                                    color: #0284c7;
+                                    background: #f0f9ff;
+                                }
+
+                                &.affected {
+                                    background: #fee2e2;
+                                    border-color: #ef4444;
+                                    color: #b91c1c;
+                                    font-weight: 800;
+                                }
+
+                                &.active {
+                                    background: #0284c7;
+                                    border-color: #0284c7;
+                                    color: #ffffff;
+                                    font-weight: 800;
+                                }
+                            }
+                        }
+
+                        .diagram-subtext {
+                            font-size: 0.65rem;
+                            color: #94a3b8;
+                            margin-top: 0.35rem;
+                        }
+                    }
+                }
+
+                /* Panel Tabs Nav */
+                .panel-tabs-nav {
+                    display: flex;
+                    background: #f1f5f9;
+                    border: 1px solid #e2e8f0;
+                    border-radius: 6px;
+                    padding: 2px;
+                    gap: 2px;
+
+                    .panel-tab-btn {
+                        flex: 1 1 0%;
+                        border: none;
+                        background: transparent;
+                        color: #64748b;
+                        padding: 0.35rem 0.2rem;
+                        font-size: 0.72rem;
+                        font-weight: 600;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        transition: all 0.12s ease;
+                        white-space: nowrap;
+
+                        &:hover {
+                            color: #0f172a;
+                        }
+
+                        &.active {
+                            background: #ffffff;
+                            color: #0284c7;
+                            font-weight: 700;
+                            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+                        }
+                    }
+                }
+
+                /* Tab 1: Record Finding Form */
+                .record-finding-form {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.65rem;
+
+                    .form-group-custom {
+                        label {
+                            font-size: 0.75rem;
+                            font-weight: 700;
+                            color: #334155;
+                            margin-bottom: 0.25rem;
+                            display: block;
+                        }
+
+                        .form-select, .form-control {
+                            font-size: 0.8rem;
+                            border-color: #cbd5e1;
+                            border-radius: 6px;
+                            color: #1e293b;
+
+                            &:focus {
+                                border-color: #0284c7;
+                                box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.15);
+                            }
+                        }
+
+                        .surfaces-chips-group {
+                            display: flex;
+                            gap: 4px;
+
+                            .surface-btn {
+                                flex: 1 1 0%;
+                                height: 28px;
+                                border: 1px solid #cbd5e1;
+                                background: #ffffff;
+                                color: #475569;
+                                border-radius: 4px;
+                                font-size: 0.75rem;
+                                font-weight: 700;
+                                cursor: pointer;
+                                transition: all 0.1s ease;
+
+                                &:hover {
+                                    background: #f0f9ff;
+                                    border-color: #0284c7;
+                                    color: #0284c7;
+                                }
+
+                                &.active {
+                                    background: #0284c7;
+                                    border-color: #0284c7;
+                                    color: #ffffff;
+                                }
+                            }
+                        }
+
+                        .severity-buttons-group {
+                            display: flex;
+                            gap: 4px;
+
+                            .btn-sev {
+                                flex: 1 1 0%;
+                                height: 28px;
+                                border: 1px solid #cbd5e1;
+                                background: #ffffff;
+                                color: #475569;
+                                border-radius: 4px;
+                                font-size: 0.75rem;
+                                font-weight: 600;
+                                cursor: pointer;
+                                transition: all 0.1s ease;
+
+                                &:hover {
+                                    background: #f1f5f9;
+                                }
+
+                                &.active {
+                                    background: #0f172a;
+                                    border-color: #0f172a;
+                                    color: #ffffff;
+                                    font-weight: 700;
+                                }
+                            }
+                        }
+                    }
+
+                    .finding-actions-row {
+                        display: flex;
+                        gap: 0.5rem;
+                        align-items: center;
+
+                        .btn-save-finding {
+                            flex: 1 1 0%;
+                            background: #0284c7;
+                            border: 1px solid #0284c7;
+                            color: #ffffff;
+                            font-weight: 700;
+                            font-size: 0.82rem;
+                            padding: 0.5rem;
+                            border-radius: 6px;
+                            cursor: pointer;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            box-shadow: 0 1px 3px rgba(2, 132, 199, 0.25);
+                            transition: all 0.15s ease;
+
+                            &:hover:not(:disabled) {
+                                background: #0369a1;
+                                border-color: #0369a1;
+                            }
+
+                            &:disabled {
+                                opacity: 0.65;
+                                cursor: not-allowed;
+                            }
+                        }
+
+                        .btn-clear-finding {
+                            background: #ffffff;
+                            border: 1px solid #cbd5e1;
+                            color: #64748b;
+                            font-weight: 700;
+                            font-size: 0.8rem;
+                            padding: 0.5rem 0.75rem;
+                            border-radius: 6px;
+                            cursor: pointer;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            transition: all 0.15s ease;
+
+                            &:hover:not(:disabled) {
+                                background: #f1f5f9;
+                                border-color: #94a3b8;
+                                color: #0f172a;
+                            }
+
+                            &:disabled {
+                                opacity: 0.65;
+                                cursor: not-allowed;
+                            }
+                        }
+                    }
+                }
+
+                /* Tab 2: Clinical History Timeline */
+                .history-timeline {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.6rem;
+
+                    .timeline-empty {
+                        padding: 1.5rem;
+                        text-align: center;
+                        color: #94a3b8;
+                        font-size: 0.8rem;
+                    }
+
+                    .timeline-card {
+                        background: #ffffff;
+                        border: 1px solid #e2e8f0;
+                        border-left: 3px solid #0284c7;
+                        border-radius: 6px;
+                        padding: 0.65rem;
+
+                        &.is-current {
+                            border-left-color: #16a34a;
+                            background: #fcfdfc;
+                        }
+
+                        .timeline-card-header {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            margin-bottom: 0.35rem;
+
+                            .card-cond-title {
+                                font-size: 0.8rem;
+                                font-weight: 700;
+                                color: #0f172a;
+                            }
+
+                            .card-date {
+                                font-size: 0.7rem;
+                                color: #64748b;
+                            }
+                        }
+
+                        .timeline-meta {
+                            display: flex;
+                            gap: 0.35rem;
+                            flex-wrap: wrap;
+                            margin-bottom: 0.35rem;
+
+                            .badge-case {
+                                background: #f1f5f9;
+                                border: 1px solid #e2e8f0;
+                                border-radius: 4px;
+                                padding: 0.1rem 0.35rem;
+                                font-size: 0.68rem;
+                                color: #475569;
+
+                                &.badge-surf {
+                                    color: #b91c1c;
+                                    background: #fee2e2;
+                                    border-color: #fecaca;
+                                    font-weight: 700;
+                                }
+                            }
+                        }
+
+                        .timeline-diag {
+                            font-size: 0.74rem;
+                            color: #1e293b;
+                            margin-bottom: 0.25rem;
+                        }
+
+                        .timeline-notes {
+                            font-size: 0.72rem;
+                            color: #64748b;
+                            font-style: italic;
+                            margin-bottom: 0.25rem;
+                        }
+
+                        .timeline-treatment {
+                            font-size: 0.72rem;
+                            color: #0369a1;
+                            font-weight: 600;
+                        }
+                    }
+                }
+
+                /* Tab 3: Linked Diagnoses */
+                .diagnoses-list {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.6rem;
+
+                    .timeline-empty {
+                        padding: 1.5rem;
+                        text-align: center;
+                        color: #94a3b8;
+                        font-size: 0.8rem;
+                    }
+
+                    .diagnosis-card {
+                        background: #ffffff;
+                        border: 1px solid #e2e8f0;
+                        border-left: 3px solid #0284c7;
+                        border-radius: 6px;
+                        padding: 0.65rem;
+
+                        .diag-header {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            margin-bottom: 0.35rem;
+
+                            .diag-title {
+                                font-size: 0.82rem;
+                                font-weight: 700;
+                                color: #0f172a;
+                            }
+
+                            .diag-status {
+                                font-size: 0.68rem;
+                                font-weight: 700;
+                                padding: 0.1rem 0.4rem;
+                                border-radius: 12px;
+
+                                &.status-confirmed { background: #dcfce7; color: #15803d; }
+                                &.status-suspected { background: #fef3c7; color: #b45309; }
+                                &.status-resolved { background: #f1f5f9; color: #475569; }
+                            }
+                        }
+
+                        .diag-meta {
+                            display: flex;
+                            gap: 0.35rem;
+                            flex-wrap: wrap;
+                            margin-bottom: 0.3rem;
+
+                            .badge-case {
+                                background: #f1f5f9;
+                                border: 1px solid #e2e8f0;
+                                border-radius: 4px;
+                                padding: 0.1rem 0.35rem;
+                                font-size: 0.68rem;
+                                color: #475569;
+                            }
+                        }
+
+                        .diag-notes {
+                            font-size: 0.72rem;
+                            color: #64748b;
+                        }
+                    }
+                }
+
+                /* Tab 4: Proposed Treatments & Completed Sessions */
+                .treatments-list {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.6rem;
+
+                    .timeline-empty {
+                        padding: 1.5rem;
+                        text-align: center;
+                        color: #94a3b8;
+                        font-size: 0.8rem;
+                    }
+
+                    .section-subheading {
+                        font-size: 0.74rem;
+                        font-weight: 700;
+                        color: #475569;
+                        text-transform: uppercase;
+                        letter-spacing: 0.4px;
+                        margin-bottom: 0.35rem;
+                    }
+
+                    .treatment-card {
+                        background: #ffffff;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 6px;
+                        padding: 0.65rem;
+
+                        &.proposed {
+                            border-left: 3px solid #f59e0b;
+                        }
+
+                        &.completed {
+                            border-left: 3px solid #16a34a;
+                            background: #fcfdfc;
+                        }
+
+                        .t-name {
+                            font-size: 0.82rem;
+                            font-weight: 700;
+                            color: #0f172a;
+                            margin-bottom: 0.2rem;
+                        }
+
+                        .t-plan {
+                            font-size: 0.72rem;
+                            color: #64748b;
+                            margin-bottom: 0.35rem;
+                        }
+
+                        .t-state {
+                            font-size: 0.68rem;
+                            font-weight: 700;
+                            padding: 0.1rem 0.45rem;
+                            border-radius: 10px;
+                            background: #fef3c7;
+                            color: #b45309;
+
+                            &.status-completed {
+                                background: #dcfce7;
+                                color: #15803d;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/* ==========================================================================
+   Dental Case Form View: Clean Full-Width Healthcare Layout
+   ========================================================================== */
+.o_dental_case_form_view {
+    &.o_form_renderer {
+        width: 100% !important;
+        display: block !important;
+    }
+
+    .o_form_sheet_bg {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
+
+        .o_form_sheet {
+            max-width: 100% !important;
+            width: 100% !important;
+            margin: 0 auto !important;
+            box-sizing: border-box !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+    }
+
+    /* Keep chatter at the bottom of the Dental Case form, not beside the odontogram */
+    display: flex !important;
+    flex-direction: column !important;
+
+    .o-mail-Form-chatter,
+    .o-mail-ChatterContainer,
+    .o-mail-Chatter {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 0 0 auto !important;
+        order: 99 !important;
+        box-sizing: border-box !important;
+        padding: 1.5rem 2rem !important;
+        margin-top: 1rem !important;
+        border-top: 1px solid #e2e8f0;
+        background: #ffffff;
+
+        &.o-aside {
+            display: block !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            position: static !important;
+            border-left: none !important;
+        }
+    }
+}
+
+
+

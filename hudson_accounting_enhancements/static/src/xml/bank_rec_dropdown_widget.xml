@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="hudson_accounting_enhancements.BankRecActionDropdown">
+        <Dropdown>
+            <button class="btn btn-link text-muted p-0 position-relative" title="Options">
+                <i class="fa fa-ellipsis-v fa-fw"/>
+                <span t-if="this.hasMatches" class="position-absolute top-0 start-100 translate-middle p-1 bg-info border border-light rounded-circle">
+                    <span class="visually-hidden">Matches</span>
+                </span>
+            </button>
+            <t t-set-slot="content">
+                <DropdownItem onSelected="() => this.onReconcile()">
+                    <span class="badge rounded-pill text-bg-success me-2" t-if="this.isReconciled">Matched</span>
+                    <span class="badge rounded-pill text-bg-info me-2" t-elif="this.hasMatches">Suggestions</span>
+                    Reconcile
+                </DropdownItem>
+                <DropdownItem onSelected="() => this.onUploadBills()">
+                    Upload Bills
+                </DropdownItem>
+                <div class="dropdown-divider"/>
+                <DropdownItem onSelected="() => this.onInternalTransfers()">
+                    Internal Transfers
+                </DropdownItem>
+                <div class="dropdown-divider"/>
+                <DropdownItem onSelected="() => this.onManageModels()">
+                    Manage Models
+                </DropdownItem>
+                <DropdownItem onSelected="() => this.onDelete()">
+                    Delete Transaction
+                </DropdownItem>
+            </t>
+        </Dropdown>
+    </t>
+</templates>

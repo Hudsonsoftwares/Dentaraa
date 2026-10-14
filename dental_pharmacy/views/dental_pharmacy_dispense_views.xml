@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Pharmacy Dispense Order Form View -->
+    <record id="view_dental_pharmacy_dispense_form" model="ir.ui.view">
+        <field name="name">dental.pharmacy.dispense.form</field>
+        <field name="model">dental.pharmacy.dispense</field>
+        <field name="arch" type="xml">
+            <form string="Pharmacy Dispense Order">
+                <header>
+                    <button name="action_dispense" string="Confirm Dispensing &amp; Release Stock" type="object" class="btn-primary"
+                            invisible="state != 'draft'" groups="dental_base.group_dental_pharmacist,dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+                    <button name="action_create_invoice" string="Generate Customer Invoice" type="object" class="btn-secondary"
+                            invisible="state != 'dispensed' or invoice_id" groups="dental_base.group_dental_pharmacist,dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+                    <button name="action_return" string="Authorize Return / Correction" type="object" class="btn-warning"
+                            invisible="state != 'dispensed'" groups="dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,dispensed,returned"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_picking" type="object" class="oe_stat_button" icon="fa-truck" invisible="not picking_id">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Stock Transfer</span>
+                                <span class="o_stat_value"><field name="picking_id" readonly="1"/></span>
+                            </div>
+                        </button>
+                        <button name="action_view_invoice" type="object" class="oe_stat_button" icon="fa-pencil-square-o" invisible="not invoice_id">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Customer Invoice</span>
+                                <span class="o_stat_value"><field name="invoice_id" readonly="1"/></span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <widget name="web_ribbon" title="DISPENSED" bg_color="text-bg-success" invisible="state != 'dispensed'"/>
+                    <widget name="web_ribbon" title="RETURNED / CORRECTED" bg_color="text-bg-danger" invisible="state != 'returned'"/>
+
+                    <div class="oe_title">
+                        <label for="name" string="Dispense Order Number"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+
+                    <!-- Return Reason Warning Banner if Returned -->
+                    <div class="alert alert-danger mb-3" role="alert" invisible="state != 'returned'">
+                        <div class="d-flex align-items-center">
+                            <i class="fa fa-undo fa-2x me-3"/>
+                            <div>
+                                <strong class="fs-6">MEDICINE DISPENSE RETURNED / CORRECTED:</strong>
+                                <div class="mt-1">Reason: <b><field name="return_reason" readonly="1"/></b></div>
+                                <div class="small mt-1 text-muted">
+                                    Authorized on: <field name="returned_date" readonly="1"/> by <field name="returned_by_id" readonly="1"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <group>
+                        <group string="Prescription Reference">
+                            <field name="prescription_id" readonly="state != 'draft'" options="{'no_create': True}"/>
+                            <field name="patient_id"/>
+                            <field name="patient_dental_id"/>
+                            <field name="dentist_id"/>
+                            <field name="case_id"/>
+                        </group>
+                        <group string="Dispense Logistics &amp; Security">
+                            <field name="dispense_date" readonly="state != 'draft'"/>
+                            <field name="pharmacist_id"/>
+                            <field name="location_id" readonly="state != 'draft'" options="{'no_create': True}"/>
+                            <field name="location_dest_id" readonly="state != 'draft'" options="{'no_create': True}"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+
+                    <group string="Billing &amp; Accounting Status" invisible="state == 'draft' and not invoice_id">
+                        <group>
+                            <field name="invoice_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="invoice_state" widget="badge"/>
+                            <field name="invoice_payment_state" widget="badge"
+                                   decoration-success="invoice_payment_state == 'paid'"
+                                   decoration-warning="invoice_payment_state in ('not_paid', 'partial')"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Dispensed Medications &amp; Batch Selection">
+                            <field name="line_ids" readonly="state != 'draft'">
+                                <list editable="bottom">
+                                    <field name="prescription_line_id" options="{'no_create': True}" string="Rx Item"/>
+                                    <field name="medicine_id"/>
+                                    <field name="generic_name" optional="show"/>
+                                    <field name="dosage_form" optional="show"/>
+                                    <field name="prescribed_qty"/>
+                                    <field name="previously_dispensed_qty"/>
+                                    <field name="remaining_qty"/>
+                                    <field name="lot_id" options="{'no_create': True}" required="1"/>
+                                    <field name="lot_expiry_date" widget="date"/>
+                                    <field name="lot_stock_qty" string="Avail Qty"/>
+                                    <field name="qty_to_dispense" sum="Total Dispensed"/>
+                                    <field name="unit_price"/>
+                                    <field name="subtotal" sum="Total Amount"/>
+                                </list>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="amount_total" class="oe_subtotal_footer_separator fw-bold text-success fs-5"/>
+                            </group>
+                        </page>
+                        <page string="Pharmacist Notes &amp; Counseling">
+                            <field name="notes" readonly="state != 'draft'" placeholder="Patient counseling details, medicine instructions given, special storage remarks..."/>
+                        </page>
+                        <page string="Authorized Return Details" invisible="state != 'returned' and not return_reason">
+                            <group>
+                                <field name="return_reason" readonly="state == 'returned'" placeholder="State the mandatory clinical or operational justification for returning or correcting this dispensed medication..."/>
+                                <field name="return_picking_id" readonly="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Pharmacy Dispense Order List View -->
+    <record id="view_dental_pharmacy_dispense_list" model="ir.ui.view">
+        <field name="name">dental.pharmacy.dispense.list</field>
+        <field name="model">dental.pharmacy.dispense</field>
+        <field name="arch" type="xml">
+            <list string="Pharmacy Dispense Orders">
+                <field name="name"/>
+                <field name="dispense_date"/>
+                <field name="prescription_id"/>
+                <field name="patient_id"/>
+                <field name="dentist_id"/>
+                <field name="pharmacist_id"/>
+                <field name="amount_total" sum="Total Dispensed Value"/>
+                <field name="picking_id" optional="show"/>
+                <field name="invoice_id" optional="show"/>
+                <field name="invoice_payment_state" widget="badge" optional="show"
+                       decoration-success="invoice_payment_state == 'paid'"
+                       decoration-warning="invoice_payment_state in ('not_paid', 'partial')"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'dispensed'"
+                       decoration-warning="state == 'draft'"
+                       decoration-danger="state == 'returned'"
+                       decoration-muted="state == 'cancelled'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Pharmacy Dispense Order Search View -->
+    <record id="view_dental_pharmacy_dispense_search" model="ir.ui.view">
+        <field name="name">dental.pharmacy.dispense.search</field>
+        <field name="model">dental.pharmacy.dispense</field>
+        <field name="arch" type="xml">
+            <search string="Search Dispense Orders">
+                <field name="name" string="Dispense / Patient / Rx" filter_domain="['|', '|', ('name', 'ilike', self), ('patient_id', 'ilike', self), ('prescription_id', 'ilike', self)]"/>
+                <field name="patient_id"/>
+                <field name="dentist_id"/>
+                <field name="pharmacist_id"/>
+                <field name="prescription_id"/>
+                <separator/>
+                <filter string="Today's Dispenses" name="filter_today" domain="[('dispense_date', '&gt;=', context_today().strftime('%Y-%m-%d 00:00:00')), ('dispense_date', '&lt;=', context_today().strftime('%Y-%m-%d 23:59:59'))]"/>
+                <filter string="Dispensed (Completed)" name="filter_dispensed" domain="[('state', '=', 'dispensed')]"/>
+                <filter string="Draft Dispense" name="filter_draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Returned / Corrected" name="filter_returned" domain="[('state', '=', 'returned')]"/>
+                <separator/>
+                <filter string="Invoiced" name="filter_invoiced" domain="[('invoice_id', '!=', False)]"/>
+                <filter string="Not Invoiced" name="filter_not_invoiced" domain="[('invoice_id', '=', False), ('state', '=', 'dispensed')]"/>
+                <separator/>
+                <filter string="Group By: Patient" name="group_by_patient" context="{'group_by': 'patient_id'}"/>
+                <filter string="Group By: Dispensing Pharmacist" name="group_by_pharmacist" context="{'group_by': 'pharmacist_id'}"/>
+                <filter string="Group By: Prescribing Dentist" name="group_by_dentist" context="{'group_by': 'dentist_id'}"/>
+                <filter string="Group By: Status" name="group_by_status" context="{'group_by': 'state'}"/>
+                <filter string="Group By: Dispense Date" name="group_by_date" context="{'group_by': 'dispense_date:day'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action: All Dispense Orders -->
+    <record id="action_dental_pharmacy_dispense" model="ir.actions.act_window">
+        <field name="name">Dispensing Orders</field>
+        <field name="res_model">dental.pharmacy.dispense</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_dental_pharmacy_dispense_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Process authorized pharmacy dispensing orders against doctor prescriptions!
+            </p>
+        </field>
+    </record>
+
+    <!-- Action: Dispensed Orders History -->
+    <record id="action_dental_pharmacy_dispense_history" model="ir.actions.act_window">
+        <field name="name">Dispensing History</field>
+        <field name="res_model">dental.pharmacy.dispense</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '=', 'dispensed')]</field>
+        <field name="search_view_id" ref="view_dental_pharmacy_dispense_search"/>
+    </record>
+</odoo>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dental_medicine_category_form" model="ir.ui.view">
+        <field name="name">dental.medicine.category.form</field>
+        <field name="model">dental.medicine.category</field>
+        <field name="arch" type="xml">
+            <form string="Medicine Category">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_medicines" type="object" class="oe_stat_button" icon="fa-medkit">
+                            <field name="medicine_count" widget="statinfo" string="Medicines"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only" string="Category Name"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Antibiotics &amp; Antimicrobials"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code" placeholder="e.g. ATB"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description &amp; Clinical Guidance">
+                            <field name="description" placeholder="Specify therapeutic guidelines, standard dental indications, contraindications..."/>
+                        </page>
+                        <page string="Medicines in Category">
+                            <field name="medicine_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="generic_name"/>
+                                    <field name="dosage_form"/>
+                                    <field name="strength"/>
+                                    <field name="list_price"/>
+                                    <field name="qty_available"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_dental_medicine_category_list" model="ir.ui.view">
+        <field name="name">dental.medicine.category.list</field>
+        <field name="model">dental.medicine.category</field>
+        <field name="arch" type="xml">
+            <list string="Medicine Categories">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="medicine_count"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dental_medicine_category_search" model="ir.ui.view">
+        <field name="name">dental.medicine.category.search</field>
+        <field name="model">dental.medicine.category</field>
+        <field name="arch" type="xml">
+            <search string="Search Medicine Categories">
+                <field name="name"/>
+                <field name="code"/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_dental_medicine_category" model="ir.actions.act_window">
+        <field name="name">Medicine Categories</field>
+        <field name="res_model">dental.medicine.category</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_dental_medicine_category_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create therapeutic categories for dental pharmaceuticals!
+            </p>
+        </field>
+    </record>
+</odoo>
