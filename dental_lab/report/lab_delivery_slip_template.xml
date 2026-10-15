@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_lab_delivery_slip_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-family: sans-serif; font-size: 13px;">
+                        <div class="row pb-3 mb-3 border-bottom">
+                            <div class="col-7">
+                                <h3 class="text-success mb-1 fw-bold">Dental Laboratory Delivery Slip</h3>
+                                <div class="text-muted small">Finished Goods Transfer &amp; Clinic Intake Verification</div>
+                            </div>
+                            <div class="col-5 text-end">
+                                <h4 class="mb-0 text-dark"><span t-field="doc.name"/></h4>
+                                <div class="badge bg-success">QC Approved</div>
+                            </div>
+                        </div>
+
+                        <div class="row g-2 mb-3 p-2 bg-light rounded border">
+                            <div class="col-6">
+                                <div><strong>Patient:</strong> <span t-field="doc.patient_id.name"/></div>
+                                <div><strong>Dental Case #:</strong> <span t-field="doc.case_id.name"/></div>
+                                <div><strong>Doctor:</strong> <span t-field="doc.dentist_id.name"/></div>
+                            </div>
+                            <div class="col-6">
+                                <div><strong>Order Date:</strong> <span t-field="doc.order_date"/></div>
+                                <div><strong>Delivery Date:</strong> <span t-field="doc.due_date"/></div>
+                                <div><strong>Lab Technician:</strong> <span t-field="doc.technician_id.name"/></div>
+                            </div>
+                        </div>
+
+                        <h6 class="fw-bold mt-3 mb-2">Delivered Restorations</h6>
+                        <table class="table table-bordered table-sm mb-3">
+                            <thead class="table-secondary">
+                                <tr>
+                                    <th>Tooth</th>
+                                    <th>Restoration</th>
+                                    <th>Material</th>
+                                    <th>Shade</th>
+                                    <th>Qty</th>
+                                    <th>Quality Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="doc.line_ids" t-as="line">
+                                    <td class="fw-bold"><span t-field="line.tooth_number"/></td>
+                                    <td><span t-field="line.restoration_type"/></td>
+                                    <td><span t-field="line.material"/></td>
+                                    <td><span t-field="line.shade"/></td>
+                                    <td><span t-field="line.quantity"/></td>
+                                    <td><span class="badge bg-success">Passed</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="card p-2 border mb-4">
+                            <h6 class="fw-bold text-secondary mb-1">Disinfection &amp; Hygiene Compliance</h6>
+                            <p class="mb-0 small text-muted">
+                                This restoration has undergone ultrasonic cleaning and high-level dental laboratory disinfection. It is sealed in a protective pouch. Chairside sterilization or disinfection is recommended prior to clinical trial/cementation.
+                            </p>
+                        </div>
+
+                        <div class="row mt-4 pt-3 border-top">
+                            <div class="col-6 text-center">
+                                <div style="height: 50px;"/>
+                                <div class="border-top pt-1"><strong>Received at Clinic (Staff Signature &amp; Date)</strong></div>
+                            </div>
+                            <div class="col-6 text-center">
+                                <div style="height: 50px;"/>
+                                <div class="border-top pt-1"><strong>Dentist Clinical Seating Acceptance</strong></div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

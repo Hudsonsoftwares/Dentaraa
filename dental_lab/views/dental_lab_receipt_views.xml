@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dental_lab_receipt_form" model="ir.ui.view">
+        <field name="name">dental.lab.receipt.form</field>
+        <field name="model">dental.lab.receipt</field>
+        <field name="arch" type="xml">
+            <form string="Clinic Laboratory Receipt">
+                <header>
+                    <button name="action_verify_with_dentist" string="Verify &amp; Handover to Doctor" type="object"
+                            class="btn-primary" invisible="state != 'received'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="received,verified,returned"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <span class="o_form_label">Receipt Record</span>
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Restoration Received">
+                            <field name="order_id" readonly="state != 'received'"/>
+                            <field name="patient_id"/>
+                            <field name="dispatch_id"/>
+                            <field name="quantity_received"/>
+                        </group>
+                        <group string="Intake &amp; Sterility">
+                            <field name="receipt_date"/>
+                            <field name="receiver_id"/>
+                            <field name="condition"/>
+                            <field name="package_sterility"/>
+                        </group>
+                    </group>
+                    <group string="Discrepancy / Inspection Observations" invisible="condition == 'intact'">
+                        <field name="discrepancy_notes" nolabel="1" placeholder="Detail any broken margins, shade discrepancy, missing components..."/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_dental_lab_receipt_list" model="ir.ui.view">
+        <field name="name">dental.lab.receipt.list</field>
+        <field name="model">dental.lab.receipt</field>
+        <field name="arch" type="xml">
+            <list string="Clinic Receipts" decoration-warning="condition != 'intact'" decoration-success="state == 'verified'">
+                <field name="name"/>
+                <field name="receipt_date"/>
+                <field name="order_id"/>
+                <field name="patient_id"/>
+                <field name="receiver_id"/>
+                <field name="condition" widget="badge" decoration-success="condition == 'intact'" decoration-danger="condition in ('damaged', 'rejected')"/>
+                <field name="package_sterility"/>
+                <field name="quantity_received"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_dental_lab_receipts" model="ir.actions.act_window">
+        <field name="name">Clinic Receipts &amp; Intake</field>
+        <field name="res_model">dental.lab.receipt</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

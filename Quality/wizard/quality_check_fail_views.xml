@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="quality_check_fail_view_form" model="ir.ui.view">
+        <field name="name">quality.check.fail.view.form</field>
+        <field name="model">quality.check.fail</field>
+        <field name="arch" type="xml">
+            <form string="Quality Check Failed">
+                <group>
+                    <group>
+                        <field name="check_id" invisible="1"/>
+                        <field name="failure_location_id"/>
+                    </group>
+                    <group>
+                        <field name="message" nolabel="1"/>
+                    </group>
+                </group>
+                <footer>
+                    <button string="Confirm Measure" name="action_confirm" type="object" class="btn-primary"/>
+                    <button string="Correct Measure" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

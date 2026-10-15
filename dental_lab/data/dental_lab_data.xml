@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Dental Laboratory Product Categories -->
+    <record id="product_category_dental_lab" model="product.category">
+        <field name="name">Dental Laboratory</field>
+        <field name="parent_id" ref="product.product_category_goods"/>
+    </record>
+
+    <record id="product_category_raw_materials" model="product.category">
+        <field name="name">Raw Materials</field>
+        <field name="parent_id" ref="product_category_dental_lab"/>
+    </record>
+
+    <record id="product_category_artificial_teeth" model="product.category">
+        <field name="name">Artificial Teeth</field>
+        <field name="parent_id" ref="product_category_dental_lab"/>
+    </record>
+
+    <record id="product_category_dental_consumables" model="product.category">
+        <field name="name">Dental Consumables</field>
+        <field name="parent_id" ref="product_category_dental_lab"/>
+    </record>
+
+    <record id="product_category_crowns_bridges" model="product.category">
+        <field name="name">Crowns and Bridges</field>
+        <field name="parent_id" ref="product_category_dental_lab"/>
+    </record>
+
+    <record id="product_category_dentures" model="product.category">
+        <field name="name">Dentures</field>
+        <field name="parent_id" ref="product_category_dental_lab"/>
+    </record>
+
+    <record id="product_category_veneers" model="product.category">
+        <field name="name">Veneers</field>
+        <field name="parent_id" ref="product_category_dental_lab"/>
+    </record>
+
+    <record id="product_category_implant_restorations" model="product.category">
+        <field name="name">Implant Restorations</field>
+        <field name="parent_id" ref="product_category_dental_lab"/>
+    </record>
+
+    <record id="product_category_orthodontic_appliances" model="product.category">
+        <field name="name">Orthodontic Appliances</field>
+        <field name="parent_id" ref="product_category_dental_lab"/>
+    </record>
+
+    <record id="product_category_finished_dental_products" model="product.category">
+        <field name="name">Finished Dental Products</field>
+        <field name="parent_id" ref="product_category_dental_lab"/>
+    </record>
+
+    <!-- Dental Quality Control Points using existing Quality module -->
+    <record id="quality_point_crown_bridge_fit" model="quality.point">
+        <field name="title">Crown &amp; Bridge Marginal Fit and Seating Verification</field>
+        <field name="apply_to">categories</field>
+        <field name="product_category_id" ref="product_category_crowns_bridges"/>
+        <field name="applies_to_manufacturing">True</field>
+        <field name="control_per">operation</field>
+        <field name="control_frequency">all</field>
+        <field name="test_type">passfail</field>
+        <field name="instructions"><![CDATA[
+            <p><strong>Inspection Checklist:</strong></p>
+            <ul>
+                <li>Verify complete seating on working die under 10x stereo microscope.</li>
+                <li>Ensure zero margin overhang, gap, or rock (&lt; 50 microns).</li>
+                <li>Verify interproximal contact tightness with 0.05mm shimstock foil.</li>
+            </ul>
+        ]]></field>
+        <field name="failure_message"><![CDATA[
+            <p><strong>Correction:</strong> Polish or re-mill margin if seat incomplete. If rocking persists, report to technician for internal relief or recast.</p>
+        ]]></field>
+    </record>
+
+    <record id="quality_point_shade_esthetic" model="quality.point">
+        <field name="title">Restoration Shade, Translucency &amp; Glaze Inspection</field>
+        <field name="apply_to">categories</field>
+        <field name="product_category_id" ref="product_category_crowns_bridges"/>
+        <field name="applies_to_manufacturing">True</field>
+        <field name="control_per">operation</field>
+        <field name="control_frequency">all</field>
+        <field name="test_type">passfail</field>
+        <field name="instructions"><![CDATA[
+            <p><strong>Inspection Checklist:</strong></p>
+            <ul>
+                <li>Match shade against designated VITA shade guide under calibrated 5500K daylight lighting.</li>
+                <li>Check incisal halo, mammelon characterization, and cervical saturation.</li>
+                <li>Inspect surface glaze for smoothness and absence of ceramic pits or rough areas.</li>
+            </ul>
+        ]]></field>
+        <field name="failure_message"><![CDATA[
+            <p><strong>Correction:</strong> Apply stain and reglaze firing cycle if shade is slightly off. Complete remake required if shade mismatch is severe.</p>
+        ]]></field>
+    </record>
+
+    <record id="quality_point_denture_occlusion" model="quality.point">
+        <field name="title">Denture Occlusal Harmony &amp; Border Seal QC</field>
+        <field name="apply_to">categories</field>
+        <field name="product_category_id" ref="product_category_dentures"/>
+        <field name="applies_to_manufacturing">True</field>
+        <field name="control_per">operation</field>
+        <field name="control_frequency">all</field>
+        <field name="test_type">passfail</field>
+        <field name="instructions"><![CDATA[
+            <p><strong>Inspection Checklist:</strong></p>
+            <ul>
+                <li>Inspect acrylic denture base for porosities, sharp edges, or blebs.</li>
+                <li>Check bilateral balanced occlusion on articulator.</li>
+                <li>Verify artificial teeth retention and high polish of cameo surfaces.</li>
+            </ul>
+        ]]></field>
+        <field name="failure_message"><![CDATA[
+            <p><strong>Correction:</strong> Perform selective grinding for occlusal interferences. Buff and polish border extensions.</p>
+        ]]></field>
+    </record>
+
+    <!-- Dental Lab Dashboard Singleton Record -->
+    <record id="dental_lab_dashboard_record" model="dental.lab.dashboard">
+        <field name="name">Dental Laboratory Dashboard</field>
+    </record>
+</odoo>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Product Template Form Inherit -->
+    <record id="view_product_template_form_inherit_dental_lab" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.dental.lab</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_lab_orders" type="object" class="oe_stat_button" icon="fa-flask"
+                        invisible="not is_dental_lab_item or lab_order_count == 0">
+                    <field name="lab_order_count" widget="statinfo" string="Lab Orders"/>
+                </button>
+            </xpath>
+            <xpath expr="//page[@name='general_information']" position="after">
+                <page string="Dental Laboratory" name="dental_lab_info">
+                    <group>
+                        <group string="Laboratory Categorization">
+                            <field name="is_dental_lab_item"/>
+                            <field name="dental_lab_type" invisible="not is_dental_lab_item"/>
+                            <field name="is_patient_specific" invisible="not is_dental_lab_item"/>
+                            <field name="lab_turnaround_days" invisible="not is_dental_lab_item"/>
+                        </group>
+                        <group string="Dental Specifications" invisible="not is_dental_lab_item">
+                            <field name="dental_material_composition"/>
+                            <field name="dental_shade"/>
+                            <field name="dental_size"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Product Template Search View Inherit -->
+    <record id="view_product_template_search_inherit_dental_lab" model="ir.ui.view">
+        <field name="name">product.template.search.inherit.dental.lab</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='filter_to_purchase']" position="after">
+                <separator/>
+                <filter string="Dental Lab Items" name="filter_dental_lab" domain="[('is_dental_lab_item', '=', True)]"/>
+                <filter string="Raw Materials" name="filter_raw_materials" domain="[('dental_lab_type', '=', 'raw_material')]"/>
+                <filter string="Artificial Teeth" name="filter_artificial_teeth" domain="[('dental_lab_type', '=', 'teeth')]"/>
+                <filter string="Consumables" name="filter_consumables" domain="[('dental_lab_type', '=', 'consumable')]"/>
+                <filter string="Finished Restorations" name="filter_finished_restorations" domain="[('dental_lab_type', 'in', ('crown_bridge', 'denture', 'veneer', 'implant', 'orthodontic', 'finished_product'))]"/>
+                <separator/>
+                <filter string="Group By: Lab Item Category" name="group_by_dental_lab_type" context="{'group_by': 'dental_lab_type'}"/>
+                <filter string="Group By: Material Composition" name="group_by_dental_material" context="{'group_by': 'dental_material_composition'}"/>
+                <filter string="Group By: Dental Shade" name="group_by_dental_shade" context="{'group_by': 'dental_shade'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Lab Products Action -->
+    <record id="action_dental_lab_products" model="ir.actions.act_window">
+        <field name="name">Dental Laboratory Products &amp; Materials</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('is_dental_lab_item', '=', True)]</field>
+        <field name="context">{'default_is_dental_lab_item': True, 'search_default_filter_dental_lab': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Register a new dental laboratory raw material, artificial teeth, or finished restoration.
+            </p>
+        </field>
+    </record>
+</odoo>

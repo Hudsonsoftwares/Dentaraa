@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dental_lab_order_line_list" model="ir.ui.view">
+        <field name="name">dental.lab.order.line.list</field>
+        <field name="model">dental.lab.order.line</field>
+        <field name="arch" type="xml">
+            <list string="Tooth Restorations"
+                  decoration-warning="state == 'rework'"
+                  decoration-danger="state == 'qc_failed'"
+                  decoration-success="state in ('qc_passed', 'completed')">
+                <field name="order_id"/>
+                <field name="tooth_number"/>
+                <field name="restoration_type"/>
+                <field name="product_id"/>
+                <field name="material"/>
+                <field name="shade"/>
+                <field name="quantity"/>
+                <field name="subtotal" sum="Total"/>
+                <field name="state" widget="badge"
+                       decoration-warning="state == 'rework'"
+                       decoration-danger="state == 'qc_failed'"
+                       decoration-info="state in ('in_production', 'qc_pending')"
+                       decoration-success="state in ('qc_passed', 'completed')"/>
+                <field name="rework_count"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dental_lab_order_line_search" model="ir.ui.view">
+        <field name="name">dental.lab.order.line.search</field>
+        <field name="model">dental.lab.order.line</field>
+        <field name="arch" type="xml">
+            <search string="Search Tooth Restorations">
+                <field name="tooth_number"/>
+                <field name="order_id"/>
+                <field name="product_id"/>
+                <field name="material"/>
+                <field name="shade"/>
+                <filter string="In Production" name="filter_in_prod" domain="[('state', '=', 'in_production')]"/>
+                <filter string="QC Pending" name="filter_qc_pending" domain="[('state', '=', 'qc_pending')]"/>
+                <separator/>
+                <filter string="Group By: Restoration Type" name="group_restoration" context="{'group_by': 'restoration_type'}"/>
+                <filter string="Group By: Material" name="group_material" context="{'group_by': 'material'}"/>
+                <filter string="Group By: Shade" name="group_shade" context="{'group_by': 'shade'}"/>
+                <filter string="Group By: Status" name="group_status" context="{'group_by': 'state'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_dental_lab_order_lines" model="ir.actions.act_window">
+        <field name="name">Tooth Restorations Registry</field>
+        <field name="res_model">dental.lab.order.line</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_dental_lab_order_line_search"/>
+    </record>
+</odoo>

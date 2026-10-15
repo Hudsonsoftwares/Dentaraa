@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_quality_check_form_inherit_dental_lab" model="ir.ui.view">
+        <field name="name">quality.check.form.inherit.dental.lab</field>
+        <field name="model">quality.check</field>
+        <field name="inherit_id" ref="Quality.view_quality_check_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_initiate_rework" type="object" string="Request Rework"
+                        class="btn-warning" invisible="quality_state != 'fail'"/>
+            </xpath>
+            <xpath expr="//field[@name='picking_id']" position="before">
+                <field name="lab_order_id" invisible="not lab_order_id"/>
+                <field name="lab_order_line_id" invisible="not lab_order_line_id"/>
+                <field name="dental_inspection_stage" invisible="not lab_order_id"/>
+                <field name="is_rework" invisible="not is_rework"/>
+                <field name="parent_check_id" invisible="not parent_check_id"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Rework / Corrective History" invisible="not rework_reason and not is_rework">
+                    <group>
+                        <field name="rework_reason" readonly="1"/>
+                        <field name="rework_check_ids" readonly="1">
+                            <list>
+                                <field name="name"/>
+                                <field name="title"/>
+                                <field name="user_id"/>
+                                <field name="quality_state" widget="badge"/>
+                                <field name="date_done"/>
+                            </list>
+                        </field>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_quality_check_list_inherit_dental_lab" model="ir.ui.view">
+        <field name="name">quality.check.list.inherit.dental.lab</field>
+        <field name="model">quality.check</field>
+        <field name="inherit_id" ref="Quality.view_quality_check_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_id']" position="after">
+                <field name="lab_order_id" optional="show"/>
+                <field name="dental_inspection_stage" optional="hide"/>
+                <field name="is_rework" optional="hide" widget="boolean_toggle"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

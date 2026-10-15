@@ -1,0 +1,398 @@
+{
+  "version": 1,
+  "sheets": [
+    {
+      "id": "sheet1",
+      "name": "Quality Control Spreadsheet",
+      "colNumber": 26,
+      "rowNumber": 100,
+      "rows": {},
+      "cols": {
+        "0": {
+          "size": 350
+        }
+      },
+      "merges": [],
+      "cells": {
+        "A2": {
+          "content": "Visual",
+          "style": 1
+        },
+        "A3": {
+          "content": "Do you wish to visually inspect the product?",
+          "style": 6
+        },
+        "A4": {
+          "content": "Is the product free of damage?",
+          "style": 2
+        },
+        "A5": {
+          "content": "Is the product free of water damage?",
+          "style": 2
+        },
+        "A7": {
+          "content": "Dimensions",
+          "style": 1
+        },
+        "A8": {
+          "content": "Do you wish to inspect the dimensions of the product?",
+          "style": 6
+        },
+        "A9": {
+          "content": "Measure the length",
+          "style": 2
+        },
+        "A10": {
+          "content": "Measure the width",
+          "style": 2
+        },
+        "A12": {
+          "content": "Color",
+          "style": 1
+        },
+        "A13": {
+          "content": "Do you wish to inspect the color of the product?",
+          "style": 6
+        },
+        "A14": {
+          "content": "Are the predominant colors acceptable?",
+          "style": 2
+        },
+        "A15": {
+          "content": "Are the trim and minor colors acceptable?",
+          "style": 2
+        },
+        "A17": {
+          "content": "Quality check result",
+          "style": 4
+        },
+        "B3": {
+          "content": "FALSE"
+        },
+        "B4": {
+          "content": "FALSE"
+        },
+        "B5": {
+          "content": "FALSE"
+        },
+        "B8": {
+          "content": "FALSE"
+        },
+        "B9": {
+          "content": "0"
+        },
+        "C9": {
+          "content": "mm"
+        },
+        "B10": {
+          "content": "0"
+        },
+        "C10": {
+          "content": "mm"
+        },
+        "B13": {
+          "content": "FALSE"
+        },
+        "B14": {
+          "content": "FALSE"
+        },
+        "B15": {
+          "content": "FALSE"
+        },
+        "B17": {
+          "content": "=IF(AND(B3=TRUE, B4=TRUE, B5=TRUE, B8=TRUE, B9>=53, B9<=57, B10>=9, B10<=11, B13=TRUE, B14=TRUE, B15=TRUE), \"PASS\", \"FAIL\")",
+          "style": 5
+        }
+      },
+      "areGridLinesVisible": true,
+      "isVisible": true,
+      "headerGroups": {
+        "ROW": [],
+        "COL": []
+      },
+      "conditionalFormats": [
+        {
+          "id": "cf_pass",
+          "ranges": [
+            "B17"
+          ],
+          "rule": {
+            "type": "CellIsRule",
+            "operator": "Equal",
+            "values": [
+              "\"PASS\""
+            ],
+            "style": {
+              "fillColor": "#388e3c",
+              "textColor": "#ffffff"
+            }
+          }
+        },
+        {
+          "id": "cf_fail",
+          "ranges": [
+            "B17"
+          ],
+          "rule": {
+            "type": "CellIsRule",
+            "operator": "Equal",
+            "values": [
+              "\"FAIL\""
+            ],
+            "style": {
+              "fillColor": "#d32f2f",
+              "textColor": "#ffffff"
+            }
+          }
+        },
+        {
+          "id": "cf_checkbox_false",
+          "ranges": [
+            "B3:B5",
+            "B8",
+            "B13:B15"
+          ],
+          "rule": {
+            "type": "CellIsRule",
+            "operator": "Equal",
+            "values": [
+              "FALSE"
+            ],
+            "style": {
+              "fillColor": "#e57373"
+            }
+          }
+        },
+        {
+          "id": "cf_checkbox_true",
+          "ranges": [
+            "B3:B5",
+            "B8",
+            "B13:B15"
+          ],
+          "rule": {
+            "type": "CellIsRule",
+            "operator": "Equal",
+            "values": [
+              "TRUE"
+            ],
+            "style": {
+              "fillColor": "#81c784"
+            }
+          }
+        },
+        {
+          "id": "cf_length_pass",
+          "ranges": [
+            "B9"
+          ],
+          "rule": {
+            "type": "CellIsRule",
+            "operator": "Between",
+            "values": [
+              "53",
+              "57"
+            ],
+            "style": {
+              "fillColor": "#81c784"
+            }
+          }
+        },
+        {
+          "id": "cf_length_fail",
+          "ranges": [
+            "B9"
+          ],
+          "rule": {
+            "type": "CellIsRule",
+            "operator": "NotBetween",
+            "values": [
+              "53",
+              "57"
+            ],
+            "style": {
+              "fillColor": "#e57373"
+            }
+          }
+        },
+        {
+          "id": "cf_width_pass",
+          "ranges": [
+            "B10"
+          ],
+          "rule": {
+            "type": "CellIsRule",
+            "operator": "Between",
+            "values": [
+              "9",
+              "11"
+            ],
+            "style": {
+              "fillColor": "#81c784"
+            }
+          }
+        },
+        {
+          "id": "cf_width_fail",
+          "ranges": [
+            "B10"
+          ],
+          "rule": {
+            "type": "CellIsRule",
+            "operator": "NotBetween",
+            "values": [
+              "9",
+              "11"
+            ],
+            "style": {
+              "fillColor": "#e57373"
+            }
+          }
+        }
+      ],
+      "dataValidationRules": [
+        {
+          "id": 1,
+          "ranges": [
+            "B3:B5",
+            "B8",
+            "B13:B15"
+          ],
+          "criterion": {
+            "type": "isBoolean",
+            "values": []
+          }
+        }
+      ],
+      "figures": [
+        {
+          "id": "gauge_length",
+          "x": 350,
+          "y": 20,
+          "width": 300,
+          "height": 180,
+          "tag": "chart",
+          "data": {
+            "type": "gauge",
+            "title": {
+              "text": "Length (mm)",
+              "color": "#2a2130",
+              "bold": true
+            },
+            "sectionRule": {
+              "rangeMin": "50",
+              "rangeMax": "60",
+              "colors": {
+                "lowerColor": "#d32f2f",
+                "middleColor": "#388e3c",
+                "upperColor": "#d32f2f"
+              },
+              "lowerInflectionPoint": {
+                "type": "number",
+                "value": "53"
+              },
+              "upperInflectionPoint": {
+                "type": "number",
+                "value": "57"
+              }
+            },
+            "dataRange": "Sheet1!B9",
+            "dataSets": [
+              {
+                "dataRange": "Sheet1!B9"
+              }
+            ]
+          }
+        },
+        {
+          "id": "gauge_width",
+          "x": 350,
+          "y": 220,
+          "width": 300,
+          "height": 180,
+          "tag": "chart",
+          "data": {
+            "type": "gauge",
+            "title": {
+              "text": "Width (mm)",
+              "color": "#2a2130",
+              "bold": true
+            },
+            "sectionRule": {
+              "rangeMin": "5",
+              "rangeMax": "15",
+              "colors": {
+                "lowerColor": "#d32f2f",
+                "middleColor": "#388e3c",
+                "upperColor": "#d32f2f"
+              },
+              "lowerInflectionPoint": {
+                "type": "number",
+                "value": "9"
+              },
+              "upperInflectionPoint": {
+                "type": "number",
+                "value": "11"
+              }
+            },
+            "dataRange": "Sheet1!B10",
+            "dataSets": [
+              {
+                "dataRange": "Sheet1!B10"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "styles": {
+    "1": {
+      "textColor": "#7e57c2",
+      "bold": true,
+      "fontSize": 14
+    },
+    "2": {
+      "bold": true
+    },
+    "3": {
+      "bold": true
+    },
+    "4": {
+      "fillColor": "#ebd4e0",
+      "bold": true
+    },
+    "5": {
+      "bold": true,
+      "align": "center"
+    },
+    "6": {
+      "fillColor": "#f3f2f1",
+      "bold": true
+    }
+  },
+  "formats": {},
+  "borders": {},
+  "tables": [],
+  "revisionId": "4c8a5ecf-c84e-41a9-8d92-a2857ebe25b7",
+  "uniqueFigureIds": true,
+  "settings": {
+    "locale": {
+      "name": "English (US)",
+      "code": "en_US",
+      "thousandsSeparator": ",",
+      "decimalSeparator": ".",
+      "weekStart": 7,
+      "dateFormat": "m/d/yyyy",
+      "timeFormat": "hh:mm:ss a",
+      "formulaArgSeparator": ","
+    }
+  },
+  "pivots": {},
+  "pivotNextId": 1,
+  "customTableStyles": {},
+  "globalFilters": [],
+  "lists": {},
+  "listNextId": 1,
+  "chartOdooMenusReferences": {}
+}

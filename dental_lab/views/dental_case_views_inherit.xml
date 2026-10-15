@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dental_case_form_inherit_dental_lab" model="ir.ui.view">
+        <field name="name">dental.case.form.inherit.dental.lab</field>
+        <field name="model">dental.case</field>
+        <field name="inherit_id" ref="dental_core.view_dental_case_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_new_lab_order" string="New Lab Order" type="object" class="btn-secondary"
+                        invisible="state in ('completed', 'cancelled')"
+                        groups="dental_base.group_dental_dentist,dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+            </xpath>
+            <xpath expr="//div[hasclass('oe_title')]" position="before">
+                <div class="oe_button_box" name="dental_lab_button_box">
+                    <button name="action_view_lab_orders" type="object" class="oe_stat_button" icon="fa-flask">
+                        <field name="lab_order_count" widget="statinfo" string="Lab Orders"/>
+                    </button>
+                </div>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Dental Lab Orders" name="lab_orders">
+                    <field name="lab_order_ids">
+                        <list decoration-warning="state == 'rework'" decoration-info="state == 'in_production'" decoration-success="state in ('dentist_accepted', 'closed')">
+                            <field name="name"/>
+                            <field name="order_date"/>
+                            <field name="due_date"/>
+                            <field name="lab_type"/>
+                            <field name="tooth_summary"/>
+                            <field name="technician_id"/>
+                            <field name="state" widget="badge"
+                                   decoration-warning="state == 'rework'"
+                                   decoration-danger="state == 'cancelled'"
+                                   decoration-info="state in ('submitted', 'in_production', 'qc_pending')"
+                                   decoration-primary="state in ('qc_approved', 'finished', 'dispatched')"
+                                   decoration-success="state in ('received_clinic', 'dentist_accepted', 'closed')"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

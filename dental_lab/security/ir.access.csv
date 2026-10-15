@@ -1,0 +1,36 @@
+id,name,model_id,group_id/id,operation,domain
+access_dental_lab_order_user,dental.lab.order.user,dental.lab.order,dental_lab.group_dental_lab_user,crud,
+access_dental_lab_order_manager,dental.lab.order.manager,dental.lab.order,dental_lab.group_dental_lab_manager,crud,
+access_dental_lab_order_dentist,dental.lab.order.dentist,dental.lab.order,dental_base.group_dental_dentist,crud,
+access_dental_lab_order_receptionist,dental.lab.order.receptionist,dental.lab.order,dental_base.group_dental_receptionist,r,
+access_dental_lab_order_base,dental.lab.order.base,dental.lab.order,base.group_user,r,
+
+access_dental_lab_order_line_user,dental.lab.order.line.user,dental.lab.order.line,dental_lab.group_dental_lab_user,crud,
+access_dental_lab_order_line_manager,dental.lab.order.line.manager,dental.lab.order.line,dental_lab.group_dental_lab_manager,crud,
+access_dental_lab_order_line_dentist,dental.lab.order.line.dentist,dental.lab.order.line,dental_base.group_dental_dentist,crud,
+access_dental_lab_order_line_base,dental.lab.order.line.base,dental.lab.order.line,base.group_user,r,
+
+access_dental_lab_dispatch_user,dental.lab.dispatch.user,dental.lab.dispatch,dental_lab.group_dental_lab_user,crud,
+access_dental_lab_dispatch_manager,dental.lab.dispatch.manager,dental.lab.dispatch,dental_lab.group_dental_lab_manager,crud,
+access_dental_lab_dispatch_receptionist,dental.lab.dispatch.receptionist,dental.lab.dispatch,dental_base.group_dental_receptionist,crud,
+access_dental_lab_dispatch_dentist,dental.lab.dispatch.dentist,dental.lab.dispatch,dental_base.group_dental_dentist,crud,
+access_dental_lab_dispatch_base,dental.lab.dispatch.base,dental.lab.dispatch,base.group_user,r,
+
+access_dental_lab_receipt_user,dental.lab.receipt.user,dental.lab.receipt,dental_lab.group_dental_lab_user,crud,
+access_dental_lab_receipt_manager,dental.lab.receipt.manager,dental.lab.receipt,dental_lab.group_dental_lab_manager,crud,
+access_dental_lab_receipt_receptionist,dental.lab.receipt.receptionist,dental.lab.receipt,dental_base.group_dental_receptionist,crud,
+access_dental_lab_receipt_dentist,dental.lab.receipt.dentist,dental.lab.receipt,dental_base.group_dental_dentist,crud,
+access_dental_lab_receipt_base,dental.lab.receipt.base,dental.lab.receipt,base.group_user,r,
+
+access_dental_lab_dashboard_base,dental.lab.dashboard.base,dental.lab.dashboard,base.group_user,crud,
+access_dental_lab_dashboard_manager,dental.lab.dashboard.manager,dental.lab.dashboard,dental_lab.group_dental_lab_manager,crud,
+access_dental_lab_dashboard_admin,dental.lab.dashboard.admin,dental.lab.dashboard,dental_base.group_dental_admin,crud,
+
+access_dental_lab_create_wizard,dental.lab.create.wizard,dental.lab.create.wizard,base.group_user,crud,
+access_dental_lab_create_wizard_line,dental.lab.create.wizard.line,dental.lab.create.wizard.line,base.group_user,crud,
+access_dental_lab_rework_wizard,dental.lab.rework.wizard,dental.lab.rework.wizard,base.group_user,crud,
+
+dental_lab_order_comp_rule,Dental Lab Order multi-company,dental.lab.order,,crud,"['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]"
+dental_lab_order_line_comp_rule,Dental Lab Order Line multi-company,dental.lab.order.line,,crud,"['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]"
+dental_lab_dispatch_comp_rule,Dental Lab Dispatch multi-company,dental.lab.dispatch,,crud,"['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]"
+dental_lab_receipt_comp_rule,Dental Lab Receipt multi-company,dental.lab.receipt,,crud,"['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]"

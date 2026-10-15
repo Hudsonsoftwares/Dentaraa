@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dental_lab_rework_wizard_form" model="ir.ui.view">
+        <field name="name">dental.lab.rework.wizard.form</field>
+        <field name="model">dental.lab.rework.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Initiate Laboratory Rework &amp; Defect Correction">
+                <field name="order_id" invisible="1"/>
+                <field name="order_line_id" invisible="1"/>
+                <field name="check_id" invisible="1"/>
+
+                <div class="alert alert-danger" role="alert">
+                    <strong>Quality Failure / Defect Detected:</strong> Please specify the defect details, rework classification, and assigned technician. This will maintain full traceability to the originating quality check.
+                </div>
+
+                <group>
+                    <group>
+                        <field name="rework_type"/>
+                        <field name="technician_id"/>
+                    </group>
+                    <group>
+                        <field name="new_due_date"/>
+                    </group>
+                </group>
+
+                <group string="Correction Instructions">
+                    <field name="rework_reason" placeholder="Detailed technical instructions for correction (e.g., adjust mesial contact by 0.5mm, re-fire shade A3.5 cervical...)" nolabel="1"/>
+                </group>
+
+                <footer>
+                    <button name="action_confirm_rework" string="Confirm &amp; Route to Rework" type="object" class="btn-danger"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

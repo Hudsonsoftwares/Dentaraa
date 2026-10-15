@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Lab Work Order Prescription Report -->
+    <record id="action_report_dental_lab_prescription" model="ir.actions.report">
+        <field name="name">Laboratory Work Order Prescription</field>
+        <field name="model">dental.lab.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">dental_lab.report_lab_order_prescription_template</field>
+        <field name="print_report_name">'Lab_Order_%s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_dental_lab_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Lab Delivery Slip Report -->
+    <record id="action_report_dental_lab_delivery_slip" model="ir.actions.report">
+        <field name="name">Laboratory Delivery &amp; Inspection Slip</field>
+        <field name="model">dental.lab.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">dental_lab.report_lab_delivery_slip_template</field>
+        <field name="print_report_name">'Delivery_Slip_%s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_dental_lab_order"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

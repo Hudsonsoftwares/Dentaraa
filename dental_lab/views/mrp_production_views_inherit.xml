@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mrp_production_form_view_inherit_dental_lab" model="ir.ui.view">
+        <field name="name">mrp.production.form.view.inherit.dental.lab</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='bom_id']" position="after">
+                <field name="lab_order_id" invisible="not lab_order_id" readonly="state != 'draft'"/>
+                <field name="lab_order_line_id" invisible="not lab_order_line_id" readonly="state != 'draft'"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

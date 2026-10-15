@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Top-level Root Menu -->
+    <menuitem id="menu_dental_lab_root"
+              name="Dental Lab"
+              sequence="45"
+              web_icon="dental_lab,static/description/icon.png"
+              groups="dental_lab.group_dental_lab_user,dental_base.group_dental_dentist,dental_base.group_dental_manager,dental_base.group_dental_admin"/>
+
+    <!-- 1. Lab Dashboard -->
+    <menuitem id="menu_dental_lab_dashboard"
+              name="Lab Dashboard"
+              parent="menu_dental_lab_root"
+              action="action_dental_lab_dashboard_window"
+              sequence="10"/>
+
+    <!-- 2. Patient Lab Orders -->
+    <menuitem id="menu_dental_lab_orders_root"
+              name="Patient Lab Orders"
+              parent="menu_dental_lab_root"
+              sequence="20"/>
+
+    <menuitem id="menu_dental_lab_orders_all"
+              name="All Patient Lab Orders"
+              parent="menu_dental_lab_orders_root"
+              action="action_dental_lab_orders"
+              sequence="10"/>
+
+    <menuitem id="menu_dental_lab_orders_qc_queue"
+              name="Quality Inspection Queue"
+              parent="menu_dental_lab_orders_root"
+              action="action_dental_lab_orders_qc_queue"
+              sequence="20"/>
+
+    <menuitem id="menu_dental_lab_order_lines_registry"
+              name="Tooth Restorations Registry"
+              parent="menu_dental_lab_orders_root"
+              action="action_dental_lab_order_lines"
+              sequence="30"/>
+
+    <!-- 3. External Laboratory Orders -->
+    <menuitem id="menu_dental_lab_external_root"
+              name="External Laboratory Orders"
+              parent="menu_dental_lab_root"
+              sequence="30"/>
+
+    <menuitem id="menu_dental_lab_external_orders"
+              name="Commercial Lab Work Orders"
+              parent="menu_dental_lab_external_root"
+              action="action_dental_lab_orders_external"
+              sequence="10"/>
+
+    <!-- 4. Finished Goods & Delivery -->
+    <menuitem id="menu_dental_lab_delivery_root"
+              name="Finished Goods &amp; Delivery"
+              parent="menu_dental_lab_root"
+              sequence="40"/>
+
+    <menuitem id="menu_dental_lab_dispatches_menu"
+              name="Dispatches to Clinic"
+              parent="menu_dental_lab_delivery_root"
+              action="action_dental_lab_dispatches"
+              sequence="10"/>
+
+    <menuitem id="menu_dental_lab_receipts_menu"
+              name="Clinic Receipts &amp; Doctor Intake"
+              parent="menu_dental_lab_delivery_root"
+              action="action_dental_lab_receipts"
+              sequence="20"/>
+
+    <!-- 5. Reports (Dental-Lab Specific) -->
+    <menuitem id="menu_dental_lab_reports_root"
+              name="Reports"
+              parent="menu_dental_lab_root"
+              sequence="50"/>
+
+    <menuitem id="menu_dental_lab_report_orders"
+              name="Lab Orders Register"
+              parent="menu_dental_lab_reports_root"
+              action="action_dental_lab_orders"
+              sequence="10"/>
+
+    <menuitem id="menu_dental_lab_report_restorations"
+              name="Tooth Restorations Analysis"
+              parent="menu_dental_lab_reports_root"
+              action="action_dental_lab_order_lines"
+              sequence="20"/>
+
+    <!-- 6. Configuration (Dental-Lab Specific Settings) -->
+    <menuitem id="menu_dental_lab_config_root"
+              name="Configuration"
+              parent="menu_dental_lab_root"
+              sequence="60"
+              groups="dental_lab.group_dental_lab_manager,dental_base.group_dental_admin"/>
+
+    <menuitem id="menu_dental_lab_config_materials"
+              name="Lab Materials &amp; Restorations Catalog"
+              parent="menu_dental_lab_config_root"
+              action="action_dental_lab_products"
+              sequence="10"/>
+
+    <menuitem id="menu_dental_lab_config_categories"
+              name="Dental Lab Categories"
+              parent="menu_dental_lab_config_root"
+              action="product.product_category_action_form"
+              sequence="20"/>
+</odoo>

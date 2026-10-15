@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Dental Lab Order Form View -->
+    <record id="view_dental_lab_order_form" model="ir.ui.view">
+        <field name="name">dental.lab.order.form</field>
+        <field name="model">dental.lab.order</field>
+        <field name="arch" type="xml">
+            <form string="Dental Lab Order">
+                <header>
+                    <button name="action_submit" string="Submit to Lab" type="object" class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_start_production" string="Start Production" type="object" class="btn-primary"
+                            invisible="state not in ('submitted', 'rework')"/>
+                    <button name="action_request_qc" string="Request QC Inspection" type="object" class="btn-primary"
+                            invisible="state != 'in_production'"/>
+                    <button name="action_receive_finished_goods" string="Store Finished Goods" type="object" class="btn-success"
+                            invisible="state != 'qc_approved'"/>
+                    <button name="action_create_dispatch" string="Dispatch to Clinic" type="object" class="btn-primary"
+                            invisible="state not in ('qc_approved', 'finished')"/>
+                    <button name="action_receive_at_clinic" string="Receive at Clinic" type="object" class="btn-primary"
+                            invisible="state != 'dispatched'"/>
+                    <button name="action_record_dentist_acceptance" string="Dentist Clinical Acceptance" type="object" class="btn-success"
+                            invisible="state != 'received_clinic'"/>
+                    <button name="action_close_order" string="Close Order" type="object" class="btn-secondary"
+                            invisible="state != 'dentist_accepted'"/>
+                    <button name="action_request_rework" string="Request Rework" type="object" class="btn-warning"
+                            invisible="state in ('draft', 'closed', 'cancelled')"/>
+                    <button name="action_cancel" string="Cancel Order" type="object"
+                            invisible="state in ('dentist_accepted', 'closed', 'cancelled')"/>
+                    <button name="action_reopen" string="Set to Draft" type="object"
+                            invisible="state != 'cancelled'"/>
+
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,submitted,in_production,qc_pending,qc_approved,finished,dispatched,received_clinic,dentist_accepted,closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_quality_checks" type="object" class="oe_stat_button" icon="fa-check-square-o"
+                                invisible="quality_check_count == 0">
+                            <field name="quality_check_count" widget="statinfo" string="Quality Checks"/>
+                        </button>
+                        <button name="action_view_quality_alerts" type="object" class="oe_stat_button" icon="fa-exclamation-triangle"
+                                invisible="quality_alert_count == 0">
+                            <field name="quality_alert_count" widget="statinfo" string="Quality Alerts"/>
+                        </button>
+                        <button name="action_view_mrp_production" type="object" class="oe_stat_button" icon="fa-wrench"
+                                invisible="not production_id">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Manufacturing</span>
+                                <span class="o_stat_text">Order</span>
+                            </div>
+                        </button>
+                        <button name="action_view_dispatches" type="object" class="oe_stat_button" icon="fa-truck"
+                                invisible="dispatch_count == 0">
+                            <field name="dispatch_count" widget="statinfo" string="Dispatches"/>
+                        </button>
+                        <button name="action_view_receipts" type="object" class="oe_stat_button" icon="fa-inbox"
+                                invisible="receipt_count == 0">
+                            <field name="receipt_count" widget="statinfo" string="Receipts"/>
+                        </button>
+                    </div>
+
+                    <div class="oe_title">
+                        <span class="o_form_label">Laboratory Order</span>
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Patient &amp; Clinical Information">
+                            <field name="patient_id" readonly="state != 'draft'"/>
+                            <field name="patient_age"/>
+                            <field name="patient_gender"/>
+                            <field name="case_id" readonly="state != 'draft'"/>
+                            <field name="dentist_id" readonly="state != 'draft'"/>
+                            <field name="appointment_id" readonly="state != 'draft'"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group string="Routing &amp; Scheduling">
+                            <field name="priority" widget="priority"/>
+                            <field name="lab_type" widget="radio" readonly="state != 'draft'"/>
+                            <field name="external_lab_id" invisible="lab_type != 'external'" required="lab_type == 'external'" readonly="state != 'draft'"/>
+                            <field name="order_date" readonly="state != 'draft'"/>
+                            <field name="due_date"/>
+                            <field name="promised_delivery_date"/>
+                            <field name="coordinator_id"/>
+                            <field name="technician_id"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Tooth Restorations" name="restoration_lines">
+                            <field name="line_ids" readonly="state in ('closed', 'cancelled')">
+                                <list editable="bottom" decoration-warning="state == 'rework'" decoration-danger="state == 'qc_failed'" decoration-success="state == 'qc_passed'">
+                                    <field name="tooth_number"/>
+                                    <field name="restoration_type"/>
+                                    <field name="product_id"/>
+                                    <field name="material"/>
+                                    <field name="shade"/>
+                                    <field name="stump_shade" optional="hide"/>
+                                    <field name="quantity"/>
+                                    <field name="unit_price" optional="show"/>
+                                    <field name="subtotal" sum="Total Billable"/>
+                                    <field name="state" widget="badge"
+                                           decoration-warning="state == 'rework'"
+                                           decoration-danger="state == 'qc_failed'"
+                                           decoration-info="state in ('in_production', 'qc_pending')"
+                                           decoration-success="state in ('qc_passed', 'completed')"/>
+                                    <field name="rework_count" optional="show"/>
+                                    <field name="technical_notes" optional="hide"/>
+                                </list>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="patient_billable_amount"/>
+                            </group>
+                        </page>
+
+                        <page string="Impression &amp; Preparation Specs" name="specs">
+                            <group>
+                                <group string="Impression Specifications">
+                                    <field name="impression_type"/>
+                                    <field name="antagonist_impression"/>
+                                    <field name="bite_registration"/>
+                                    <field name="articulators_included"/>
+                                </group>
+                                <group string="Esthetics &amp; Contacts">
+                                    <field name="shade"/>
+                                    <field name="stump_shade"/>
+                                    <field name="margin_design"/>
+                                    <field name="occlusal_clearance"/>
+                                </group>
+                            </group>
+                            <group string="Clinical Instructions">
+                                <field name="clinical_instructions" nolabel="1" placeholder="Prescribing dentist instructions..."/>
+                            </group>
+                            <group string="Internal Technician Observations">
+                                <field name="internal_technician_notes" nolabel="1" placeholder="Internal CAD/CAM milling or laboratory notes..."/>
+                            </group>
+                        </page>
+
+                        <page string="Digital Scans &amp; Clinical Images" name="scans">
+                            <field name="attachment_ids" widget="many2many_binary" string="Attach STL / PLY / DICOM / Clinical Photos"/>
+                        </page>
+
+                        <page string="External Lab Tracking" name="external_logistics" invisible="lab_type != 'external'">
+                            <group>
+                                <group string="External Reference &amp; Cost">
+                                    <field name="external_reference"/>
+                                    <field name="external_quotation_cost"/>
+                                </group>
+                                <group string="Logistics &amp; Courier">
+                                    <field name="external_courier_name"/>
+                                    <field name="external_tracking_number"/>
+                                    <field name="external_dispatch_date"/>
+                                    <field name="external_expected_return"/>
+                                    <field name="external_actual_return"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Dentist Clinical Acceptance" name="clinical_acceptance">
+                            <group>
+                                <group string="Clinical Evaluation">
+                                    <field name="dentist_fit_rating" readonly="state == 'closed'"/>
+                                    <field name="dentist_shade_match" readonly="state == 'closed'"/>
+                                </group>
+                                <group string="Verification Audit">
+                                    <field name="dentist_accepted_by"/>
+                                    <field name="dentist_accepted_date"/>
+                                </group>
+                            </group>
+                            <group string="Doctor Verification Observations">
+                                <field name="dentist_acceptance_notes" nolabel="1" placeholder="Observations regarding margins, occlusion, shade match, and patient satisfaction..."/>
+                            </group>
+                        </page>
+
+                        <page string="Costing &amp; Accounting" name="costing" groups="dental_base.group_dental_manager,dental_base.group_dental_admin">
+                            <group>
+                                <group string="Cost Breakdown">
+                                    <field name="material_cost"/>
+                                    <field name="production_cost"/>
+                                    <field name="external_lab_cost" invisible="lab_type != 'external'"/>
+                                </group>
+                                <group string="Billing Status">
+                                    <field name="patient_billable_amount"/>
+                                    <field name="is_invoiced"/>
+                                    <field name="invoice_id" invisible="not is_invoiced"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Dental Lab Order List View -->
+    <record id="view_dental_lab_order_list" model="ir.ui.view">
+        <field name="name">dental.lab.order.list</field>
+        <field name="model">dental.lab.order</field>
+        <field name="arch" type="xml">
+            <list string="Dental Lab Orders"
+                  decoration-warning="state == 'rework'"
+                  decoration-danger="state == 'cancelled'"
+                  decoration-info="state in ('submitted', 'in_production', 'qc_pending')"
+                  decoration-primary="state in ('qc_approved', 'finished', 'dispatched')"
+                  decoration-success="state in ('received_clinic', 'dentist_accepted', 'closed')">
+                <field name="name"/>
+                <field name="order_date"/>
+                <field name="due_date" widget="remaining_days"/>
+                <field name="patient_id"/>
+                <field name="case_id"/>
+                <field name="dentist_id"/>
+                <field name="tooth_summary"/>
+                <field name="lab_type"/>
+                <field name="technician_id" widget="many2one_avatar_user"/>
+                <field name="quality_check_count" string="QC Checks"/>
+                <field name="priority" widget="priority"/>
+                <field name="state" widget="badge"
+                       decoration-warning="state == 'rework'"
+                       decoration-danger="state == 'cancelled'"
+                       decoration-info="state in ('submitted', 'in_production', 'qc_pending')"
+                       decoration-primary="state in ('qc_approved', 'finished', 'dispatched')"
+                       decoration-success="state in ('received_clinic', 'dentist_accepted', 'closed')"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Dental Lab Order Kanban View -->
+    <record id="view_dental_lab_order_kanban" model="ir.ui.view">
+        <field name="name">dental.lab.order.kanban</field>
+        <field name="model">dental.lab.order</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="o_kanban_small_column" quick_create="false">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="patient_id"/>
+                <field name="tooth_summary"/>
+                <field name="shade"/>
+                <field name="priority"/>
+                <field name="due_date"/>
+                <field name="lab_type"/>
+                <field name="state"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_card oe_kanban_global_click">
+                            <div class="o_kanban_record_top">
+                                <div class="o_kanban_record_headings">
+                                    <strong class="o_kanban_record_title"><field name="name"/></strong>
+                                    <span class="text-muted d-block"><field name="patient_id"/></span>
+                                </div>
+                                <field name="priority" widget="priority"/>
+                            </div>
+                            <div class="mt-1">
+                                <span class="badge bg-light text-dark me-1"><field name="tooth_summary"/></span>
+                                <span class="badge bg-secondary me-1"><field name="shade"/></span>
+                                <span t-if="record.lab_type.raw_value == 'external'" class="badge bg-info">External</span>
+                            </div>
+                            <div class="o_kanban_record_bottom mt-2">
+                                <div class="oe_kanban_bottom_left text-muted small">
+                                    <i class="fa fa-clock-o me-1"/><field name="due_date" widget="date"/>
+                                </div>
+                                <div class="oe_kanban_bottom_right">
+                                    <field name="technician_id" widget="many2one_avatar_user"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Dental Lab Order Calendar View -->
+    <record id="view_dental_lab_order_calendar" model="ir.ui.view">
+        <field name="name">dental.lab.order.calendar</field>
+        <field name="model">dental.lab.order</field>
+        <field name="arch" type="xml">
+            <calendar string="Lab Work Schedule" date_start="order_date" date_stop="due_date" color="technician_id" mode="month">
+                <field name="name"/>
+                <field name="patient_id"/>
+                <field name="tooth_summary"/>
+                <field name="state"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- Dental Lab Order Search View -->
+    <record id="view_dental_lab_order_search" model="ir.ui.view">
+        <field name="name">dental.lab.order.search</field>
+        <field name="model">dental.lab.order</field>
+        <field name="arch" type="xml">
+            <search string="Search Dental Lab Orders">
+                <field name="name" string="Order # / Patient" filter_domain="['|', ('name', 'ilike', self), ('patient_id', 'ilike', self)]"/>
+                <field name="case_id"/>
+                <field name="dentist_id"/>
+                <field name="technician_id"/>
+                <field name="external_lab_id"/>
+                <field name="tooth_summary"/>
+
+                <filter string="Open Orders" name="filter_open" domain="[('state', 'not in', ('closed', 'cancelled'))]"/>
+                <filter string="In-House Lab" name="filter_in_house" domain="[('lab_type', '=', 'in_house')]"/>
+                <filter string="External Commercial Lab" name="filter_external" domain="[('lab_type', '=', 'external')]"/>
+                <separator/>
+                <filter string="Draft" name="filter_draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="In Production" name="filter_production" domain="[('state', '=', 'in_production')]"/>
+                <filter string="Awaiting QC" name="filter_qc_pending" domain="[('state', '=', 'qc_pending')]"/>
+                <filter string="QC Approved" name="filter_qc_approved" domain="[('state', '=', 'qc_approved')]"/>
+                <filter string="Rework Required" name="filter_rework" domain="[('state', '=', 'rework')]"/>
+                <filter string="Dispatched / Received" name="filter_delivery" domain="[('state', 'in', ('dispatched', 'received_clinic'))]"/>
+                <filter string="Clinically Accepted" name="filter_accepted" domain="[('state', '=', 'dentist_accepted')]"/>
+                <separator/>
+                <filter string="High / Urgent Priority" name="filter_urgent" domain="[('priority', 'in', ('2', '3'))]"/>
+                <filter string="Overdue Delivery" name="filter_overdue" domain="[('due_date', '&lt;', context_today), ('state', 'not in', ('closed', 'cancelled'))]"/>
+                <separator/>
+                <filter string="Group By: Status" name="group_by_state" context="{'group_by': 'state'}"/>
+                <filter string="Group By: Laboratory Routing" name="group_by_lab_type" context="{'group_by': 'lab_type'}"/>
+                <filter string="Group By: Technician" name="group_by_technician" context="{'group_by': 'technician_id'}"/>
+                <filter string="Group By: Dentist" name="group_by_dentist" context="{'group_by': 'dentist_id'}"/>
+                <filter string="Group By: Priority" name="group_by_priority" context="{'group_by': 'priority'}"/>
+                <filter string="Group By: Due Date" name="group_by_due_date" context="{'group_by': 'due_date:month'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action: All Patient Lab Orders -->
+    <record id="action_dental_lab_orders" model="ir.actions.act_window">
+        <field name="name">Patient Dental Lab Orders</field>
+        <field name="res_model">dental.lab.order</field>
+        <field name="view_mode">kanban,list,calendar,form</field>
+        <field name="search_view_id" ref="view_dental_lab_order_search"/>
+        <field name="context">{'search_default_filter_open': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a patient-specific Dental Laboratory Order.
+            </p>
+            <p>
+                Track in-house milling, technician tasks, quality control checks, external commercial lab routing, clinic dispatch, and dentist clinical acceptance.
+            </p>
+        </field>
+    </record>
+
+    <!-- Action: External Lab Orders -->
+    <record id="action_dental_lab_orders_external" model="ir.actions.act_window">
+        <field name="name">External Laboratory Orders</field>
+        <field name="res_model">dental.lab.order</field>
+        <field name="view_mode">list,kanban,calendar,form</field>
+        <field name="domain">[('lab_type', '=', 'external')]</field>
+        <field name="context">{'default_lab_type': 'external', 'search_default_filter_open': 1}</field>
+    </record>
+
+    <!-- Action: Quality Inspection Queue -->
+    <record id="action_dental_lab_orders_qc_queue" model="ir.actions.act_window">
+        <field name="name">Quality Inspection Queue</field>
+        <field name="res_model">dental.lab.order</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('state', 'in', ('qc_pending', 'rework'))]</field>
+        <field name="context">{'search_default_filter_qc_pending': 1}</field>
+    </record>
+</odoo>

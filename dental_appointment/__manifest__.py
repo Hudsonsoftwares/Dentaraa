@@ -4,7 +4,7 @@
     'summary': 'Dental Appointment Management',
     'category': 'Healthcare',
     'author': 'Antigravity',
-    'depends': ['dental_base', 'dental_patient', 'dental_catalog', 'calendar', 'mail', 'resource', 'hr', 'hr_holidays'],
+    'depends': ['dental_base', 'dental_patient', 'dental_catalog', 'calendar', 'mail', 'resource', 'hr', 'hr_holidays', 'website'],
     'data': [
         'security/ir.access.csv',
         'data/ir_sequence_data.xml',
@@ -15,6 +15,7 @@
         'views/recall_views.xml',
         'views/follow_up_views.xml',
         'views/res_partner_views.xml',
+        'views/website_appointment_templates.xml',
         'views/menu_views.xml',
     ],
     'installable': True,

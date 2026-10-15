@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dental_lab_create_wizard_form" model="ir.ui.view">
+        <field name="name">dental.lab.create.wizard.form</field>
+        <field name="model">dental.lab.create.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Create Dental Lab Order">
+                <field name="existing_order_count" invisible="1"/>
+                <field name="existing_order_id" invisible="1"/>
+                <field name="existing_order_warning" invisible="not existing_order_warning" widget="html" readonly="1"/>
+
+                <group>
+                    <group string="Clinical Context">
+                        <field name="case_id" readonly="1"/>
+                        <field name="patient_id" readonly="1"/>
+                        <field name="dentist_id" readonly="1"/>
+                        <field name="appointment_id" readonly="1"/>
+                    </group>
+                    <group string="Laboratory Order Routing">
+                        <field name="lab_type" widget="radio"/>
+                        <field name="external_lab_id" invisible="lab_type != 'external'" required="lab_type == 'external'"/>
+                        <field name="priority" widget="priority"/>
+                        <field name="due_date"/>
+                    </group>
+                </group>
+
+                <group string="Esthetics &amp; Preparation">
+                    <group>
+                        <field name="shade"/>
+                        <field name="stump_shade"/>
+                    </group>
+                    <group>
+                        <field name="margin_design"/>
+                        <field name="occlusal_clearance"/>
+                    </group>
+                </group>
+
+                <notebook>
+                    <page string="Tooth Restoration Lines" name="lines">
+                        <field name="line_ids">
+                            <list editable="bottom">
+                                <field name="tooth_number"/>
+                                <field name="restoration_type"/>
+                                <field name="product_id"/>
+                                <field name="material"/>
+                                <field name="shade"/>
+                                <field name="quantity"/>
+                                <field name="unit_price" optional="show"/>
+                                <field name="technical_notes" optional="hide"/>
+                            </list>
+                        </field>
+                    </page>
+                    <page string="Doctor Prescription Notes" name="instructions">
+                        <field name="clinical_instructions" placeholder="Enter specific instructions for the laboratory technician..."/>
+                    </page>
+                </notebook>
+
+                <footer>
+                    <button name="action_open_existing" string="Open Existing Lab Order" type="object" class="btn-warning"
+                            invisible="existing_order_count == 0"/>
+                    <button name="action_confirm_create" string="Create &amp; Open Lab Order" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

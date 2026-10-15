@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Raw Materials (product.product) -->
+    <record id="product_zirconia_disc_a2" model="product.product">
+        <field name="name">Multilayer Zirconia Disc 3D Pro (98x16mm, Shade A2)</field>
+        <field name="default_code">RAW-ZIRC-98-16-A2</field>
+        <field name="categ_id" ref="product_category_raw_materials"/>
+        <field name="type">consu</field>
+        <field name="list_price">140.0</field>
+        <field name="standard_price">90.0</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="is_dental_lab_item">True</field>
+        <field name="dental_lab_type">raw_material</field>
+        <field name="dental_material_composition">zirconia_ml</field>
+        <field name="dental_shade">A2</field>
+        <field name="dental_size">16mm</field>
+    </record>
+
+    <record id="product_emax_cad_block_a2" model="product.product">
+        <field name="name">IPS E.max CAD Block (LT A2, Box of 5)</field>
+        <field name="default_code">RAW-EMAX-CAD-A2</field>
+        <field name="categ_id" ref="product_category_raw_materials"/>
+        <field name="type">consu</field>
+        <field name="list_price">125.0</field>
+        <field name="standard_price">80.0</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="is_dental_lab_item">True</field>
+        <field name="dental_lab_type">raw_material</field>
+        <field name="dental_material_composition">emax_cad</field>
+        <field name="dental_shade">A2</field>
+    </record>
+
+    <record id="product_cocr_alloy" model="product.product">
+        <field name="name">Cobalt-Chromium Dental Casting Alloy (1 kg)</field>
+        <field name="default_code">RAW-COCR-1KG</field>
+        <field name="categ_id" ref="product_category_raw_materials"/>
+        <field name="type">consu</field>
+        <field name="list_price">210.0</field>
+        <field name="standard_price">150.0</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="is_dental_lab_item">True</field>
+        <field name="dental_lab_type">raw_material</field>
+        <field name="dental_material_composition">cocr_alloy</field>
+    </record>
+
+    <record id="product_type4_die_stone" model="product.product">
+        <field name="name">Type IV High Strength Die Stone - Golden Brown (25 kg)</field>
+        <field name="default_code">RAW-STONE-T4-25KG</field>
+        <field name="categ_id" ref="product_category_raw_materials"/>
+        <field name="type">consu</field>
+        <field name="list_price">65.0</field>
+        <field name="standard_price">40.0</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="is_dental_lab_item">True</field>
+        <field name="dental_lab_type">raw_material</field>
+        <field name="dental_material_composition">dental_stone</field>
+    </record>
+
+    <!-- Artificial Teeth (product.product) -->
+    <record id="product_acrylic_teeth_ant_a2" model="product.product">
+        <field name="name">Multi-Layer Acrylic Anterior Teeth Set (Shade A2, Upper)</field>
+        <field name="default_code">TEE-ANT-A2-UPP</field>
+        <field name="categ_id" ref="product_category_artificial_teeth"/>
+        <field name="type">consu</field>
+        <field name="list_price">28.0</field>
+        <field name="standard_price">16.0</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="is_dental_lab_item">True</field>
+        <field name="dental_lab_type">teeth</field>
+        <field name="dental_shade">A2</field>
+    </record>
+
+    <record id="product_acrylic_teeth_post_a2" model="product.product">
+        <field name="name">Multi-Layer Acrylic Posterior Teeth Set (Shade A2, 28° Cusp)</field>
+        <field name="default_code">TEE-POST-A2-28</field>
+        <field name="categ_id" ref="product_category_artificial_teeth"/>
+        <field name="type">consu</field>
+        <field name="list_price">26.0</field>
+        <field name="standard_price">15.0</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="is_dental_lab_item">True</field>
+        <field name="dental_lab_type">teeth</field>
+        <field name="dental_shade">A2</field>
+    </record>
+
+    <!-- Dental Consumables (product.product) -->
+    <record id="product_milling_bur_2mm" model="product.product">
+        <field name="name">Diamond Coated CAD/CAM Milling Bur (2.0 mm, Shank 4mm)</field>
+        <field name="default_code">CON-BUR-2.0MM</field>
+        <field name="categ_id" ref="product_category_dental_consumables"/>
+        <field name="type">consu</field>
+        <field name="list_price">45.0</field>
+        <field name="standard_price">28.0</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="is_dental_lab_item">True</field>
+        <field name="dental_lab_type">consumable</field>
+    </record>
+
+    <record id="product_glaze_paste_5g" model="product.product">
+        <field name="name">Universal Glaze Paste Fluorescent &amp; Liquid (5g)</field>
+        <field name="default_code">CON-GLAZE-5G</field>
+        <field name="categ_id" ref="product_category_dental_consumables"/>
+        <field name="type">consu</field>
+        <field name="list_price">55.0</field>
+        <field name="standard_price">35.0</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="is_dental_lab_item">True</field>
+        <field name="dental_lab_type">consumable</field>
+    </record>
+
+    <!-- Finished Dental Restorations & Lab Products (product.template) -->
+    <record id="product_finished_zirconia_crown_template" model="product.template">
+        <field name="name">Monolithic / Multilayer Zirconia Crown (Custom Milled)</field>
+        <field name="default_code">LAB-CROWN-ZIRC</field>
+        <field name="categ_id" ref="product_category_crowns_bridges"/>
+        <field name="type">consu</field>
+        <field name="list_price">280.0</field>
+        <field name="standard_price">75.0</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="is_dental_lab_item">True</field>
+        <field name="dental_lab_type">crown_bridge</field>
+        <field name="dental_material_composition">zirconia_ml</field>
+        <field name="is_patient_specific">True</field>
+        <field name="lab_turnaround_days">3</field>
+    </record>
+
+    <record id="product_finished_emax_crown_template" model="product.template">
+        <field name="name">IPS E.max Press Aesthetic Crown</field>
+        <field name="default_code">LAB-CROWN-EMAX</field>
+        <field name="categ_id" ref="product_category_crowns_bridges"/>
+        <field name="type">consu</field>
+        <field name="list_price">320.0</field>
+        <field name="standard_price">85.0</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="is_dental_lab_item">True</field>
+        <field name="dental_lab_type">crown_bridge</field>
+        <field name="dental_material_composition">emax_press</field>
+        <field name="is_patient_specific">True</field>
+        <field name="lab_turnaround_days">3</field>
+    </record>
+
+    <record id="product_finished_complete_denture_template" model="product.template">
+        <field name="name">Complete Acrylic Denture (High Impact, Upper/Lower)</field>
+        <field name="default_code">LAB-DENT-COMPLETE</field>
+        <field name="categ_id" ref="product_category_dentures"/>
+        <field name="type">consu</field>
+        <field name="list_price">450.0</field>
+        <field name="standard_price">110.0</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="is_dental_lab_item">True</field>
+        <field name="dental_lab_type">denture</field>
+        <field name="dental_material_composition">acrylic</field>
+        <field name="is_patient_specific">True</field>
+        <field name="lab_turnaround_days">5</field>
+    </record>
+
+    <record id="product_finished_nightguard_template" model="product.template">
+        <field name="name">Thermoformed Hard-Soft Occlusal Splint / Nightguard</field>
+        <field name="default_code">LAB-SPLINT-NIGHT</field>
+        <field name="categ_id" ref="product_category_orthodontic_appliances"/>
+        <field name="type">consu</field>
+        <field name="list_price">180.0</field>
+        <field name="standard_price">45.0</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="is_dental_lab_item">True</field>
+        <field name="dental_lab_type">orthodontic</field>
+        <field name="is_patient_specific">True</field>
+        <field name="lab_turnaround_days">2</field>
+    </record>
+
+    <!-- Manufacturing Bill of Materials (BOM) for Zirconia Crown -->
+    <record id="bom_zirconia_crown" model="mrp.bom">
+        <field name="product_tmpl_id" ref="product_finished_zirconia_crown_template"/>
+        <field name="product_qty">1.0</field>
+        <field name="type">normal</field>
+        <field name="bom_line_ids" eval="[
+            (0, 0, {'product_id': ref('product_zirconia_disc_a2'), 'product_qty': 0.05}),
+            (0, 0, {'product_id': ref('product_milling_bur_2mm'), 'product_qty': 0.02}),
+            (0, 0, {'product_id': ref('product_glaze_paste_5g'), 'product_qty': 0.1}),
+        ]"/>
+    </record>
+</odoo>

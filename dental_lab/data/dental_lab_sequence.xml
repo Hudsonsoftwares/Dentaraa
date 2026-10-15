@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Dental Lab Order Sequence -->
+    <record id="seq_dental_lab_order" model="ir.sequence">
+        <field name="name">Dental Lab Order</field>
+        <field name="code">dental.lab.order</field>
+        <field name="prefix">DLO/%(year)s/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <!-- Dental Lab Dispatch Sequence -->
+    <record id="seq_dental_lab_dispatch" model="ir.sequence">
+        <field name="name">Dental Lab Dispatch</field>
+        <field name="code">dental.lab.dispatch</field>
+        <field name="prefix">DSP/%(year)s/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <!-- Dental Lab Receipt Sequence -->
+    <record id="seq_dental_lab_receipt" model="ir.sequence">
+        <field name="name">Dental Lab Receipt</field>
+        <field name="code">dental.lab.receipt</field>
+        <field name="prefix">RCP/%(year)s/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+</odoo>

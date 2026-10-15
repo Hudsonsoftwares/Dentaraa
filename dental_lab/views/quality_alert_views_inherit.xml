@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_quality_alert_form_inherit_dental_lab" model="ir.ui.view">
+        <field name="name">quality.alert.form.inherit.dental.lab</field>
+        <field name="model">quality.alert</field>
+        <field name="inherit_id" ref="Quality.view_quality_alert_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='picking_id']" position="before">
+                <field name="lab_order_id" invisible="not lab_order_id"/>
+                <field name="lab_order_line_id" invisible="not lab_order_line_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_quality_alert_list_inherit_dental_lab" model="ir.ui.view">
+        <field name="name">quality.alert.list.inherit.dental.lab</field>
+        <field name="model">quality.alert</field>
+        <field name="inherit_id" ref="Quality.view_quality_alert_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_id']" position="after">
+                <field name="lab_order_id" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
